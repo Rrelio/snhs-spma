@@ -1,0 +1,512 @@
+:root {
+    --assignment-percent: 90deg;
+    --accent-color: 128, 168, 63;
+
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    z-index: -1000;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(var(--accent-color), .2);
+}
+
+body {
+    background-image: url("../images/SNHS-cover.jpg");
+    background-position: 35% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    backdrop-filter: blur(3px);
+}
+
+.login-container {
+    margin: 12.5vh 0 12.5vh 0;
+    height: 75vh;
+    border-radius: 10px;
+}
+
+.login-container .col-lg-4 {
+    background-color: #FFFFFFEF;
+    border-radius: 10px 0 0 10px;
+}
+
+.login-container .col-lg-8 {
+    color: white;
+    background-color: #97D03EEF;
+    border-radius: 0 10px 10px 0;
+}
+
+.login-title {
+    color: #20508a;
+    font-size: 22pt;
+}
+
+.login-option {
+    cursor: pointer;
+    border: 1px solid #fff0;
+    border-radius: 15px;
+    transition: background-color .2s;
+}
+
+.login-option-icon {
+    height: auto;
+    max-width: 60px;
+}
+
+.login-option:hover {
+    background-color: #69BD45;
+    border: 1px #209B38 solid;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.cursor-default{
+    cursor: default !important;
+}
+
+input.form-control {
+    border-radius: 15px;
+}
+
+.modal-dialog {
+    margin-top: 4.5rem;
+    max-width: 400px;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 25px;
+    color: #4C4C60;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.borderless {
+    border: none;
+}
+
+.bg-danger-50 {
+    background-color: #dc354588;
+}
+
+.vh-100 {
+    max-height: 100vh;
+}
+
+.dashboard-background {
+    position: absolute;
+    width: 95%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -10;
+}
+
+.dashboard-board {
+    width: 90%;
+}
+
+.dashboard-board>div {
+    max-height: 95vh;
+}
+
+.dashboard-board>div:first-child {
+    border-radius: 30px 0 0 30px;
+}
+
+.dashboard-board>div:nth-child(2) {
+    border-radius: 0 30px 30px 0;
+}
+
+.mini-cal {
+    text-align: center;
+}
+
+.bg-white-50 {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.text-darkish {
+    color: #4C4C60;
+}
+
+.text-darkerish {
+    color: #2B2945;
+}
+
+.text-black-50 {
+    color: rgba(0, 0, 0, .5);
+}
+
+.mini-calendar>thead>tr>th:first-child {
+    color: #ff00008f;
+
+}
+
+.current-date {
+
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border-radius: 10px;
+}
+
+.mini-calendar>thead>tr>th {
+    text-align: center;
+    padding-bottom: 0;
+    font-weight: normal;
+    color: #0000008f;
+}
+
+.mini-calendar>tbody>tr>td {
+    text-align: center;
+}
+
+.mini-cal-dates {
+    margin-top: 2px;
+}
+
+.active-tab {
+    background-color: rgb(var(--accent-color));
+    border-radius: 10px;
+}
+
+.active-tab>img {
+    filter: brightness(0) invert(1);
+}
+
+.input-group-pill>input {
+    border-radius: 50px 0 0 50px;
+}
+
+.input-group-pill>span {
+    border-radius: 0 50px 50px 0;
+}
+
+.table-fs-small>tbody
+{
+    font-size: 11pt;
+}
+
+button.account-inactive
+{
+    background-color: #8E8E8E !important;
+    border-color: #8E8E8E !important;
+    cursor: default !important;
+}
+
+.flip {
+    transform: scale(-1);
+}
+
+.form-border {
+    border: 1px solid #ced4da
+}
+
+.rounded-4 {
+    border-radius: .4rem !important;
+}
+
+.rounded-5 {
+    border-radius: .5rem !important;
+}
+
+.bg-accent{
+    background-color: rgb(var(--accent-color));
+}
+
+.bg-accent-50{
+    background-color: rgba(var(--accent-color),.5);
+}
+.bg-accent-75{
+    background-color: rgba(var(--accent-color),.75);
+}
+
+.text-accent{
+    color: rgb(var(--accent-color));
+}
+
+.opacity-75{
+    opacity: .75;
+}
+
+.opacity-5{
+    opacity: .5;
+}
+
+.opacity-25{
+    opacity: .25;
+}
+
+.text-transparent{
+    color: rgba(255, 255, 255, .0);
+}
+
+.img-upload {
+    background-color: rgba(var(--accent-color), .2);
+    border: rgb(var(--accent-color)) 3px dashed;
+    border-radius: 50%;
+    height: auto;
+    max-width: 150px;
+    min-width: 100px;
+    color: rgb(var(--accent-color));
+}
+
+.sticky-th
+{
+    box-shadow: 0px 2px black;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: #e4e4e4;
+    border-radius: 100px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border: 2px solid #e4e4e4;
+    background: #888;
+    border-radius: 100px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+pre.nowrap{
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.wave-anim {
+    animation-name: wave-animation;
+    /* Refers to the name of your @keyframes element below */
+    animation-duration: 2.5s;
+    /* Change to speed up or slow down */
+    transform-origin: 70% 70%;
+    /* Pivot around the bottom-left palm */
+    display: inline-block;
+}
+
+@keyframes wave-animation {
+    0% {
+        transform: rotate(0.0deg)
+    }
+
+    10% {
+        transform: rotate(14.0deg)
+    }
+
+    /* The following five values can be played with to make the waving more or less extreme */
+    20% {
+        transform: rotate(-8.0deg)
+    }
+
+    30% {
+        transform: rotate(14.0deg)
+    }
+
+    40% {
+        transform: rotate(-4.0deg)
+    }
+
+    50% {
+        transform: rotate(10.0deg)
+    }
+
+    60% {
+        transform: rotate(0.0deg)
+    }
+
+    /* Reset for the last half to pause */
+    100% {
+        transform: rotate(0.0deg)
+    }
+}
+
+.user-count
+{
+    color: #4C4C60;
+    display: block;
+    /* background: linear-gradient(to top, black 50%, transparent 0); */
+    background-size: 100% 210% !important;
+    background-position: top;
+    animation: makeItfadeIn 1s 1s forwards;
+}
+
+@keyframes makeItfadeIn {
+100%
+    {
+        background-position: bottom;
+        color: white;
+    }
+}
+
+.worm-bg>svg
+{
+    width: 50%;
+    position: absolute;
+    /* top: 0px; */
+    bottom: 10px;
+    right: 10px;
+    transform: scaleX(-1);
+    fill: rgba(var(--accent-color),.25);
+    /* right: 0px; */
+}
+
+/* configs */
+.accordion-button:not(.collapsed) {
+    color: black;
+    background-color: rgba(var(--accent-color), .05);
+}
+
+.accordion-button:focus {
+    border-color: rgb(var(--accent-color));
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), .5);
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: brightness(0);
+}
+
+.form-control:focus {
+    border-color: rgb(var(--accent-color));
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), .25) !important;
+}
+
+.btn-check:focus+.btn,
+.btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), .25);
+}
+
+.form-select:focus {
+    border-color: rgb(var(--accent-color));
+    box-shadow: 0 0 0 0.25rem rgba(var(--accent-color), .25) !important;
+}
+
+.btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
+    color: #fff;
+    background-color: rgb(var(--accent-color)) !important;
+    border-color: rgb(var(--accent-color)) !important;
+}
+.btn-outline-primary
+{
+    color: rgb(var(--accent-color));
+    border-color: rgb(var(--accent-color));
+}
+
+.btn-outline-primary:hover
+{
+    color: white;
+    background-color: rgb(var(--accent-color));
+    border-color: rgb(var(--accent-color));
+}
+
+.pill-left
+{
+    border-radius: 50rem 0 0 50rem !important;
+}
+.pill-right
+{
+    border-radius: 0 50rem 50rem 0 !important;
+}
+
+#add-event::before
+{
+    content: "Add an event";
+    white-space: nowrap;
+    margin-top: 3px;
+    margin-right: 0px;
+    font-size: 14pt;
+    /* background-color: rebeccapurple; */
+    transition: .7s;
+    /* transition-timing-function: ease; */
+    clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+}
+#add-event
+{
+    width: 42px;
+    border-radius: 50%;
+    transition: .75s;
+}
+
+#add-event:hover
+{
+    border-radius: 50rem;
+    width: 30%;
+}
+
+#add-event:hover::before
+{
+    margin-right: 10px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.test-truncate
+{
+    white-space: nowrap; 
+    /* width: 5px;  */
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    /* border: 1px solid #000000; */
+}
+
+.admin-verification-container
+{
+    height: 0px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+}
+
+.wipe-down
+{
+    animation: wipe-down 1s 1s forwards;
+}
+
+@keyframes wipe-down {
+    100%
+    {
+        height: 85px;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+}
+
+.w-fit
+{
+    width: fit-content !important;
+}
+
+.nudge
+{
+    animation: nudge .4s linear;
+}
+
+@keyframes nudge {
+    0% {
+      transform: rotate(-3deg);
+    }
+    
+    33% {
+      transform: rotate(3deg);
+    }
+    
+    66% {
+      transform: rotate(-3deg);
+    }
+  }

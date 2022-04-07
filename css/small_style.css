@@ -1,0 +1,25 @@
+@media screen and (max-width: 600px) {
+    .dashboard-background
+    {
+        width: 100%;
+    }
+    .dashboard-board
+    {
+        width: 90%;
+    }
+    .dashboard-board>div:nth-child(2)
+    {
+        border: 1px #707070 solid;
+        border-radius: 30px;
+    }
+
+    .w-sm-50
+    {
+        width: 50% !important;
+    }
+
+    .w-sm-25
+    {
+        width: 25% !important;
+    }
+}

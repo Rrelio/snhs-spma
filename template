@@ -1,0 +1,10 @@
+<?php
+    require 'php_helpers/head.php';
+?>
+<body>
+    
+<script src="js/main.js"></script>
+</body>
+<?php
+    require 'php_helpers/foot.php';
+?>

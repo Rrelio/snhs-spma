@@ -1,0 +1,9 @@
+@media screen and (max-width: 1135px) and (min-width: 600px){
+    .mini-calendar>thead>tr>th , .mini-calendar>tbody>tr>td
+    {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    
+}
