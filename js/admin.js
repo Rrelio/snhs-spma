@@ -1039,6 +1039,61 @@ async function setSectionDelete(ID, name, grade) {
     }else{console.log(res)}
 }
 
+async function getTeachersClass() {
+    let res = await GET("getTeachersClass",{});
+    if(resCheck(res, "GET")){
+        res.forEach(teacher => {
+            document.querySelector("#teacherList").innerHTML += `
+            <h2 class="accordion-header" id="flush-headingOne"><button class="accordion-button collapsed"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                    aria-expanded="false" aria-controls="flush-collapseOne">
+                    <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
+                    <div class="test-truncate">
+                        
+                    </div>
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExamples">
+                <div class="accordion-body p-2 pe-0 d-flex">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Grade</th>
+                                <th scope="col">Section</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>English</td>
+                                <td>6</td>
+                                <td>A</td>
+                                <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
+                            </tr>
+                            <tr>
+                                <td>Asd</td>
+                                <td>Thornton</td>
+                                <td>lo</td>
+                                <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
+                            </tr>
+                            <tr>
+                                <td>Larry the Bird</td>
+                                <td>@twitter</td>
+                                <td>@twitter</td>
+                                <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>`
+        });
+    }
+}
+
+
+
 function switchClassManager(elem)
 {
     let container = document.querySelector("#tab-content");
@@ -1107,6 +1162,7 @@ function switchClassManager(elem)
                     <div>Teacher Manager</div>
                 </div>`;
                 currentClassManager=val;
+                getTeachersClass()
                 setClassModal()
             })
         }

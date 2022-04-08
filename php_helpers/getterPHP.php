@@ -168,6 +168,12 @@
         return $res;
     }
 
+    function getTeachersClass($data)
+    {
+        $res = selectDatabase("SELECT * FROM teacher WHERE active=1");
+        return $res;
+    }
+    
     function test(){
         echo "hey";
     }
