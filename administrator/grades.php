@@ -161,7 +161,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="subjectSuccess" tabindex="-1" aria-labelledby="subjectSuccess" aria-hidden="true">
+<div class="modal fade" id="classSuccess" tabindex="-1" aria-labelledby="classSuccess" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header borderless">
@@ -174,7 +174,7 @@
                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                     </svg>
                 </div>
-                <span id="subjectSuccessMsg">Subject success fully added</span>
+                <span id="classSuccessMsg">Subject successfully added</span>
             </div>
             <div class="modal-footer borderless d-flex justify-content-end">
                 <button class="spma-button-2 w-auto px-3" data-bs-dismiss="modal">OK</button>
@@ -183,7 +183,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="subjectDelete" tabindex="-1" aria-labelledby="subjectDelete" aria-hidden="true">
+<div class="modal fade" id="classDelete" tabindex="-1" aria-labelledby="classDelete" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header borderless">
@@ -191,12 +191,12 @@
             </div>
             <div class="modal-body pt-0 text-center">
                 <h5 class="modal-title fw-bold d-block text-center">Remove Subject</h5>
-                <span id="subjectDeleteMsg">
+                <span id="classDeleteMsg">
                     Are you sure you want to delete this note?
                 </span>
             </div>
             <div class="modal-footer borderless d-flex justify-content-center">
-                <button class="spma-button-2-danger w-auto px-3" data-bs-dismiss="modal" onclick="setSubjectDelete()" id="subjectDeleteYes">Yes</button>
+                <button class="spma-button-2-danger w-auto px-3" data-bs-dismiss="modal" onclick="setSubjectDelete()" id="classDeleteYes">Yes</button>
                 <button class="spma-button-2 w-auto px-3" data-bs-dismiss="modal">No</button>
             </div>
         </div>

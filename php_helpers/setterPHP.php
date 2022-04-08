@@ -161,3 +161,18 @@
         $res = modifyDatabase("UPDATE subjects SET active = 0 WHERE ID=$ID");
         return $res;
     }
+
+    function setNewSection($data)
+    {
+        $grade = $data["grade"];
+        $section = $data["section"];
+        $res = modifyDatabase("INSERT INTO sections (section_name, grade_level, active) VALUE ('$section', $grade, 1)");
+        return $res;
+    }
+
+    function setSectionDelete($data)
+    {
+        $ID = $data["ID"];
+        $res = modifyDatabase("UPDATE sections SET active = 0 WHERE ID=$ID");
+        return $res;
+    }

@@ -91,75 +91,6 @@ function setAddRole(val)
     }
 }
 
-function switchClassManager(elem)
-{
-    let container = document.querySelector("#tab-content");
-    let val = elem.id;
-    if(!elem.classList.contains("switch-select"))
-    {
-        console.log(currentClassManager)
-        if(val=="switchSubject")
-        {
-            fetch("grades.php")
-            .then(response => response.text())
-            .then(text => {
-                container.innerHTML = text
-                let switcher = document.querySelector(".class-switch");
-                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative switch-select switch-left" onclick="switchClassManager(this)" id="switchSubject">
-                <div>Subjects Manager</div>    
-                </div>
-                <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchSection">
-                    <div> Sections Manager </div>
-                </div>
-                <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchTeacher">
-                    <div> Teacher Manager </div>
-                </div>`;
-                currentClassManager=val;
-                })
-        }else if(val=="switchSection")
-        {
-            fetch("sections.php")
-            .then(response => response.text())
-            .then(text => {
-                container.innerHTML = text
-                let switcher = document.querySelector(".class-switch");
-                let dir = "right";
-                currentClassManager=="switchSubject"?dir="right":dir="left";
-                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative " onclick="switchClassManager(this)" id="switchSubject">
-                <div>Subjects Manager</div>    
-                </div>
-                <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative switch-select switch-${dir}" onclick="switchClassManager(this)" id="switchSection">
-                    <div> Sections Manager </div>
-                </div>
-                <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchTeacher">
-                    <div> Teacher Manager </div>
-                </div>`;
-                currentClassManager=val;
-                })
-        }else
-        {
-            fetch("teachers.php")
-            .then(response => response.text())
-            .then(text => {
-                container.innerHTML = text
-                let switcher = document.querySelector(".class-switch");
-                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative"
-                onclick="switchClassManager(this)" id="switchSubject">
-                <div>Subjects Manager</div>
-                </div>
-                <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchSection">
-                    <div> Sections Manager </div>
-                </div>
-                <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative switch-select switch-right"
-                    onclick="switchClassManager(this)" id="switchTeacher">
-                    <div>Teacher Manager</div>
-                </div>`;
-                currentClassManager=val;
-            })
-        }
-    }
-}
-
 async function getNotes()
 {
     let res = await GET("getNotes", {});
@@ -974,17 +905,14 @@ async function setEventDelete(id){
 }
 
 
-let subjectModalSuccess;
-let subjectModalDelete;
-function setSubjectModal() {
-    subjectModalSuccess = new bootstrap.Modal(document.querySelector("#subjectSuccess"));
-    subjectModalDelete = new bootstrap.Modal(document.querySelector("#subjectDelete"));
+let classModalSuccess;
+let classModalDelete;
+function setClassModal() {
+    classModalSuccess = new bootstrap.Modal(document.querySelector("#classSuccess"));
+    classModalDelete = new bootstrap.Modal(document.querySelector("#classDelete"));
 }
 
 async function getSubjects(grade=0) {
-    document.querySelector("#subjectGrade").value = "";
-    document.querySelector("#subjectName").value = "";
-    setVisibility(document.querySelector("#subjectError"), false)
     let res = await GET("getSubjects", {grade:grade});
     if(resCheck(res, "GET")){
         if(grade!=0){document.querySelector(`#grade${grade}-Subjects`).innerHTML = ''}
@@ -1003,7 +931,7 @@ async function setNewSubject(){
     let subject = document.querySelector("#subjectName").value;
     let error = document.querySelector("#subjectError");
     let errorMsg = document.querySelector("#subjectErrorMsg");
-    let successMsg = document.querySelector("#subjectSuccessMsg");
+    let successMsg = document.querySelector("#classSuccessMsg");
     if(grade && subject){
         let res = await POST({
             func: "setNewSubject",
@@ -1011,8 +939,11 @@ async function setNewSubject(){
             subject: subject
         });
         if(resCheck(res, "POST")){
-            subjectModalSuccess.show()
+            classModalSuccess.show()
             successMsg.innerText = `${subject} successfully added to Grade ${grade}`;
+            document.querySelector("#subjectGrade").value = "";
+            document.querySelector("#subjectName").value = "";
+            setVisibility(document.querySelector("#subjectError"), false)
             getSubjects(grade);
             setVisibility(error, false);
         }else{
@@ -1025,21 +956,159 @@ async function setNewSubject(){
 }
 
 function subjectDelete(grade, name, ID) {
-    document.querySelector("#subjectDeleteMsg").innerHTML = `Are you sure you want to remove <i> ${name}</i> from Grade ${grade}?`;
-    document.querySelector("#subjectDeleteYes").setAttribute("onclick", `setSubjectDelete(${ID},'${name}',${grade})`)
-    subjectModalDelete.show()
+    document.querySelector("#classDeleteMsg").innerHTML = `Are you sure you want to remove <i> ${name}</i> from Grade ${grade}?`;
+    document.querySelector("#classDeleteYes").setAttribute("onclick", `setSubjectDelete(${ID},'${name}',${grade})`)
+    classModalDelete.show()
 }
 
 async function setSubjectDelete(ID, name, grade) {
-    let successMsg = document.querySelector("#subjectSuccessMsg");
+    let successMsg = document.querySelector("#classSuccessMsg");
     let res = await POST({
         func: "setSubjectDelete",
         ID: ID
     })
     if(resCheck(res, "POST")){
-        subjectModalSuccess.show();
+        classModalSuccess.show();
         successMsg.innerText = `${name} successfully removed from Grade ${grade}`;
         document.querySelector(`#subject-${ID}`).remove()
         getSubjects(grade);
     }else{console.log(res)}
+}
+
+async function getSections(grade=0) {
+    let res = await GET("getSections", {grade:grade});
+    if(resCheck(res, "GET")){
+        if(grade!=0){document.querySelector(`#grade${grade}-Sections`).innerHTML = ''}
+        res.forEach(item => {
+            document.querySelector(`#grade${item.grade_level}-Sections`).innerHTML += `
+            <li class="list-group-item list-group-item-action d-flex pe-1 justify-content-between" id="section-${item.ID}">
+                <div class="test-truncate align-self-center"><small> ${item.section_name} </small></div>
+                <div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="sectionDelete(${item.grade_level}, '${item.section_name}', ${item.ID})"><small><i class="bi bi-trash-fill"></i></small></div>
+            </li>`;
+        });
+    }else{console.log(res)}
+}
+
+async function setNewSection(){
+    let grade = document.querySelector("#sectionGrade").value;
+    let section = document.querySelector("#sectionName").value;
+    let error = document.querySelector("#sectionError");
+    let errorMsg = document.querySelector("#sectionErrorMsg");
+    let successMsg = document.querySelector("#classSuccessMsg");
+    if(grade && section){
+        let res = await POST({
+            func: "setNewSection",
+            grade: grade,
+            section: section
+        });
+        if(resCheck(res, "POST")){
+            successMsg.innerHTML = `<i>${section}</i> successfully added to Grade ${grade}`;
+            classModalSuccess.show()
+            console.log(successMsg)
+            document.querySelector("#sectionGrade").value = "";
+            document.querySelector("#sectionName").value = "";
+            // setVisibility(document.querySelector("#sectionError"), false)
+            getSections(grade);
+            setVisibility(error, false);
+        }else{
+            errorMsg.innerText = "Something went wrong"
+            setVisibility(error, true);
+        }
+    }else{
+        setVisibility(error, true);
+    }
+}
+
+function sectionDelete(grade, name, ID) {
+    document.querySelector("#classDeleteMsg").innerHTML = `Are you sure you want to remove <i> ${name}</i> from Grade ${grade}?`;
+    document.querySelector("#classDeleteYes").setAttribute("onclick", `setSectionDelete(${ID},'${name}',${grade})`)
+    classModalDelete.show()
+}
+
+async function setSectionDelete(ID, name, grade) {
+    let successMsg = document.querySelector("#classSuccessMsg");
+    let res = await POST({
+        func: "setSectionDelete",
+        ID: ID
+    })
+    if(resCheck(res, "POST")){
+        classModalSuccess.show();
+        successMsg.innerText = `${name} successfully removed from Grade ${grade}`;
+        document.querySelector(`#section-${ID}`).remove()
+        getSections(grade);
+    }else{console.log(res)}
+}
+
+function switchClassManager(elem)
+{
+    let container = document.querySelector("#tab-content");
+    let val = elem.id;
+    if(!elem.classList.contains("switch-select"))
+    {
+        console.log(currentClassManager)
+        if(val=="switchSubject")
+        {
+            fetch("grades.php")
+            .then(response => response.text())
+            .then(text => {
+                container.innerHTML = text
+                let switcher = document.querySelector(".class-switch");
+                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative switch-select switch-left" onclick="switchClassManager(this)" id="switchSubject">
+                <div>Subjects Manager</div>    
+                </div>
+                <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchSection">
+                    <div> Sections Manager </div>
+                </div>
+                <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchTeacher">
+                    <div> Teacher Manager </div>
+                </div>`;
+                currentClassManager=val;
+                getSubjects()
+                setClassModal()
+                })
+        }else if(val=="switchSection")
+        {
+            fetch("sections.php")
+            .then(response => response.text())
+            .then(text => {
+                container.innerHTML = text
+                let switcher = document.querySelector(".class-switch");
+                let dir = "right";
+                currentClassManager=="switchSubject"?dir="right":dir="left";
+                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative " onclick="switchClassManager(this)" id="switchSubject">
+                <div>Subjects Manager</div>    
+                </div>
+                <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative switch-select switch-${dir}" onclick="switchClassManager(this)" id="switchSection">
+                    <div> Sections Manager </div>
+                </div>
+                <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchTeacher">
+                    <div> Teacher Manager </div>
+                </div>`;
+                currentClassManager=val;
+                getSections()
+                setClassModal()
+                })
+        }else
+        {
+            fetch("teachers.php")
+            .then(response => response.text())
+            .then(text => {
+                container.innerHTML = text
+                let switcher = document.querySelector(".class-switch");
+                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative"
+                onclick="switchClassManager(this)" id="switchSubject">
+                <div>Subjects Manager</div>
+                </div>
+                <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchSection">
+                    <div> Sections Manager </div>
+                </div>
+                <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative switch-select switch-right"
+                    onclick="switchClassManager(this)" id="switchTeacher">
+                    <div>Teacher Manager</div>
+                </div>`;
+                currentClassManager=val;
+                setClassModal()
+            })
+        }
+    }
 }

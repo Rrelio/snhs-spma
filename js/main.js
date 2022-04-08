@@ -298,7 +298,7 @@ async function switchTab(location, elem) {
             case "grades":
                 currentClassManager = "switchSubject";
                 if (SessionStorage()['role'] == "admin") {
-                    setSubjectModal()
+                    setClassModal()
                     getSubjects()
                 }
                 break;

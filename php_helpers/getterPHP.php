@@ -157,6 +157,17 @@
         return $res;
     }
 
+    function getSections($data)
+    {
+        $grade = $data["grade"];
+        if($grade>=6 && $grade<=12){
+            $res = selectDatabase("SELECT * FROM sections WHERE active=1 AND grade_level=$grade ORDER BY section_name");
+        }else{
+            $res = selectDatabase("SELECT * FROM sections WHERE active=1 ORDER BY section_name");
+        }
+        return $res;
+    }
+
     function test(){
         echo "hey";
     }
