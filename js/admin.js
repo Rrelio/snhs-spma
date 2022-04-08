@@ -972,3 +972,74 @@ async function setEventDelete(id){
         getEvents()
     }else{console.log(res)}
 }
+
+
+let subjectModalSuccess;
+let subjectModalDelete;
+function setSubjectModal() {
+    subjectModalSuccess = new bootstrap.Modal(document.querySelector("#subjectSuccess"));
+    subjectModalDelete = new bootstrap.Modal(document.querySelector("#subjectDelete"));
+}
+
+async function getSubjects(grade=0) {
+    document.querySelector("#subjectGrade").value = "";
+    document.querySelector("#subjectName").value = "";
+    setVisibility(document.querySelector("#subjectError"), false)
+    let res = await GET("getSubjects", {grade:grade});
+    if(resCheck(res, "GET")){
+        if(grade!=0){document.querySelector(`#grade${grade}-Subjects`).innerHTML = ''}
+        res.forEach(item => {
+            document.querySelector(`#grade${item.grade_level}-Subjects`).innerHTML += `
+            <li class="list-group-item list-group-item-action d-flex pe-1 justify-content-between" id="subject-${item.ID}">
+                <div class="test-truncate align-self-center"><small> ${item.subject_name} </small></div>
+                <div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="subjectDelete(${item.grade_level}, '${item.subject_name}', ${item.ID})"><small><i class="bi bi-trash-fill"></i></small></div>
+            </li>`;
+        });
+    }else{console.log(res)}
+}
+
+async function setNewSubject(){
+    let grade = document.querySelector("#subjectGrade").value;
+    let subject = document.querySelector("#subjectName").value;
+    let error = document.querySelector("#subjectError");
+    let errorMsg = document.querySelector("#subjectErrorMsg");
+    let successMsg = document.querySelector("#subjectSuccessMsg");
+    if(grade && subject){
+        let res = await POST({
+            func: "setNewSubject",
+            grade: grade,
+            subject: subject
+        });
+        if(resCheck(res, "POST")){
+            subjectModalSuccess.show()
+            successMsg.innerText = `${subject} successfully added to Grade ${grade}`;
+            getSubjects(grade);
+            setVisibility(error, false);
+        }else{
+            errorMsg.innerText = "Something went wrong"
+            setVisibility(error, true);
+        }
+    }else{
+        setVisibility(error, true);
+    }
+}
+
+function subjectDelete(grade, name, ID) {
+    document.querySelector("#subjectDeleteMsg").innerHTML = `Are you sure you want to remove <i> ${name}</i> from Grade ${grade}?`;
+    document.querySelector("#subjectDeleteYes").setAttribute("onclick", `setSubjectDelete(${ID},'${name}',${grade})`)
+    subjectModalDelete.show()
+}
+
+async function setSubjectDelete(ID, name, grade) {
+    let successMsg = document.querySelector("#subjectSuccessMsg");
+    let res = await POST({
+        func: "setSubjectDelete",
+        ID: ID
+    })
+    if(resCheck(res, "POST")){
+        subjectModalSuccess.show();
+        successMsg.innerText = `${name} successfully removed from Grade ${grade}`;
+        document.querySelector(`#subject-${ID}`).remove()
+        getSubjects(grade);
+    }else{console.log(res)}
+}

@@ -47,17 +47,17 @@ function isValidJSON(text) {
     }
 }
 
-function resCheck(res, method)
-{
-    if(method=="GET" && res!=null){
+function resCheck(res, method) {
+    if (method == "GET" && res != null) {
         return true
-    }else if(method=="POST" && res=="1"){
+    } else if (method == "POST" && res == "1") {
         return true
-    }else if(typeof res == String && res!=null){
-        if(res.includes("Error")){console.log(res)}
+    } else if (typeof res == String && res != null) {
+        if (res.includes("Error")) {
+            console.log(res)
+        }
         return false
-    }else
-    {
+    } else {
         return false
     }
 
@@ -131,7 +131,7 @@ function passwordToggle(passwordField, toggler) {
 }
 
 function createCode(size) {
-    const givenSet = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
+    const givenSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let code = "";
     for (let i = 0; i < size; i++) {
         let pos = Math.floor(Math.random() * givenSet.length);
@@ -179,7 +179,7 @@ function getDaysPerMonth(month) {
 
 function convertDateTime(datetime) {
     let dateTimeArray = datetime.split("-");
-    let month = convertMonth(Number(dateTimeArray[1])-1)
+    let month = convertMonth(Number(dateTimeArray[1]) - 1)
     let dateTime = `${month}, ${dateTimeArray[2]} ${dateTimeArray[0]} `
     return dateTime;
 }
@@ -297,6 +297,10 @@ async function switchTab(location, elem) {
                 break;
             case "grades":
                 currentClassManager = "switchSubject";
+                if (SessionStorage()['role'] == "admin") {
+                    setSubjectModal()
+                    getSubjects()
+                }
                 break;
             default:
                 break;
@@ -378,11 +382,11 @@ function logout() {
     window.location.replace("http://localhost/snhs-spma");
 }
 
-async function getUpcomingEvents(){
+async function getUpcomingEvents() {
     let container = document.querySelector("#upcomingEvents")
     container.innerHTML = "";
     let res = await GET("getUpcomingEvents", {})
-    if(resCheck(res, "GET")){
+    if (resCheck(res, "GET")) {
         console.log(res)
         res.forEach(event => {
             container.innerHTML += `
@@ -396,7 +400,7 @@ async function getUpcomingEvents(){
                 </div>
             </div>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }

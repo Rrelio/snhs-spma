@@ -146,6 +146,17 @@
         return $res;
     }
 
+    function getSubjects($data)
+    {
+        $grade = $data["grade"];
+        if($grade>=6 && $grade<=12){
+            $res = selectDatabase("SELECT * FROM subjects WHERE active=1 AND grade_level=$grade ORDER BY subject_name");
+        }else{
+            $res = selectDatabase("SELECT * FROM subjects WHERE active=1 ORDER BY subject_name");
+        }
+        return $res;
+    }
+
     function test(){
         echo "hey";
     }

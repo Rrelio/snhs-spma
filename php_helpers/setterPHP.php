@@ -146,3 +146,18 @@
         $res = modifyDatabase("DELETE FROM events WHERE ID=$id");
         return $res;
     }
+
+    function setNewSubject($data)
+    {
+        $grade = $data["grade"];
+        $subject = $data["subject"];
+        $res = modifyDatabase("INSERT INTO subjects (subject_name, grade_level, active) VALUE ('$subject', $grade, 1)");
+        return $res;
+    }
+
+    function setSubjectDelete($data)
+    {
+        $ID = $data["ID"];
+        $res = modifyDatabase("UPDATE subjects SET active = 0 WHERE ID=$ID");
+        return $res;
+    }
