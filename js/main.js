@@ -3,12 +3,19 @@ console.log("main");
 async function GET(func, obj) {
     try {
         let jsonObj = '&obj=' + JSON.stringify(obj)
+        let load = setTimeout(() => {
+            setVisibility(document.querySelector("#loader"), true)
+        }, 300);
         const response = await fetch('../php_helpers/getterPHP.php/?func=' + func + jsonObj);
         if (response.ok) {
             const result = await response.text()
             if (isValidJSON(result)) {
+                clearTimeout(load);
+                setVisibility(document.querySelector("#loader"), false)
                 return JSON.parse(result);
             } else {
+                clearTimeout(load);
+                setVisibility(document.querySelector("#loader"), false)
                 console.log(result)
             }
         }
@@ -20,6 +27,9 @@ async function GET(func, obj) {
 
 async function POST(obj) {
     try {
+        let load = setTimeout(() => {
+            setVisibility(document.querySelector("#loader"), true)
+        }, 300);
         const response = await fetch('../php_helpers/setterPHP.php', {
             method: 'POST',
             body: JSON.stringify(obj)
@@ -27,10 +37,36 @@ async function POST(obj) {
         if (response.ok) {
             const result = await response.text()
             if (isValidJSON(result)) {
+                clearTimeout(load);
+                setVisibility(document.querySelector("#loader"), false)
                 return JSON.parse(result);
             } else {
+                clearTimeout(load);
+                setVisibility(document.querySelector("#loader"), false)
                 console.log(result)
             }
+        }
+        throw new Error('Request Failed!');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function uploadUserPicture(form_data) {
+    try {
+        let load = setTimeout(() => {
+            setVisibility(document.querySelector("#loader"), true)
+        }, 300);
+        const response = await fetch('../php_helpers/upload.php', {
+            method: 'POST',
+            body: form_data
+        });
+        if (response.ok) {
+            const result = await response.text()
+            clearTimeout(load);
+            setVisibility(document.querySelector("#loader"), false)
+            return result;
+
         }
         throw new Error('Request Failed!');
     } catch (error) {
@@ -48,7 +84,7 @@ function isValidJSON(text) {
 }
 
 function resCheck(res, method) {
-    if (method == "GET" && res != null) {
+    if (method == "GET" && res != '') {
         return true
     } else if (method == "POST" && res == "1") {
         return true
@@ -259,10 +295,12 @@ function setElemWidth(elem) {
 let currentClassManager = "switchSubject";
 async function switchTab(location, elem) {
     fetcher(location, elem).then(() => {
+        setAccentColor(JSON.parse(sessionStorage.userInfo).theme)
         switch (location) {
             case "dashboard":
                 if (SessionStorage()['role'] == "admin") {
                     getActiveUserTotal()
+                    setAdminIndex()
                     setNoteModal()
                     getNotes()
                 }
@@ -272,9 +310,7 @@ async function switchTab(location, elem) {
             case "activities":
                 break;
             case "setting":
-                setTimeout(() => {
-                    document.querySelector("#mamba-green").classList.add("text-white");
-                }, 250)
+                    setSelectedAccent()
                 break;
             case "accounts":
                 if (SessionStorage()['role'] == "admin") {
@@ -368,17 +404,45 @@ function clearSiblingsClass(elems) {
     });
 }
 
-function changeAccentColor(elem) {
-    let root = document.documentElement;
+async function changeAccentColor(elem) {
+    let colour = elem.getAttribute("value")
+    console.log(elem.getAttribute("value"))
+    console.log(JSON.parse(sessionStorage.userInfo).role)
+    let res = await POST({
+        func: "setAccentColor",
+        role: JSON.parse(sessionStorage.userInfo).role,
+        ID: JSON.parse(sessionStorage.userInfo).ID,
+        color:colour
+    });
+    if(resCheck(res, "POST")){
+        let colorPicks = document.querySelectorAll(".color-pick");
+        colorPicks.forEach(element => {
+            element.classList.remove("text-white")
+        });
+        elem.classList.add("text-white");
+        setAccentColor(elem.getAttribute("value"));
+        let temp = JSON.parse(sessionStorage.userInfo)
+        temp.theme = elem.getAttribute("value");
+        sessionStorage.userInfo = JSON.stringify(temp)
+    }
+}
+
+function setSelectedAccent() {
+    let accent = JSON.parse(sessionStorage.userInfo).theme
+    setAccentColor(accent)
     let colorPicks = document.querySelectorAll(".color-pick");
     colorPicks.forEach(element => {
-        element.classList.remove("text-white")
+        console.log(`${accent} == ${element.getAttribute("value") == accent}`)
+        if(element.getAttribute("value") == accent)
+        {
+            element.classList.add("text-white");
+        }
     });
-    elem.classList.add("text-white");
-    let color = elem.style.backgroundColor;
-    console.log(color)
-    root.style.setProperty('--accent-color', color.substring(4, color.length - 1));
+}
 
+function setAccentColor(color) {
+    let root = document.documentElement;
+    root.style.setProperty('--accent-color', color); 
 }
 
 function logout() {
@@ -417,3 +481,47 @@ function ValidateEmail(mail)
     // alert("You have entered an invalid email address!")
     return (false)
 }
+
+async function setProfilePicture(elem){
+    let file = elem.files[0];
+    if(!['image/jpeg', 'image/png'].includes(file.type)){
+		alert("Only .jpg and .png image are allowed");
+		elem.value = '';
+		return;
+	}
+	if(file.size > 2 * 1024 * 1024){
+		alert("File must be less than 2 MB");
+		elem.value = '';
+		return;
+	}
+    const form_data = new FormData();
+    form_data.append('sample_image', file);
+    form_data.append('role', SessionStorage().role)
+    form_data.append('ID', SessionStorage().ID)
+    // console.log(form_data)
+    let res = await uploadUserPicture(form_data);
+    if(resCheck(res, "GET")){
+        console.log(JSON.parse(res))
+        let resu = await POST({
+            func: "setUserImage",
+            role: SessionStorage().role,
+            ID: SessionStorage().ID,
+            image: JSON.parse(res)[0]
+        })
+        if(resCheck(resu, "POST")){
+            let temp = SessionStorage()
+            temp.profile_image = JSON.parse(res)[0]
+            sessionStorage.userInfo = JSON.stringify(temp)
+            location.reload()
+        }else{
+            alert("Something went wrong")
+        }
+    }else{
+        alert("Sorry, there was an error uploading your file.")
+    }
+}
+
+async function setUserImage(role, directory) {
+    
+}
+  

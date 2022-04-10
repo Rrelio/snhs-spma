@@ -3,7 +3,9 @@
 ?>
 
 <body>
-
+    <?php
+        require '../php_helpers/loader.php';
+    ?>
     <div class="vh-100 row dashboard-background">
         <div class="col-8 d-none d-sm-none d-md-block" style="background-color: #F2F4F7;"></div>
         <div class="col-12 col-sm-12 col-md-4 bg-accent"></div>
@@ -74,10 +76,10 @@
                 <div class="fw-bold mb-3">My Profile</div>
                 <div class=" text-center flex-fill mx-2"
                     style="border-radius:25px; background-color:rgba(255,255,255,.5);">
-                    <img src="../images/Users/Layer 10.png" alt=""
+                    <img src="" alt=""
                         class="img-fluid mx-auto d-block mt-3 border rounded-circle"
                         style="width: 35%;" id="userProfilePic">
-                    <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish">Admin Name</p>
+                    <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish" id="adminName">Admin Name</p>
                     <p>Administrator</p>
                 </div>
                 <div>

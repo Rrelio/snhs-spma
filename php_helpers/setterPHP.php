@@ -218,3 +218,28 @@
         return $res;
     }
     
+    function setAccentColor($data)
+    {
+        $role = $data["role"];
+        $ID = $data["ID"];
+        $color = $data["color"];
+        $res = modifyDatabase("UPDATE $role SET theme='$color' WHERE ID=$ID");
+        return $res;
+    }
+
+    function setAdminUserName($data)
+    {
+        $username = $data["username"];
+        $ID = $data["ID"];
+        $res = modifyDatabase("UPDATE admin SET user_name='$username' WHERE ID=$ID");
+        return $res;
+    }
+
+    function setUserImage($data)
+    {
+        $role = $data["role"];
+        $ID = $data["ID"];
+        $image = $data["image"];
+        $res = modifyDatabase("UPDATE $role SET profile_image='$image' WHERE ID=$ID");
+        return $res;
+    }

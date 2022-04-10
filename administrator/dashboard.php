@@ -10,21 +10,21 @@
                 <div class="w-100 mx-3 text-center">
                     <div class="user-count border rounded-pill py-2 text-center"
                         style="background: linear-gradient(to top, #FF7543 50%, transparent 0); animation-delay:.5s;">
-                        <h3 class="m-0" id="totalTeachers">43</h3>
+                        <h3 class="m-0" id="totalTeachers"></h3>
                     </div>
                     <p class="mb-4">No. of Teachers</p>
                 </div>
                 <div class="w-100 mx-3 text-center">
                     <div class="user-count border rounded-pill py-2 text-center"
                         style="background: linear-gradient(to top, #88CCE1 50%, transparent 0); animation-delay:1s;">
-                        <h3 class="m-0" id="totalStudents">1200</h3>
+                        <h3 class="m-0" id="totalStudents"></h3>
                     </div>
                     <p class="mb-4">No. of Students</p>
                 </div>
                 <div class="w-100 mx-3 text-center">
                     <div class="user-count border rounded-pill py-2 text-center"
                         style="background: linear-gradient(to top, #FFBB61 50%, transparent 0); animation-delay:1.5s;">
-                        <h3 class="m-0" id="totalParents">2400</h3>
+                        <h3 class="m-0" id="totalParents"></h3>
                     </div>
                     <p class="mb-4">No. of Parents</p>
                 </div>

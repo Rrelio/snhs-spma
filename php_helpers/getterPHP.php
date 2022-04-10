@@ -245,3 +245,7 @@
     function test(){
         echo "hey";
     }
+    function testSlow(){
+        sleep(2);
+        return 1;
+    }

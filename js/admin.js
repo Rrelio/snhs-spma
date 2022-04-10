@@ -1,5 +1,10 @@
 sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replace("http://localhost/snhs-spma/login.php");
-console.log(SessionStorage())
+// console.log(SessionStorage())
+
+async function setAdminIndex() {
+    document.querySelector("#adminName").innerText = SessionStorage().user_name
+    document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
+}
 
 async function getNotes() {
     let res = await GET("getNotes", {});
@@ -1517,4 +1522,30 @@ function setAddRole(val) {
     </div>`
     submit.setAttribute("onclick","setAddTeacher()")
     }
+}
+
+async function setAdminUserName()
+{
+    let username = document.querySelector("#adminUserName").value
+    let usernameError = document.querySelector("#adminUserNameError")
+    if(username){
+        let res = await POST({
+            func: "setAdminUserName",
+            ID: SessionStorage().ID,
+            username: username,
+        })
+        if(resCheck(res, "POST")){
+            let temp  = SessionStorage();
+            temp.user_name = username;
+            sessionStorage.userInfo = JSON.stringify(temp);
+            setAdminIndex()
+        }else{setVisibility(usernameError, true)}
+    }else{setVisibility(usernameError, true)}
+}
+
+function setAdminImage() {
+}
+
+async function testSlow(){
+    let res = await GET("testSlow",{})
 }
