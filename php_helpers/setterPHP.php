@@ -176,3 +176,11 @@
         $res = modifyDatabase("UPDATE sections SET active = 0 WHERE ID=$ID");
         return $res;
     }
+
+    function setTeacherHandles($data)
+    {
+        $handle = $data["handle"];
+        $ID = $data["ID"];
+        $res = modifyDatabase("UPDATE teacher SET handle='$handle' WHERE ID=$ID");
+        return $res;
+    }

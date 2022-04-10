@@ -174,6 +174,42 @@
         return $res;
     }
     
+    function getTeacherSections($data)
+    {
+        $res = selectDatabase("SELECT * FROM sections WHERE active=1 ORDER BY grade_level");
+        $section = [];
+        $temp = [];
+        $grade = 7;
+        foreach ($res as $key => $value) {
+            if($grade!=$value["grade_level"]){
+                $section[$grade] = $temp;
+                $grade+=1;
+                $temp = array();
+            }
+            array_push($temp, $value["section_name"]);
+        }
+        $section[$grade] = $temp;
+        return $section;
+    }
+
+    function getTeacherSubjects($data)
+    {
+        $res = selectDatabase("SELECT * FROM subjects WHERE active=1 ORDER BY grade_level");
+        $ubject = [];
+        $temp = [];
+        $grade = 7;
+        foreach ($res as $key => $value) {
+            if($grade!=$value["grade_level"]){
+                $ubject[$grade] = $temp;
+                $grade+=1;
+                $temp = array();
+            }
+            array_push($temp, $value["subject_name"]);
+        }
+        $ubject[$grade] = $temp;
+        return $ubject;
+    }
+
     function test(){
         echo "hey";
     }

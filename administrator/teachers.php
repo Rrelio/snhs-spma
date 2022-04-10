@@ -20,49 +20,7 @@
                 </div>
                 <div class="accordion accordion-flush" id="accordionFlushExamples">
                     <div class="accordion-item" id="teacherList">
-                        <h2 class="accordion-header" id="flush-headingOne"><button class="accordion-button collapsed"
-                                type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                aria-expanded="false" aria-controls="flush-collapseOne">
-                                <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
-                                <div class="test-truncate">
-                                    Teacher 1 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officiis provident tempore eius alias sit culpa at assumenda numquam nobis architecto modi aliquam, quos voluptatibus distinctio eveniet fugiat id ullam tenetur!
-                                </div>
-                            </button></h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExamples">
-                            <div class="accordion-body p-2 pe-0 d-flex">
-                                <table class="table table-sm table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Grade</th>
-                                            <th scope="col">Section</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>English</td>
-                                            <td>6</td>
-                                            <td>A</td>
-                                            <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Asd</td>
-                                            <td>Thornton</td>
-                                            <td>lo</td>
-                                            <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Larry the Bird</td>
-                                            <td>@twitter</td>
-                                            <td>@twitter</td>
-                                            <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -73,9 +31,8 @@
 
                     <form class="">
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="teacherGrade" aria-label="Floating label select example">
-                                <option selected>Select grade</option>
-                                <option value="6">Grade 6</option>
+                            <select class="form-select" id="teacherGrade" aria-label="Floating label select example" disabled onchange="assignSectionAndSubjectStep(this)">
+                                <option selected value="">Select grade</option>
                                 <option value="7">Grade 7</option>
                                 <option value="8">Grade 8</option>
                                 <option value="9">Grade 9</option>
@@ -86,28 +43,22 @@
                             <label for="teacherGrade">Grade level</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>Select section</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select" id="teacherSection" aria-label="Floating label select example" disabled onchange="assignSectionAndSubjectStep(this)">
+                                <option selected value="">Select section</option>
                             </select>
-                            <label for="floatingSelect">Section</label>
+                            <label for="teacherSection">Section</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>Select subject</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="form-select" id="teacherSubject" aria-label="Floating label select example" disabled>
+                                <option selected value="">Select subject</option>
                             </select>
-                            <label for="floatingSelect">Subject</label>
+                            <label for="teacherSubject">Subject</label>
                         </div>
-                        <div class="alert alert-danger p-0 px-2" role="alert" style="visibility: hidden;">
+                        <div class="alert alert-danger p-0 px-2" role="alert" style="visibility: hidden;" id="teacherError">
                             <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;<small>Don't leave any field
                                 blank</small>
                         </div>
-                        <button class="spma-button-2 text-white rounded-pill w-fit px-3 mx-auto d-block my-2">Submit <i
+                        <button class="spma-button-2 text-white rounded-pill w-fit px-3 mx-auto d-block my-2" type="button" onclick="setTeacherAddHandles()" id="teacherSubmit">Submit <i
                                 class="bi bi-plus-circle"></i></button>
                     </form>
                 </div>
@@ -150,7 +101,7 @@
             <div class="modal-body pt-0 text-center">
                 <h5 class="modal-title fw-bold d-block text-center">Remove Subject</h5>
                 <span id="classDeleteMsg">
-                    Are you sure you want to delete this note?
+                    Are you sure you want to remove this note?
                 </span>
             </div>
             <div class="modal-footer borderless d-flex justify-content-center">

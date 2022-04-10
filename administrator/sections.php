@@ -17,7 +17,7 @@
                 </div>
                 <div class="accordion accordion-flush" id="accordionFlushExamples">
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-heading6"><button class="accordion-button collapsed"
+                        <!-- <h2 class="accordion-header" id="flush-heading6"><button class="accordion-button collapsed"
                                 type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse6"
                                 aria-expanded="false" aria-controls="flush-collapse6">
                                 <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
@@ -30,7 +30,7 @@
                                     
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                         <h2 class="accordion-header" id="flush-heading7"><button class="accordion-button collapsed"
                                 type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse7"
                                 aria-expanded="false" aria-controls="flush-collapse7">
@@ -125,7 +125,7 @@
                         <div class="form-floating mb-3">
                             <select class="form-select" id="sectionGrade" aria-label="Floating label select example">
                                 <option selected value="">Select grade</option>
-                                <option value="6">Grade 6</option>
+                                <!-- <option value="6">Grade 6</option> -->
                                 <option value="7">Grade 7</option>
                                 <option value="8">Grade 8</option>
                                 <option value="9">Grade 9</option>

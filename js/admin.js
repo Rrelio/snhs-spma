@@ -1039,22 +1039,42 @@ async function setSectionDelete(ID, name, grade) {
     }else{console.log(res)}
 }
 
+let teacherSections;
+let teacherSubjects;
+let teacherHandles;
+let teachers;
 async function getTeachersClass() {
     let res = await GET("getTeachersClass",{});
+    let count = 0;
+    document.querySelector("#teacherList").innerHTML =''; 
     if(resCheck(res, "GET")){
+        teachers = res;
+        setVisibility(document.querySelector("#teacherError"), false)
         res.forEach(teacher => {
+            let handles = JSON.parse(teacher.handle);
+            let subjectTables = ``;
+            if(Object.keys(handles).length === 0 && handles.constructor === Object)
+            { console.log(0)
+            }else{
+                console.log(handles)
+                for (const key in handles) {
+                    subjectTables += `
+                    <tr>
+                        <td>${handles[key].subject}</td>
+                        <td>${handles[key].grade}</td>
+                        <td>${handles[key].section}</td>
+                        <td><div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="askTeacherHandleRemove(${count}, '${key}')"><small><i class="bi bi-trash-fill"></i></small></div></td>
+                    </tr>`}
+            }
             document.querySelector("#teacherList").innerHTML += `
-            <h2 class="accordion-header" id="flush-headingOne"><button class="accordion-button collapsed"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                    aria-expanded="false" aria-controls="flush-collapseOne">
+            <h2 class="accordion-header" id="flush-heading${teacher.ID}" onclick="selectTeacher('${teacher.last_name}, ${teacher.first_name}', ${count})">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${teacher.ID}" aria-expanded="false" aria-controls="flush-collapse${teacher.ID}">
                     <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
-                    <div class="test-truncate">
-                        
-                    </div>
+                    <div class="test-truncate">${teacher.last_name}, ${teacher.first_name}</div>
                 </button>
             </h2>
-            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExamples">
+            <div id="flush-collapse${teacher.ID}" class="accordion-collapse collapse"
+                aria-labelledby="flush-heading${teacher.ID}" data-bs-parent="#accordionFlushExamples">
                 <div class="accordion-body p-2 pe-0 d-flex">
                     <table class="table table-sm table-hover">
                         <thead>
@@ -1066,33 +1086,131 @@ async function getTeachersClass() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>English</td>
-                                <td>6</td>
-                                <td>A</td>
-                                <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                            </tr>
-                            <tr>
-                                <td>Asd</td>
-                                <td>Thornton</td>
-                                <td>lo</td>
-                                <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                            </tr>
-                            <tr>
-                                <td>Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                                <td><div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                            </tr>
+                            ${subjectTables}
                         </tbody>
                     </table>
                 </div>
             </div>`
+            count++;
         });
     }
 }
 
+function selectTeacher(teacher_name, teacher_id) {
+    teacherHandles = teachers[teacher_id].handle;
+    // console.log(teacherHandles)
+    let gradeSelect = document.querySelector("#teacherGrade")
+    let sectionSelect = document.querySelector("#teacherSection");
+    let subjectSelect = document.querySelector("#teacherSubject");
+    gradeSelect.value = ""
+    sectionSelect.value = ""
+    subjectSelect.value = ""
+    disable(sectionSelect, true)
+    disable(subjectSelect, true)
+    document.querySelector("#teacherName").innerHTML = `<u>${teacher_name}</u>`
+    document.querySelector("#teacherSubmit").setAttribute("onclick", "setTeacherAddHandles("+teachers[teacher_id].ID+")");
+    disable(document.querySelector("#teacherGrade"), false)
+}
 
+async function assignSectionAndSubjectStep(elem){
+    let sectionSelect = document.querySelector("#teacherSection");
+    let subjectSelect = document.querySelector("#teacherSubject");
+    setVisibility(document.querySelector("#teacherError"), false)
+    if(elem.id=="teacherGrade" && elem.value!=''){
+        if(setTeacherSections(elem.value)){
+            disable(sectionSelect, false);
+        }else{disable(sectionSelect, true);}
+        if(setTeacherSubjects(elem.value)){
+            disable(subjectSelect, false);
+        }else{disable(subjectSelect, true);}
+    }else if(elem.id=="teacherGrade" && elem.value==''){
+        disable(sectionSelect, true);
+        disable(subjectSelect, true);
+    }
+}
+
+function setTeacherSections(grade) {
+    document.querySelector('#teacherSection').innerHTML = `<option selected value="">Select section</option>`
+    try{
+        teacherSections[grade].forEach(element => {
+            document.querySelector('#teacherSection').innerHTML += `<option value="${element}">${element}</option>`
+        });
+        return true;
+    }catch(TypeError){
+        alert("There are currently no sections in Grade "+ grade)
+        return false;
+    }
+}
+function setTeacherSubjects(grade) {
+    document.querySelector('#teacherSubject').innerHTML = `<option selected value="">Select subject</option>`
+    try{
+        teacherSubjects[grade].forEach(element => {
+            document.querySelector('#teacherSubject').innerHTML += `<option value="${element}">${element}</option>`
+        });
+        return true;
+    }catch(TypeError){
+        alert("There are currently no subjects in Grade "+ grade)
+        return false;
+    }
+}
+
+async function getTeacherSectionsAndSubjects(grade){
+    let section = await GET("getTeacherSections", {
+        grade: grade
+    });
+    let subject = await GET("getTeacherSubjects", {
+        grade: grade
+    });
+    teacherSections = section
+    teacherSubjects = subject
+}
+
+async function setTeacherAddHandles(ID){
+    let sectionSelect = document.querySelector("#teacherSection").value;
+    let subjectSelect = document.querySelector("#teacherSubject").value;
+    let gradeSelect = document.querySelector("#teacherGrade").value;
+    if(sectionSelect && subjectSelect && gradeSelect){
+        let handles = JSON.parse(teacherHandles);
+        handles[`${gradeSelect}-${sectionSelect}-${subjectSelect}`] = {
+            subject:subjectSelect,
+            grade:gradeSelect,
+            section:sectionSelect
+        }
+        console.log(handles);
+        let res = await POST({
+            func: "setTeacherHandles",
+            ID: ID,
+            handle: JSON.stringify(handles)
+        })
+        if(resCheck(res, "POST")){
+            getTeachersClass()
+        }else{console.log(res)}
+    }else{
+        setVisibility(document.querySelector("#teacherError"), true)
+    }
+}
+
+function askTeacherHandleRemove(ID, handleKey) {
+    let removeTeacher = teachers[ID]
+    let handle = JSON.parse(removeTeacher.handle)[handleKey]
+    classModalDelete.show()
+    document.querySelector("#classDeleteMsg").innerHTML = `Are you sure you want <i> ${removeTeacher.first_name} ${removeTeacher.last_name} </i> to unhandle <u>${handle.subject} of ${handle.grade} - ${handle.section} </u>?`;
+    document.querySelector("#classDeleteYes").setAttribute("onclick", `setTeacherDeleteHandle(${removeTeacher.ID}, '${handleKey}', ${ID})`);
+}
+
+async function setTeacherDeleteHandle(ID, removeKey, count){
+    console.log("hey")
+    let handles = JSON.parse(teachers[count].handle);
+    delete handles[removeKey];
+    let res = await POST({
+        func: "setTeacherHandles",
+        ID: ID,
+        handle: JSON.stringify(handles)
+    })
+    if(resCheck(res, "POST")){
+        getTeachersClass()
+    }else{console.log(res)}
+}
 
 function switchClassManager(elem)
 {
@@ -1163,6 +1281,7 @@ function switchClassManager(elem)
                 </div>`;
                 currentClassManager=val;
                 getTeachersClass()
+                getTeacherSectionsAndSubjects()
                 setClassModal()
             })
         }
