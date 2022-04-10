@@ -1,12 +1,10 @@
-sessionStorage.userInfo?console.log(SessionStorage()):window.location.replace("http://localhost/snhs-spma/login.php");
+sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replace("http://localhost/snhs-spma/login.php");
 console.log(SessionStorage())
 
-function setAddRole(val)
-{
+function setAddRole(val) {
     let container = document.querySelector("#form-container");
     console.log(val);
-    if(val==0)
-    {
+    if (val == 0) {
         container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
         <div class="text-center">
             <input type="text" class="form-control" id="studentLastName">
@@ -37,8 +35,7 @@ function setAddRole(val)
             <label for="studentSection" class="form-label">Section</label>
         </div>
     </div>`;
-    }else if(val==1)
-    {
+    } else if (val == 1) {
         container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
         <div class="text-center">
             <input type="text" class="form-control" id="parentLastName">
@@ -63,7 +60,7 @@ function setAddRole(val)
             <label for="parentContactNumber" class="form-label">Contact Number</label>
         </div>
     </div>`
-    }else{
+    } else {
         container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
         <div class="text-center">
             <input type="text" class="form-control" id="teacherLastName">
@@ -91,16 +88,14 @@ function setAddRole(val)
     }
 }
 
-async function getNotes()
-{
+async function getNotes() {
     let res = await GET("getNotes", {});
     let notesCount = document.querySelector("#notesCount");
     let notesContainer1 = document.querySelector("#notesContainer1");
     let notesContainer2 = document.querySelector("#notesContainer2");
     notesContainer1.innerHTML = ''
     notesContainer2.innerHTML = ''
-    if(res!="0")
-    {
+    if (res != "0") {
         notesCount.innerHTML = res.length;
         res.forEach(obj => {
             let body = obj.body;
@@ -122,37 +117,37 @@ ${body}
 </pre>
                                 </div>
                             </div>`;
-            if(notesContainer2.offsetHeight>=notesContainer1.offsetHeight){
+            if (notesContainer2.offsetHeight >= notesContainer1.offsetHeight) {
                 notesContainer1.innerHTML += content
-            }else{
+            } else {
                 notesContainer2.innerHTML += content
             }
         });
     }
 }
 
-async function setNewNote(){
+async function setNewNote() {
     let noteHeaderField = document.querySelector("#noteTitle").value
     let noteBodyField = document.querySelector("#noteDescription").value
     let noteError = document.querySelector("#notesError")
-    if(noteBodyField=="" && noteHeaderField==""){
+    if (noteBodyField == "" && noteHeaderField == "") {
         setVisibility(noteError, true)
-    }else{
+    } else {
         let res = await POST({
             func: "setNewNote",
             header: noteHeaderField,
             body: noteBodyField
         })
         console.log(res)
-        if(res!="0"){
+        if (res != "0") {
             getNotes()
             setVisibility(noteError, false)
             document.querySelector("#noteTitle").value = '';
             document.querySelector("#noteDescription").value = '';
             noteModalAdd.hide()
-        }else{
+        } else {
             setVisibility(noteError, true)
-            noteBodyField=""
+            noteBodyField = ""
         }
     }
 }
@@ -161,6 +156,7 @@ console.log("admin");
 
 let noteModal;
 let noteModalAdd
+
 function setNoteModal() {
     noteModal = new bootstrap.Modal(document.querySelector("#notesEditModal"));
     noteModalAdd = new bootstrap.Modal(document.getElementById('notesModal'))
@@ -170,33 +166,31 @@ function setNoteModal() {
 let noteID;
 let noteHeader;
 let noteBody;
-function editNotes(elem)
-{
+
+function editNotes(elem) {
     noteModal.show()
     let id = elem.id.split("-")[1];
     console.log(id)
     noteID = id;
-    noteHeader = document.querySelector("#notesTitle-"+id).innerText
-    noteBody = document.querySelector("#notesBody-"+id).innerText
+    noteHeader = document.querySelector("#notesTitle-" + id).innerText
+    noteBody = document.querySelector("#notesBody-" + id).innerText
     let noteHeaderField = document.querySelector("#noteEditTitle")
     let noteBodyField = document.querySelector("#noteEditDescription")
     noteHeaderField.value = noteHeader
     noteBodyField.value = noteBody
 }
 
-async function setNoteEdit()
-{
+async function setNoteEdit() {
     let noteHeaderField = document.querySelector("#noteEditTitle").value
     let noteBodyField = document.querySelector("#noteEditDescription").value
     let noteError = document.querySelector("#notesEditError")
-    if(noteBodyField=="" && noteHeaderField==""){
+    if (noteBodyField == "" && noteHeaderField == "") {
         setVisibility(noteError, true)
-    }else{
+    } else {
         console.log(`${noteHeader} == ${noteHeaderField}`)
         console.log(`${noteBody} == ${noteBodyField}`)
-        console.log(noteHeader!=noteHeaderField && noteBody!=noteBodyField)
-        if(noteHeader!=noteHeaderField || noteBody!=noteBodyField)
-        {
+        console.log(noteHeader != noteHeaderField && noteBody != noteBodyField)
+        if (noteHeader != noteHeaderField || noteBody != noteBodyField) {
             let res = await POST({
                 func: "setNoteEdit",
                 id: noteID,
@@ -204,23 +198,20 @@ async function setNoteEdit()
                 body: noteBodyField
             })
             console.log(res)
-            if(res!="0")
-            {
+            if (res != "0") {
                 getNotes()
                 setVisibility(noteError, false)
                 noteModal.hide()
-            }else
-            {
+            } else {
                 setVisibility(noteError, true)
             }
-        }else{
+        } else {
             noteModal.hide()
         }
     }
 }
 
-function delNote(elem)
-{
+function delNote(elem) {
     let id = elem.id.split("-")[1];
     noteID = id;
 }
@@ -230,27 +221,26 @@ async function setNoteDelete() {
         func: "setNoteDelete",
         id: noteID
     });
-    if(res!="0"){
+    if (res != "0") {
         getNotes()
-    }else{
+    } else {
         alert("Error: Note not deleted")
     }
 }
 
-async function getActiveUserTotal()
-{
+async function getActiveUserTotal() {
     let res = await GET("getActiveUserTotal", {});
-    if(res!=0){
+    if (res != 0) {
         document.querySelector("#totalTeachers").innerText = res.totalTeachers
         document.querySelector("#totalStudents").innerText = res.totalStudents
         document.querySelector("#totalParents").innerText = res.totalParents
     }
 }
 
-let accountCount=0;
-let accountSort=""
-let accountRole="student"
-let accountTotal=0;
+let accountCount = 0;
+let accountSort = ""
+let accountRole = "student"
+let accountTotal = 0;
 async function setStudentTable() {
     document.querySelector("#radioStudent").checked = true;
     document.querySelector("#accountsSort").innerHTML = `
@@ -272,28 +262,30 @@ async function setStudentTable() {
     await getStudentAccounts()
 }
 
-async function getStudentAccounts(counts=0, sorts="") {
-    document.querySelector("#accountsPaginationCount").innerText = counts+1;
-    accountCount=counts;
-    accountSort=sorts;
-    accountRole="student"
+async function getStudentAccounts(counts = 0, sorts = "") {
+    document.querySelector("#accountsPaginationCount").innerText = counts + 1;
+    accountCount = counts;
+    accountSort = sorts;
+    accountRole = "student"
     let table = document.querySelector("#accountsTable");
-    table.innerHTML=""
-    if(accountSort==""){accountSort="LRN"}
+    table.innerHTML = ""
+    if (accountSort == "") {
+        accountSort = "LRN"
+    }
     let res = await GET("getStudentAccounts", {
         count: accountCount,
         sort: accountSort
     });
-    if(res!=0){
+    if (res != 0) {
         accountTotal = res[0].total
         res.forEach(item => {
             let active = "";
             let label = "Active";
-            if(item.active==1){
-                active=""
+            if (item.active == 1) {
+                active = ""
                 label = "Active";
-            }else{
-                active="account-inactive"
+            } else {
+                active = "account-inactive"
                 label = "Inactive";
             }
             table.innerHTML += `
@@ -307,13 +299,12 @@ async function getStudentAccounts(counts=0, sorts="") {
                 <td><button class="spma-button-2 text-white p-0 ${active}" onclick="setActive(this, ${item.ID}, '${accountRole}')"><small>${label}</small></button></td>
             </tr>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
 
-async function setParentTable()
-{
+async function setParentTable() {
     document.querySelector("#radioParent").checked = true;
     document.querySelector("#accountsSort").innerHTML = `
     <option value="child_lrn">Child's LRN</option>
@@ -332,29 +323,31 @@ async function setParentTable()
     await getParentAccounts()
 }
 
-async function getParentAccounts(counts=0, sorts="") {
-    document.querySelector("#accountsPaginationCount").innerText = counts+1;
-    accountCount=counts;
-    accountSort=sorts;
-    accountRole="parent"
+async function getParentAccounts(counts = 0, sorts = "") {
+    document.querySelector("#accountsPaginationCount").innerText = counts + 1;
+    accountCount = counts;
+    accountSort = sorts;
+    accountRole = "parent"
     let table = document.querySelector("#accountsTable");
-    table.innerHTML=""
-    if(accountSort==""){accountSort="child_lrn"}
+    table.innerHTML = ""
+    if (accountSort == "") {
+        accountSort = "child_lrn"
+    }
     let res = await GET("getParentAccounts", {
         count: accountCount,
         sort: accountSort
     });
-    if(res!=0){
+    if (res != 0) {
         accountTotal = res[0].total
         console.log(accountTotal)
         res.forEach(item => {
             let active = "";
             let label = "Active";
-            if(item.active==1){
-                active=""
+            if (item.active == 1) {
+                active = ""
                 label = "Active";
-            }else{
-                active="account-inactive"
+            } else {
+                active = "account-inactive"
                 label = "Inactive";
             }
             table.innerHTML += `
@@ -367,7 +360,7 @@ async function getParentAccounts(counts=0, sorts="") {
                 <td><button class="spma-button-2 text-white p-0 ${active}" onclick="setActive(this, ${item.ID}, '${accountRole}')"><small>${label}</small></button></td>
             </tr>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
@@ -391,29 +384,31 @@ async function setTeacherTable() {
     getTeacherAccounts()
 }
 
-async function getTeacherAccounts(counts=0, sorts="") {
-    document.querySelector("#accountsPaginationCount").innerText = counts+1;
-    accountCount=counts;
-    accountSort=sorts;
-    accountRole="teacher"
+async function getTeacherAccounts(counts = 0, sorts = "") {
+    document.querySelector("#accountsPaginationCount").innerText = counts + 1;
+    accountCount = counts;
+    accountSort = sorts;
+    accountRole = "teacher"
     let table = document.querySelector("#accountsTable");
-    table.innerHTML=""
-    if(accountSort==""){accountSort="ID"}
+    table.innerHTML = ""
+    if (accountSort == "") {
+        accountSort = "ID"
+    }
     let res = await GET("getTeacherAccounts", {
         count: accountCount,
         sort: accountSort
     });
-    if(res!=0){
+    if (res != 0) {
         accountTotal = res[0].total
         console.log(accountTotal)
         res.forEach(item => {
             let active = "";
             let label = "Active";
-            if(item.active==1){
-                active=""
+            if (item.active == 1) {
+                active = ""
                 label = "Active";
-            }else{
-                active="account-inactive"
+            } else {
+                active = "account-inactive"
                 label = "Inactive";
             }
             table.innerHTML += `
@@ -426,28 +421,25 @@ async function getTeacherAccounts(counts=0, sorts="") {
                 <td><button class="spma-button-2 text-white p-0 ${active}" onclick="setActive(this, ${item.ID}, '${accountRole}')"><small>${label}</small></button></td>
             </tr>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
 
-async function setActive(elem, IDs, role)
-{
+async function setActive(elem, IDs, role) {
     let active;
-    elem.classList.contains("account-inactive")?active=1:active=0;
+    elem.classList.contains("account-inactive") ? active = 1 : active = 0;
     let res = await POST({
         func: "setActive",
         ID: IDs,
         role: role,
         active: active
-    }).then(res =>{
-        if(res!="0"){
-            if(elem.classList.contains("account-inactive"))
-            {
+    }).then(res => {
+        if (res != "0") {
+            if (elem.classList.contains("account-inactive")) {
                 elem.classList.remove("account-inactive");
                 elem.innerHTML = "<small>Active</small>"
-            }else
-            {
+            } else {
                 elem.classList.add("account-inactive");
                 elem.innerHTML = "<small>Inactive</small>"
             }
@@ -459,36 +451,36 @@ function accountPagination(direction) {
     let limit = 50;
     switch (accountRole) {
         case "student":
-            if(direction=="start"  && accountCount!=0){
+            if (direction == "start" && accountCount != 0) {
                 getStudentAccounts(0, accountSort)
-            }else if(direction=="previous" && accountCount!=0){
-                getStudentAccounts(accountCount-1, accountSort)
-            }else if(direction=="next" && accountCount<Math.floor(accountTotal/limit)){
-                getStudentAccounts(accountCount+1, accountSort)
-            }else if(direction=="end" && accountCount<Math.floor(accountTotal/limit)){
-                getStudentAccounts(Math.ceil((accountCount+1)/limit), accountSort)
+            } else if (direction == "previous" && accountCount != 0) {
+                getStudentAccounts(accountCount - 1, accountSort)
+            } else if (direction == "next" && accountCount < Math.floor(accountTotal / limit)) {
+                getStudentAccounts(accountCount + 1, accountSort)
+            } else if (direction == "end" && accountCount < Math.floor(accountTotal / limit)) {
+                getStudentAccounts(Math.ceil((accountCount + 1) / limit), accountSort)
             }
             break;
         case "parent":
-            if(direction=="start"  && accountCount!=0){
+            if (direction == "start" && accountCount != 0) {
                 getParentAccounts(0, accountSort)
-            }else if(direction=="previous" && accountCount!=0){
-                getParentAccounts(accountCount-1, accountSort)
-            }else if(direction=="next" && accountCount<Math.floor(accountTotal/limit)){
-                getParentAccounts(accountCount+1, accountSort)
-            }else if(direction=="end" && accountCount<Math.floor(accountTotal/limit)){
-                getParentAccounts(Math.ceil((accountCount+1)/limit), accountSort)
+            } else if (direction == "previous" && accountCount != 0) {
+                getParentAccounts(accountCount - 1, accountSort)
+            } else if (direction == "next" && accountCount < Math.floor(accountTotal / limit)) {
+                getParentAccounts(accountCount + 1, accountSort)
+            } else if (direction == "end" && accountCount < Math.floor(accountTotal / limit)) {
+                getParentAccounts(Math.ceil((accountCount + 1) / limit), accountSort)
             }
             break;
         case "teacher":
-            if(direction=="start"  && accountCount!=0){
+            if (direction == "start" && accountCount != 0) {
                 getTeacherAccounts(0, accountSort)
-            }else if(direction=="previous" && accountCount!=0){
-                getTeacherAccounts(accountCount-1, accountSort)
-            }else if(direction=="next" && accountCount<Math.floor(accountTotal/limit)){
-                getTeacherAccounts(accountCount+1, accountSort)
-            }else if(direction=="end" && accountCount<Math.floor(accountTotal/limit)){
-                getTeacherAccounts(Math.ceil((accountCount+1)/limit), accountSort)
+            } else if (direction == "previous" && accountCount != 0) {
+                getTeacherAccounts(accountCount - 1, accountSort)
+            } else if (direction == "next" && accountCount < Math.floor(accountTotal / limit)) {
+                getTeacherAccounts(accountCount + 1, accountSort)
+            } else if (direction == "end" && accountCount < Math.floor(accountTotal / limit)) {
+                getTeacherAccounts(Math.ceil((accountCount + 1) / limit), accountSort)
             }
             break;
         default:
@@ -499,26 +491,25 @@ function accountPagination(direction) {
 function sortAccounts(value) {
     switch (accountRole) {
         case "student":
-                getStudentAccounts(0, value)
+            getStudentAccounts(0, value)
             break;
         case "parent":
-                getParentAccounts(0, value)
+            getParentAccounts(0, value)
             break;
         case "teacher":
-                getTeacherAccounts(0, value)
+            getTeacherAccounts(0, value)
             break;
         default:
             break;
     }
 }
 
-let resetCount=0;
-let resetSort=""
-let resetRole="student"
-let resetTotal=0;
+let resetCount = 0;
+let resetSort = ""
+let resetRole = "student"
+let resetTotal = 0;
 async function setResetTable(role) {
-    if(role=="student")
-    {
+    if (role == "student") {
         document.querySelector("#radioStudent").checked = true;
         document.querySelector("#resetsSort").innerHTML = `
         <option value="LRN">LRN</option>
@@ -537,7 +528,7 @@ async function setResetTable(role) {
         <th scope="col">Section</th>
         <th scope="col">Status</th>`;
         await getStudentResets()
-    }else if(role=="parent"){
+    } else if (role == "parent") {
         document.querySelector("#radioParent").checked = true;
         document.querySelector("#resetsSort").innerHTML = `
         <option value="child_lrn">Child's LRN</option>
@@ -554,7 +545,7 @@ async function setResetTable(role) {
         <th scope="col">Contact No.</th>
         <th scope="col">Status</th>`;
         await getParentResets()
-    }else if(role=="teacher"){
+    } else if (role == "teacher") {
         document.querySelector("#radioTeacher").checked = true;
         document.querySelector("#resetsSort").innerHTML = `
         <option value="ID">ID</option>
@@ -574,31 +565,33 @@ async function setResetTable(role) {
     }
 }
 
-async function getStudentResets(counts=0, sorts="") {
-    document.querySelector("#resetPaginationCount").innerText = counts+1;
-    resetCount=counts;
-    resetSort=sorts;
-    resetRole="student"
+async function getStudentResets(counts = 0, sorts = "") {
+    document.querySelector("#resetPaginationCount").innerText = counts + 1;
+    resetCount = counts;
+    resetSort = sorts;
+    resetRole = "student"
     let table = document.querySelector("#resetsTable");
-    table.innerHTML=""
-    if(resetSort==""){resetSort="date"}
+    table.innerHTML = ""
+    if (resetSort == "") {
+        resetSort = "date"
+    }
     let res = await GET("getResets", {
         count: resetCount,
         sort: resetSort,
         role: resetRole
     });
-    if(resCheck(res, "GET")){
+    if (resCheck(res, "GET")) {
         console.log(res)
         resetTotal = res[0].total
         res.forEach(item => {
             let active = "";
             let disabler = ""
-            if(item.reset==1){
+            if (item.reset == 1) {
                 disabler = ""
-                active=""
-            }else{
+                active = ""
+            } else {
                 disabler = "disabled";
-                active="account-inactive"
+                active = "account-inactive"
             }
             table.innerHTML += `
             <tr>
@@ -611,35 +604,37 @@ async function getStudentResets(counts=0, sorts="") {
                 <td><button class="spma-button-2 text-white p-0 ${active}" ${disabler} onclick="setReset(this, ${item.ID}, '${item.LRN}','${accountRole}')"><small>Reset</small></button></td>
             </tr>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
 
-async function getParentResets(counts=0, sorts="") {
-    document.querySelector("#resetPaginationCount").innerText = counts+1;
-    resetCount=counts;
-    resetSort=sorts;
-    resetRole="parent"
+async function getParentResets(counts = 0, sorts = "") {
+    document.querySelector("#resetPaginationCount").innerText = counts + 1;
+    resetCount = counts;
+    resetSort = sorts;
+    resetRole = "parent"
     let table = document.querySelector("#resetsTable");
-    table.innerHTML=""
-    if(resetSort==""){resetSort="date"}
+    table.innerHTML = ""
+    if (resetSort == "") {
+        resetSort = "date"
+    }
     let res = await GET("getResets", {
         count: resetCount,
         sort: resetSort,
         role: resetRole
     });
-    if(resCheck(res, "GET")){
+    if (resCheck(res, "GET")) {
         resetTotal = res[0].total
         res.forEach(item => {
             let active = "";
             let disabler = ""
-            if(item.reset==1){
+            if (item.reset == 1) {
                 disabler = ""
-                active=""
-            }else{
+                active = ""
+            } else {
                 disabler = "disabled";
-                active="account-inactive"
+                active = "account-inactive"
             }
             table.innerHTML += `
             <tr>
@@ -651,36 +646,38 @@ async function getParentResets(counts=0, sorts="") {
                 <td><button class="spma-button-2 text-white p-0 ${active}" ${disabler} onclick="setReset(this, ${item.ID}, '${item.child_lrn}','${resetRole}')"><small>Reset</small></button></td>
             </tr>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
 
-async function getTeacherResets(counts=0, sorts="") {
-    document.querySelector("#resetPaginationCount").innerText = counts+1;
-    resetCount=counts;
-    resetSort=sorts;
-    resetRole="teacher"
+async function getTeacherResets(counts = 0, sorts = "") {
+    document.querySelector("#resetPaginationCount").innerText = counts + 1;
+    resetCount = counts;
+    resetSort = sorts;
+    resetRole = "teacher"
     let table = document.querySelector("#resetsTable");
-    table.innerHTML=""
-    if(resetSort==""){resetSort="date"}
+    table.innerHTML = ""
+    if (resetSort == "") {
+        resetSort = "date"
+    }
     let res = await GET("getResets", {
         count: resetCount,
         sort: resetSort,
         role: resetRole
     });
-    if(resCheck(res, "GET")){
+    if (resCheck(res, "GET")) {
         console.log(res)
         resetTotal = res[0].total
         res.forEach(item => {
             let active = "";
             let disabler = ""
-            if(item.reset==1){
+            if (item.reset == 1) {
                 disabler = ""
-                active=""
-            }else{
+                active = ""
+            } else {
                 disabler = "disabled";
-                active="account-inactive"
+                active = "account-inactive"
             }
             table.innerHTML += `
             <tr>
@@ -692,15 +689,13 @@ async function getTeacherResets(counts=0, sorts="") {
                 <td><button class="spma-button-2 text-white p-0 ${active}" ${disabler} onclick="setReset(this, ${item.ID}, '${item.employee_no}','${resetRole}')"><small>Reset</small></button></td>
             </tr>`;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
 
-async function setReset(elem, id, info, role)
-{
-    if(!elem.classList.contains("account-inactive"))
-    {
+async function setReset(elem, id, info, role) {
+    if (!elem.classList.contains("account-inactive")) {
         let res = await POST({
             func: "setResetPassword",
             id: id,
@@ -708,23 +703,23 @@ async function setReset(elem, id, info, role)
             role: role
         })
         console.log(res)
-        if(resCheck(res, "POST")){
+        if (resCheck(res, "POST")) {
             elem.classList.add("account-inactive");
             elem.setAttribute("disabled", true)
         }
     }
 }
 
-async function sortResets(value){
+async function sortResets(value) {
     switch (accountRole) {
         case "student":
-                getStudentResets(0, value)
+            getStudentResets(0, value)
             break;
         case "parent":
-                getParentResets(0, value)
+            getParentResets(0, value)
             break;
         case "teacher":
-                getTeacherResets(0, value)
+            getTeacherResets(0, value)
             break;
         default:
             break;
@@ -735,36 +730,36 @@ async function resetPagination(direction) {
     let limit = 50;
     switch (resetRole) {
         case "student":
-            if(direction=="start"  && resetCount!=0){
+            if (direction == "start" && resetCount != 0) {
                 getStudentResets(0, resetSort)
-            }else if(direction=="previous" && resetCount!=0){
-                getStudentResets(resetCount-1, resetSort)
-            }else if(direction=="next" && resetCount<Math.floor(resetTotal/limit)){
-                getStudentResets(resetCount+1, resetSort)
-            }else if(direction=="end" && resetCount<Math.floor(resetTotal/limit)){
-                getStudentResets(Math.ceil((resetCount+1)/limit), resetSort)
+            } else if (direction == "previous" && resetCount != 0) {
+                getStudentResets(resetCount - 1, resetSort)
+            } else if (direction == "next" && resetCount < Math.floor(resetTotal / limit)) {
+                getStudentResets(resetCount + 1, resetSort)
+            } else if (direction == "end" && resetCount < Math.floor(resetTotal / limit)) {
+                getStudentResets(Math.ceil((resetCount + 1) / limit), resetSort)
             }
             break;
         case "parent":
-            if(direction=="start"  && resetCount!=0){
+            if (direction == "start" && resetCount != 0) {
                 getParentResets(0, resetSort)
-            }else if(direction=="previous" && resetCount!=0){
-                getParentResets(resetCount-1, resetSort)
-            }else if(direction=="next" && resetCount<Math.floor(resetTotal/limit)){
-                getParentResets(resetCount+1, resetSort)
-            }else if(direction=="end" && resetCount<Math.floor(resetTotal/limit)){
-                getParentResets(Math.ceil((resetCount+1)/limit), resetSort)
+            } else if (direction == "previous" && resetCount != 0) {
+                getParentResets(resetCount - 1, resetSort)
+            } else if (direction == "next" && resetCount < Math.floor(resetTotal / limit)) {
+                getParentResets(resetCount + 1, resetSort)
+            } else if (direction == "end" && resetCount < Math.floor(resetTotal / limit)) {
+                getParentResets(Math.ceil((resetCount + 1) / limit), resetSort)
             }
             break;
         case "teacher":
-            if(direction=="start"  && resetCount!=0){
+            if (direction == "start" && resetCount != 0) {
                 getTeacherResets(0, resetSort)
-            }else if(direction=="previous" && resettCount!=0){
-                getTeacherResets(resetCount-1, resetSort)
-            }else if(direction=="next" && resetCount<Math.floor(resetTotal/limit)){
-                getTeacherResets(resetCount+1, resetSort)
-            }else if(direction=="end" && resetCount<Math.floor(resetTotal/limit)){
-                getTeacherResets(Math.ceil((resetCount+1)/limit), resetSort)
+            } else if (direction == "previous" && resettCount != 0) {
+                getTeacherResets(resetCount - 1, resetSort)
+            } else if (direction == "next" && resetCount < Math.floor(resetTotal / limit)) {
+                getTeacherResets(resetCount + 1, resetSort)
+            } else if (direction == "end" && resetCount < Math.floor(resetTotal / limit)) {
+                getTeacherResets(Math.ceil((resetCount + 1) / limit), resetSort)
             }
             break;
         default:
@@ -776,6 +771,7 @@ async function resetPagination(direction) {
 let eventModal;
 let eventModalEdit;
 let eventModalDelete;
+
 function setEventModal() {
     eventModal = new bootstrap.Modal(document.querySelector("#eventModal"));
     eventModalEdit = new bootstrap.Modal(document.getElementById('eventEditModal'))
@@ -789,8 +785,8 @@ let eventsList = {};
 async function getEvents() {
     let container = document.querySelector("#eventsContainer");
     let res = await GET("getEvents", {})
-    if(resCheck(res, "GET")){
-        container.innerHTML='';
+    if (resCheck(res, "GET")) {
+        container.innerHTML = '';
         eventsList = res;
         console.log(res)
         let count = 0;
@@ -811,7 +807,7 @@ async function getEvents() {
             </div>`
             count++;
         });
-    }else{
+    } else {
         console.log(res)
     }
 }
@@ -822,8 +818,7 @@ async function setEvent() {
     let category = document.querySelector("#eventCategory").value
     let name = document.querySelector("#eventName").value
     let error = document.querySelector("#eventError")
-    if(date && color && category && name)
-    {
+    if (date && color && category && name) {
         setVisibility(error, false)
         let res = await POST({
             func: "setEvent",
@@ -832,17 +827,20 @@ async function setEvent() {
             category: category,
             name: name
         })
-        if(resCheck(res, "POST")){
+        if (resCheck(res, "POST")) {
             getEvents();
             eventModal.hide()
-        }else{console.log(res)}
-    }else{
+        } else {
+            console.log(res)
+        }
+    } else {
         setVisibility(error, true)
     }
 }
 
 let eventSelectedItem = {};
-function showEventModalEdit(ID){
+
+function showEventModalEdit(ID) {
     let data = eventsList[ID]
     eventSelectedItem = eventsList[ID]
     console.log(data)
@@ -865,11 +863,10 @@ async function setEventEdit() {
     let category = document.querySelector("#eventEditCategory").value
     let name = document.querySelector("#eventEditName").value
     let error = document.querySelector("#eventEditError")
-    if(date && color && category && name)
-    {
-        if(date==item.date && color==item.color && name==item.holiday && category==item.holiday_info){
+    if (date && color && category && name) {
+        if (date == item.date && color == item.color && name == item.holiday && category == item.holiday_info) {
             eventModalEdit.hide()
-        }else{
+        } else {
             setVisibility(error, false)
             let res = await POST({
                 func: "setEventEdit",
@@ -879,43 +876,51 @@ async function setEventEdit() {
                 category: category,
                 name: name
             })
-            if(resCheck(res, "POST")){
+            if (resCheck(res, "POST")) {
                 getEvents();
                 eventModalEdit.hide()
-            }else{console.log(res)}
+            } else {
+                console.log(res)
+            }
         }
-    }else{
+    } else {
         setVisibility(error, true)
     }
 }
 
-function setEventDeleteParam(id){
-    document.querySelector("#eventDeleteYes").setAttribute("onclick", "setEventDelete("+id+")");
+function setEventDeleteParam(id) {
+    document.querySelector("#eventDeleteYes").setAttribute("onclick", "setEventDelete(" + id + ")");
 }
 
-async function setEventDelete(id){
+async function setEventDelete(id) {
     let res = await POST({
         func: "setEventDelete",
         id: id
     })
-    if(resCheck(res, "POST"))
-    {
+    if (resCheck(res, "POST")) {
         getEvents()
-    }else{console.log(res)}
+    } else {
+        console.log(res)
+    }
 }
 
 
 let classModalSuccess;
 let classModalDelete;
+
 function setClassModal() {
     classModalSuccess = new bootstrap.Modal(document.querySelector("#classSuccess"));
     classModalDelete = new bootstrap.Modal(document.querySelector("#classDelete"));
 }
 
-async function getSubjects(grade=0) {
-    let res = await GET("getSubjects", {grade:grade});
-    if(resCheck(res, "GET")){
-        if(grade!=0){document.querySelector(`#grade${grade}-Subjects`).innerHTML = ''}
+async function getSubjects(grade = 0) {
+    let res = await GET("getSubjects", {
+        grade: grade
+    });
+    if (resCheck(res, "GET")) {
+        if (grade != 0) {
+            document.querySelector(`#grade${grade}-Subjects`).innerHTML = ''
+        }
         res.forEach(item => {
             document.querySelector(`#grade${item.grade_level}-Subjects`).innerHTML += `
             <li class="list-group-item list-group-item-action d-flex pe-1 justify-content-between" id="subject-${item.ID}">
@@ -923,22 +928,24 @@ async function getSubjects(grade=0) {
                 <div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="subjectDelete(${item.grade_level}, '${item.subject_name}', ${item.ID})"><small><i class="bi bi-trash-fill"></i></small></div>
             </li>`;
         });
-    }else{console.log(res)}
+    } else {
+        console.log(res)
+    }
 }
 
-async function setNewSubject(){
+async function setNewSubject() {
     let grade = document.querySelector("#subjectGrade").value;
     let subject = document.querySelector("#subjectName").value;
     let error = document.querySelector("#subjectError");
     let errorMsg = document.querySelector("#subjectErrorMsg");
     let successMsg = document.querySelector("#classSuccessMsg");
-    if(grade && subject){
+    if (grade && subject) {
         let res = await POST({
             func: "setNewSubject",
             grade: grade,
             subject: subject
         });
-        if(resCheck(res, "POST")){
+        if (resCheck(res, "POST")) {
             classModalSuccess.show()
             successMsg.innerText = `${subject} successfully added to Grade ${grade}`;
             document.querySelector("#subjectGrade").value = "";
@@ -946,11 +953,11 @@ async function setNewSubject(){
             setVisibility(document.querySelector("#subjectError"), false)
             getSubjects(grade);
             setVisibility(error, false);
-        }else{
+        } else {
             errorMsg.innerText = "Something went wrong"
             setVisibility(error, true);
         }
-    }else{
+    } else {
         setVisibility(error, true);
     }
 }
@@ -967,18 +974,24 @@ async function setSubjectDelete(ID, name, grade) {
         func: "setSubjectDelete",
         ID: ID
     })
-    if(resCheck(res, "POST")){
+    if (resCheck(res, "POST")) {
         classModalSuccess.show();
         successMsg.innerText = `${name} successfully removed from Grade ${grade}`;
         document.querySelector(`#subject-${ID}`).remove()
         getSubjects(grade);
-    }else{console.log(res)}
+    } else {
+        console.log(res)
+    }
 }
 
-async function getSections(grade=0) {
-    let res = await GET("getSections", {grade:grade});
-    if(resCheck(res, "GET")){
-        if(grade!=0){document.querySelector(`#grade${grade}-Sections`).innerHTML = ''}
+async function getSections(grade = 0) {
+    let res = await GET("getSections", {
+        grade: grade
+    });
+    if (resCheck(res, "GET")) {
+        if (grade != 0) {
+            document.querySelector(`#grade${grade}-Sections`).innerHTML = ''
+        }
         res.forEach(item => {
             document.querySelector(`#grade${item.grade_level}-Sections`).innerHTML += `
             <li class="list-group-item list-group-item-action d-flex pe-1 justify-content-between" id="section-${item.ID}">
@@ -986,22 +999,24 @@ async function getSections(grade=0) {
                 <div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="sectionDelete(${item.grade_level}, '${item.section_name}', ${item.ID})"><small><i class="bi bi-trash-fill"></i></small></div>
             </li>`;
         });
-    }else{console.log(res)}
+    } else {
+        console.log(res)
+    }
 }
 
-async function setNewSection(){
+async function setNewSection() {
     let grade = document.querySelector("#sectionGrade").value;
     let section = document.querySelector("#sectionName").value;
     let error = document.querySelector("#sectionError");
     let errorMsg = document.querySelector("#sectionErrorMsg");
     let successMsg = document.querySelector("#classSuccessMsg");
-    if(grade && section){
+    if (grade && section) {
         let res = await POST({
             func: "setNewSection",
             grade: grade,
             section: section
         });
-        if(resCheck(res, "POST")){
+        if (resCheck(res, "POST")) {
             successMsg.innerHTML = `<i>${section}</i> successfully added to Grade ${grade}`;
             classModalSuccess.show()
             console.log(successMsg)
@@ -1010,11 +1025,11 @@ async function setNewSection(){
             // setVisibility(document.querySelector("#sectionError"), false)
             getSections(grade);
             setVisibility(error, false);
-        }else{
+        } else {
             errorMsg.innerText = "Something went wrong"
             setVisibility(error, true);
         }
-    }else{
+    } else {
         setVisibility(error, true);
     }
 }
@@ -1031,12 +1046,14 @@ async function setSectionDelete(ID, name, grade) {
         func: "setSectionDelete",
         ID: ID
     })
-    if(resCheck(res, "POST")){
+    if (resCheck(res, "POST")) {
         classModalSuccess.show();
         successMsg.innerText = `${name} successfully removed from Grade ${grade}`;
         document.querySelector(`#section-${ID}`).remove()
         getSections(grade);
-    }else{console.log(res)}
+    } else {
+        console.log(res)
+    }
 }
 
 let teacherSections;
@@ -1044,18 +1061,18 @@ let teacherSubjects;
 let teacherHandles;
 let teachers;
 async function getTeachersClass() {
-    let res = await GET("getTeachersClass",{});
+    let res = await GET("getTeachersClass", {});
     let count = 0;
-    document.querySelector("#teacherList").innerHTML =''; 
-    if(resCheck(res, "GET")){
+    document.querySelector("#teacherList").innerHTML = '';
+    if (resCheck(res, "GET")) {
         teachers = res;
         setVisibility(document.querySelector("#teacherError"), false)
         res.forEach(teacher => {
             let handles = JSON.parse(teacher.handle);
             let subjectTables = ``;
-            if(Object.keys(handles).length === 0 && handles.constructor === Object)
-            { console.log(0)
-            }else{
+            if (Object.keys(handles).length === 0 && handles.constructor === Object) {
+                console.log(0)
+            } else {
                 console.log(handles)
                 for (const key in handles) {
                     subjectTables += `
@@ -1064,7 +1081,8 @@ async function getTeachersClass() {
                         <td>${handles[key].grade}</td>
                         <td>${handles[key].section}</td>
                         <td><div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="askTeacherHandleRemove(${count}, '${key}')"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                    </tr>`}
+                    </tr>`
+                }
             }
             document.querySelector("#teacherList").innerHTML += `
             <h2 class="accordion-header" id="flush-heading${teacher.ID}" onclick="selectTeacher('${teacher.last_name}, ${teacher.first_name}', ${count})">
@@ -1108,22 +1126,26 @@ function selectTeacher(teacher_name, teacher_id) {
     disable(sectionSelect, true)
     disable(subjectSelect, true)
     document.querySelector("#teacherName").innerHTML = `<u>${teacher_name}</u>`
-    document.querySelector("#teacherSubmit").setAttribute("onclick", "setTeacherAddHandles("+teachers[teacher_id].ID+")");
+    document.querySelector("#teacherSubmit").setAttribute("onclick", "setTeacherAddHandles(" + teachers[teacher_id].ID + ")");
     disable(document.querySelector("#teacherGrade"), false)
 }
 
-async function assignSectionAndSubjectStep(elem){
+async function assignSectionAndSubjectStep(elem) {
     let sectionSelect = document.querySelector("#teacherSection");
     let subjectSelect = document.querySelector("#teacherSubject");
     setVisibility(document.querySelector("#teacherError"), false)
-    if(elem.id=="teacherGrade" && elem.value!=''){
-        if(setTeacherSections(elem.value)){
+    if (elem.id == "teacherGrade" && elem.value != '') {
+        if (setTeacherSections(elem.value)) {
             disable(sectionSelect, false);
-        }else{disable(sectionSelect, true);}
-        if(setTeacherSubjects(elem.value)){
+        } else {
+            disable(sectionSelect, true);
+        }
+        if (setTeacherSubjects(elem.value)) {
             disable(subjectSelect, false);
-        }else{disable(subjectSelect, true);}
-    }else if(elem.id=="teacherGrade" && elem.value==''){
+        } else {
+            disable(subjectSelect, true);
+        }
+    } else if (elem.id == "teacherGrade" && elem.value == '') {
         disable(sectionSelect, true);
         disable(subjectSelect, true);
     }
@@ -1131,30 +1153,31 @@ async function assignSectionAndSubjectStep(elem){
 
 function setTeacherSections(grade) {
     document.querySelector('#teacherSection').innerHTML = `<option selected value="">Select section</option>`
-    try{
+    try {
         teacherSections[grade].forEach(element => {
             document.querySelector('#teacherSection').innerHTML += `<option value="${element}">${element}</option>`
         });
         return true;
-    }catch(TypeError){
-        alert("There are currently no sections in Grade "+ grade)
-        return false;
-    }
-}
-function setTeacherSubjects(grade) {
-    document.querySelector('#teacherSubject').innerHTML = `<option selected value="">Select subject</option>`
-    try{
-        teacherSubjects[grade].forEach(element => {
-            document.querySelector('#teacherSubject').innerHTML += `<option value="${element}">${element}</option>`
-        });
-        return true;
-    }catch(TypeError){
-        alert("There are currently no subjects in Grade "+ grade)
+    } catch (TypeError) {
+        alert("There are currently no sections in Grade " + grade)
         return false;
     }
 }
 
-async function getTeacherSectionsAndSubjects(grade){
+function setTeacherSubjects(grade) {
+    document.querySelector('#teacherSubject').innerHTML = `<option selected value="">Select subject</option>`
+    try {
+        teacherSubjects[grade].forEach(element => {
+            document.querySelector('#teacherSubject').innerHTML += `<option value="${element}">${element}</option>`
+        });
+        return true;
+    } catch (TypeError) {
+        alert("There are currently no subjects in Grade " + grade)
+        return false;
+    }
+}
+
+async function getTeacherSectionsAndSubjects(grade) {
     let section = await GET("getTeacherSections", {
         grade: grade
     });
@@ -1165,16 +1188,16 @@ async function getTeacherSectionsAndSubjects(grade){
     teacherSubjects = subject
 }
 
-async function setTeacherAddHandles(ID){
+async function setTeacherAddHandles(ID) {
     let sectionSelect = document.querySelector("#teacherSection").value;
     let subjectSelect = document.querySelector("#teacherSubject").value;
     let gradeSelect = document.querySelector("#teacherGrade").value;
-    if(sectionSelect && subjectSelect && gradeSelect){
+    if (sectionSelect && subjectSelect && gradeSelect) {
         let handles = JSON.parse(teacherHandles);
         handles[`${gradeSelect}-${sectionSelect}-${subjectSelect}`] = {
-            subject:subjectSelect,
-            grade:gradeSelect,
-            section:sectionSelect
+            subject: subjectSelect,
+            grade: gradeSelect,
+            section: sectionSelect
         }
         console.log(handles);
         let res = await POST({
@@ -1182,10 +1205,12 @@ async function setTeacherAddHandles(ID){
             ID: ID,
             handle: JSON.stringify(handles)
         })
-        if(resCheck(res, "POST")){
+        if (resCheck(res, "POST")) {
             getTeachersClass()
-        }else{console.log(res)}
-    }else{
+        } else {
+            console.log(res)
+        }
+    } else {
         setVisibility(document.querySelector("#teacherError"), true)
     }
 }
@@ -1198,7 +1223,7 @@ function askTeacherHandleRemove(ID, handleKey) {
     document.querySelector("#classDeleteYes").setAttribute("onclick", `setTeacherDeleteHandle(${removeTeacher.ID}, '${handleKey}', ${ID})`);
 }
 
-async function setTeacherDeleteHandle(ID, removeKey, count){
+async function setTeacherDeleteHandle(ID, removeKey, count) {
     console.log("hey")
     let handles = JSON.parse(teachers[count].handle);
     delete handles[removeKey];
@@ -1207,26 +1232,25 @@ async function setTeacherDeleteHandle(ID, removeKey, count){
         ID: ID,
         handle: JSON.stringify(handles)
     })
-    if(resCheck(res, "POST")){
+    if (resCheck(res, "POST")) {
         getTeachersClass()
-    }else{console.log(res)}
+    } else {
+        console.log(res)
+    }
 }
 
-function switchClassManager(elem)
-{
+function switchClassManager(elem) {
     let container = document.querySelector("#tab-content");
     let val = elem.id;
-    if(!elem.classList.contains("switch-select"))
-    {
+    if (!elem.classList.contains("switch-select")) {
         console.log(currentClassManager)
-        if(val=="switchSubject")
-        {
+        if (val == "switchSubject") {
             fetch("grades.php")
-            .then(response => response.text())
-            .then(text => {
-                container.innerHTML = text
-                let switcher = document.querySelector(".class-switch");
-                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative switch-select switch-left" onclick="switchClassManager(this)" id="switchSubject">
+                .then(response => response.text())
+                .then(text => {
+                    container.innerHTML = text
+                    let switcher = document.querySelector(".class-switch");
+                    switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative switch-select switch-left" onclick="switchClassManager(this)" id="switchSubject">
                 <div>Subjects Manager</div>    
                 </div>
                 <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchSection">
@@ -1235,20 +1259,19 @@ function switchClassManager(elem)
                 <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchTeacher">
                     <div> Teacher Manager </div>
                 </div>`;
-                currentClassManager=val;
-                getSubjects()
-                setClassModal()
+                    currentClassManager = val;
+                    getSubjects()
+                    setClassModal()
                 })
-        }else if(val=="switchSection")
-        {
+        } else if (val == "switchSection") {
             fetch("sections.php")
-            .then(response => response.text())
-            .then(text => {
-                container.innerHTML = text
-                let switcher = document.querySelector(".class-switch");
-                let dir = "right";
-                currentClassManager=="switchSubject"?dir="right":dir="left";
-                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative " onclick="switchClassManager(this)" id="switchSubject">
+                .then(response => response.text())
+                .then(text => {
+                    container.innerHTML = text
+                    let switcher = document.querySelector(".class-switch");
+                    let dir = "right";
+                    currentClassManager == "switchSubject" ? dir = "right" : dir = "left";
+                    switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative " onclick="switchClassManager(this)" id="switchSubject">
                 <div>Subjects Manager</div>    
                 </div>
                 <div class="rounded-pill p-1 w-50 text-center pointer text-white position-relative switch-select switch-${dir}" onclick="switchClassManager(this)" id="switchSection">
@@ -1257,18 +1280,17 @@ function switchClassManager(elem)
                 <div class="rounded-pill ms-1 p-1 w-50 text-center pointer text-white position-relative" onclick="switchClassManager(this)" id="switchTeacher">
                     <div> Teacher Manager </div>
                 </div>`;
-                currentClassManager=val;
-                getSections()
-                setClassModal()
+                    currentClassManager = val;
+                    getSections()
+                    setClassModal()
                 })
-        }else
-        {
+        } else {
             fetch("teachers.php")
-            .then(response => response.text())
-            .then(text => {
-                container.innerHTML = text
-                let switcher = document.querySelector(".class-switch");
-                switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative"
+                .then(response => response.text())
+                .then(text => {
+                    container.innerHTML = text
+                    let switcher = document.querySelector(".class-switch");
+                    switcher.innerHTML = `<div class="rounded-pill me-1 p-1 w-50 text-center pointer text-white position-relative"
                 onclick="switchClassManager(this)" id="switchSubject">
                 <div>Subjects Manager</div>
                 </div>
@@ -1279,11 +1301,11 @@ function switchClassManager(elem)
                     onclick="switchClassManager(this)" id="switchTeacher">
                     <div>Teacher Manager</div>
                 </div>`;
-                currentClassManager=val;
-                getTeachersClass()
-                getTeacherSectionsAndSubjects()
-                setClassModal()
-            })
+                    currentClassManager = val;
+                    getTeachersClass()
+                    getTeacherSectionsAndSubjects()
+                    setClassModal()
+                })
         }
     }
 }
