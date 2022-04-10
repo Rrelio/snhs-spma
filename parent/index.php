@@ -3,7 +3,9 @@
 ?>
 
 <body>
-
+    <?php
+        require '../php_helpers/loader.php';
+    ?>
     <div class="vh-100 row dashboard-background">
         <div class="col-8 d-none d-sm-none d-md-block" style="background-color: #F2F4F7;"></div>
         <div class="col-12 col-sm-12 col-md-4 bg-accent"></div>
