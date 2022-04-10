@@ -184,3 +184,37 @@
         $res = modifyDatabase("UPDATE teacher SET handle='$handle' WHERE ID=$ID");
         return $res;
     }
+
+    function setAddStudent($data)
+    {
+        $lastName = $data["lastName"];
+        $firstName = $data["firstName"];
+        $middleName = $data["middleName"];
+        $LRN = $data["LRN"];
+        $gradeLevel = $data["gradeLevel"];
+        $section = $data["section"];
+        $res = modifyDatabase("INSERT INTO student (last_name, first_name, middle_name, LRN, password, grade_level, section, active, reset, initial, theme) VALUE ('$lastName', '$firstName', '$middleName', '$LRN', '$LRN', '$gradeLevel', '$section', 1, 0, 1, '128, 168, 63')");
+        return $res;
+    }
+
+    function setAddParent($data)
+    {
+        $lastName = $data["lastName"];
+        $firstName = $data["firstName"];
+        $middleName = $data["middleName"];
+        $LRN = $data["LRN"];
+        $contactNumber = $data["contactNumber"];
+        $res = modifyDatabase("INSERT INTO parent (last_name, first_name, middle_name, contact_number, child_lrn, password, active, reset, initial, theme) VALUE ('$lastName', '$firstName', '$middleName', '$contactNumber', '$LRN', '$LRN', 1, 0, 1, '128, 168, 63')");
+        return $res;
+    }
+    function setAddTeacher($data)
+    {
+        $lastName = $data["lastName"];
+        $firstName = $data["firstName"];
+        $middleName = $data["middleName"];
+        $employeeNumber = $data["employeeNumber"];
+        $email = $data["email"];
+        $res = modifyDatabase("INSERT INTO teacher (last_name, first_name, middle_name, employee_no, email, handle, password, active, reset, initial, theme) VALUE ('$lastName', '$firstName', '$middleName', '$employeeNumber', '$email', '{}', '$employeeNumber', 1, 0, 1, '128, 168, 63')");
+        return $res;
+    }
+    

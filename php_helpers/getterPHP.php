@@ -210,6 +210,38 @@
         return $ubject;
     }
 
+    function getGradeSections($data)
+    {
+        $res = selectDatabase("SELECT * FROM sections WHERE active=1 ORDER BY grade_level");
+        $section = [];
+        $temp = [];
+        $grade = 7;
+        foreach ($res as $key => $value) {
+            if($grade!=$value["grade_level"]){
+                $section[$grade] = $temp;
+                $grade+=1;
+                $temp = array();
+            }
+            array_push($temp, $value["section_name"]);
+        }
+        $section[$grade] = $temp;
+        return $section;
+    }
+
+    function checkStudentLRN($data)
+    {
+        $lrn = $data["LRN"];
+        $res = selectDatabase("SELECT COUNT(LRN) FROM student WHERE LRN=$lrn AND active=1");
+        return $res[0]["COUNT(LRN)"];
+    }
+
+    function checkTeacherEmployeeNum($data)
+    {
+        $employeeNumber = $data["employeeNumber"];
+        $res = selectDatabase("SELECT COUNT(employee_no) FROM teacher WHERE employee_no='$employeeNumber' AND active=1");
+        return $res[0]["COUNT(employee_no)"];
+    }
+
     function test(){
         echo "hey";
     }

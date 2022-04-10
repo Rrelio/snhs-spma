@@ -1,93 +1,6 @@
 sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replace("http://localhost/snhs-spma/login.php");
 console.log(SessionStorage())
 
-function setAddRole(val) {
-    let container = document.querySelector("#form-container");
-    console.log(val);
-    if (val == 0) {
-        container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center">
-            <input type="text" class="form-control" id="studentLastName">
-            <label for="studentLastName" class="form-label">Last Name</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="studentFirstName">
-            <label for="studentFirstName" class="form-label">First Name</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="studentMiddleName">
-            <label for="studentMiddleName" class="form-label">Middle Name</label>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center flex-fill me-4">
-            <input type="text" class="form-control" id="studentLRN">
-            <label for="studentLRN" class="form-label">Learner's Reference Number</label>
-        </div>
-        <div class="text-center">
-            <input type="number" class="form-control" id="studentGradeLevel">
-            <label for="studentGradeLevel" class="form-label">Grade Level</label>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center">
-            <input type="text" class="form-control" id="studentSection">
-            <label for="studentSection" class="form-label">Section</label>
-        </div>
-    </div>`;
-    } else if (val == 1) {
-        container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center">
-            <input type="text" class="form-control" id="parentLastName">
-            <label for="parentLastName" class="form-label">Last Name</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="parentFirstName">
-            <label for="parentFirstName" class="form-label">First Name</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="parentMiddleName">
-            <label for="parentMiddleName" class="form-label">Middle Name</label>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center flex-fill me-4">
-            <input type="text" class="form-control" id="parentLRN">
-            <label for="parentLRN" class="form-label">Child's Learner's Reference Number</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="parentContactNumber">
-            <label for="parentContactNumber" class="form-label">Contact Number</label>
-        </div>
-    </div>`
-    } else {
-        container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center">
-            <input type="text" class="form-control" id="teacherLastName">
-            <label for="teacherLastName" class="form-label">Last Name</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="teacherFirstName">
-            <label for="teacherFirstName" class="form-label">First Name</label>
-        </div>
-        <div class="text-center">
-            <input type="text" class="form-control" id="teacherMiddleName">
-            <label for="teacherMiddleName" class="form-label">Middle Name</label>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
-        <div class="text-center w-100 me-4">
-            <input type="text" class="form-control" id="teacherEmployeeNumber">
-            <label for="teacherEmployeeNumber" class="form-label">Employee Number</label>
-        </div>
-        <div class="text-center w-100">
-            <input type="email" class="form-control" id="teacherEmail">
-            <label for="teacherEmail" class="form-label">Email Address</label>
-        </div>
-    </div>`
-    }
-}
-
 async function getNotes() {
     let res = await GET("getNotes", {});
     let notesCount = document.querySelector("#notesCount");
@@ -1307,5 +1220,301 @@ function switchClassManager(elem) {
                     setClassModal()
                 })
         }
+    }
+}
+let addModalSuccess;
+let addModalDanger;
+function setAddModal() {
+    addModalSuccess = new bootstrap.Modal(document.querySelector("#addSuccess"));
+    addModalDanger = new bootstrap.Modal(document.querySelector("#addDanger"));
+}
+
+let sections;
+async function getGradeSections(){
+    let res = await GET("getGradeSections",{})
+    if(resCheck(res, "GET")){
+        sections = res;
+    }else{console.log(res)}
+}
+
+async function setAddStudent() {
+    let successModalMsg = document.querySelector("#addSuccessMsg");
+    let lastName = document.querySelector("#studentLastName").value;
+    let firstName = document.querySelector("#studentFirstName").value;
+    let middleName = document.querySelector("#studentMiddleName").value;
+    let LRN = document.querySelector("#studentLRN").value;
+    let gradeLevel = document.querySelector("#studentGrade").value;
+    let section = document.querySelector("#studentSection").value;
+    if(lastName && firstName && middleName && LRN && gradeLevel && section){
+        console.log(section)
+        if(!/^([A-Za-z]+\s?)+$/.test(lastName)){addError(true, 'Invalid last name')}
+        else if(!/^([A-Za-z]+\s?)+$/.test(firstName)){addError(true, 'Invalid first name')}
+        else if(!/^([A-Za-z]+\s?)+$/.test(middleName)){addError(true, 'Invalid middle name')}
+        else if(!/^[0-9]{12}$/.test(LRN)){addError(true, 'Invalid LRN')}
+        else if(!(gradeLevel>=7 && gradeLevel<=12)){addError(true, 'Invalid grade level')}
+        else if(section==''){addError(true, 'Invalid section')}
+        else{
+            addError(false)
+            if(await checkStudentLRN(LRN.trim())){
+                let res = await POST({
+                    func: "setAddStudent",
+                    lastName: lastName.trim(),
+                    firstName: firstName.trim(),
+                    middleName: middleName.trim(),
+                    LRN: LRN.trim(),
+                    gradeLevel: gradeLevel,
+                    section: section.trim()
+                })
+                if(resCheck(res, "POST")){
+                    addModalSuccess.show();
+                    successModalMsg.innerHTML = `Student: <i>${firstName} ${lastName}</i><br>LRN: <i>${LRN}</i><br> Successfully added to the database`;
+                    document.querySelector("#studentLastName").value = ""
+                    document.querySelector("#studentFirstName").value = ""
+                    document.querySelector("#studentMiddleName").value = ""
+                    document.querySelector("#studentLRN").value = ""
+                    document.querySelector("#studentGrade").value = ""
+                    document.querySelector("#studentSection").value = ""
+                }else{
+                    addModalDanger.show();
+                }
+            }else{
+                addError(true, `An active student already has the LRN: <i>${LRN}</i> in the database. Please double check your form fields`)
+            }
+        }
+    }else{
+        addError(true, 'Do not leave any field empty')
+    }
+}
+
+let recentStudents;
+async function setAddParent() {
+    let successModalMsg = document.querySelector("#addSuccessMsg");
+    let lastName = document.querySelector("#parentLastName").value;
+    let firstName = document.querySelector("#parentFirstName").value;
+    let middleName = document.querySelector("#parentMiddleName").value;
+    let LRN = document.querySelector("#parentLRN").value;
+    let contactNumber = document.querySelector("#parentContactNumber").value;
+    if(lastName && firstName && middleName && LRN && contactNumber){
+        if(!/^([A-Za-z]+\s?)+$/.test(lastName)){addError(true, 'Invalid last name')}
+        else if(!/^([A-Za-z]+\s?)+$/.test(firstName)){addError(true, 'Invalid first name')}
+        else if(!/^([A-Za-z]+\s?)+$/.test(middleName)){addError(true, 'Invalid middle name')}
+        else if(!/^[0-9]{12}$/.test(LRN)){addError(true, 'Invalid LRN')}
+        else if(!/^(09|\+639)\d{9}$/.test(contactNumber)){addError(true, 'Invalid contact number')}
+        else{
+            addError(false)
+            if(await checkStudentLRN(LRN.trim())==false){
+                let res = await POST({
+                    func: "setAddParent",
+                    lastName: lastName.trim(),
+                    firstName: firstName.trim(),
+                    middleName: middleName.trim(),
+                    LRN: LRN.trim(),
+                    contactNumber: contactNumber.trim(),
+                })
+                if(resCheck(res, "POST")){
+                    addModalSuccess.show();
+                    successModalMsg.innerHTML = `Parent: <i>${firstName} ${lastName}</i><br>Child's LRN: <i>${LRN}</i><br> Successfully added to the database`;
+                    document.querySelector("#parentLastName").value = ""
+                    document.querySelector("#parentFirstName").value = ""
+                    document.querySelector("#parentMiddleName").value = ""
+                    document.querySelector("#parentLRN").value = ""
+                    document.querySelector("#parentContactNumber").value = ""
+                }else{
+                    addModalDanger.show();
+                }
+            }else{
+                addError(true, `No active student found with LRN: <i>${LRN}</i> in the database. Please double check your form fields`)
+            }
+        }
+    }else{
+        addError(true, 'Do not leave any field empty')
+    }
+}
+
+async function setAddTeacher() {
+    let successModalMsg = document.querySelector("#addSuccessMsg");
+    let lastName = document.querySelector("#teacherLastName").value;
+    let firstName = document.querySelector("#teacherFirstName").value;
+    let middleName = document.querySelector("#teacherMiddleName").value;
+    let employeeNumber = document.querySelector("#teacherEmployeeNumber").value;
+    let email = document.querySelector("#teacherEmail").value;
+    if(lastName && firstName && middleName && employeeNumber && email){
+        if(!/^([A-Za-z]+\s?)+$/.test(lastName)){addError(true, 'Invalid last name')}
+        else if(!/^([A-Za-z]+\s?)+$/.test(firstName)){addError(true, 'Invalid first name')}
+        else if(!/^([A-Za-z]+\s?)+$/.test(middleName)){addError(true, 'Invalid middle name')}
+        else if(!/^[0-9]+$/.test(employeeNumber)){addError(true, 'Invalid employee number')}
+        else if(!ValidateEmail(email)){addError(true, 'Invalid email address')}
+        else{
+            addError(false)
+            if(await checkTeacherEmployeeNum(employeeNumber.trim())){
+                let res = await POST({
+                    func: "setAddTeacher",
+                    lastName: lastName.trim(),
+                    firstName: firstName.trim(),
+                    middleName: middleName.trim(),
+                    employeeNumber: employeeNumber.trim(),
+                    email: email.trim()
+                })
+                if(resCheck(res, "POST")){
+                    addModalSuccess.show();
+                    successModalMsg.innerHTML = `Teacher: <i>${firstName} ${lastName}</i><br>Employee Number: <i>${employeeNumber}</i><br> Successfully added to the database`;
+                    document.querySelector("#teacherLastName").value = ""
+                    document.querySelector("#teacherFirstName").value = ""
+                    document.querySelector("#teacherMiddleName").value = ""
+                    document.querySelector("#teacherEmployeeNumber").value = ""
+                    document.querySelector("#teacherEmail").value = ""
+                }else{
+                    addModalDanger.show();
+                }
+            }else{
+                addError(true, `An active teacher already has the Employee Number: <i>${employeeNumber}</i> in the database. Please double check your form fields`)
+            }
+        }
+    }else{
+        addError(true, 'Do not leave any field empty')
+    }
+}
+
+
+async function checkStudentLRN(LRN) {
+    let res = await GET("checkStudentLRN", {
+        LRN:LRN
+    });
+    console.log(res)
+    if(res==0){
+       return true 
+    }else{return false}
+}
+
+async function checkTeacherEmployeeNum(employeeNumber){
+    let res = await GET("checkTeacherEmployeeNum", {
+        employeeNumber: employeeNumber
+    });
+    console.log(res)
+    if(res==0){
+       return true 
+    }else{return false}
+}
+
+function setStudentSections(elem){
+    let sectionSelect = document.querySelector("#studentSection");
+    if(elem.value!=''){
+        disable(sectionSelect, false)
+        sectionSelect.innerHTML = `<option selected value=''>Select a section</option>`;
+        sections[elem.value].forEach(section => {
+            sectionSelect.innerHTML += `<option value="${section}">${section}</option>`;
+        });
+    }else{disable(sectionSelect, true)}
+}
+
+function addError(visibility, message="") {
+    let error = document.querySelector("#addError");
+    let errorMsg = document.querySelector("#addErrorMsg");
+    setVisibility(error, visibility);
+    errorMsg.innerHTML = message;
+}
+
+function setAddRole(val) {
+    let container = document.querySelector("#form-container");
+    let submit = document.querySelector("#addSubmit");
+    console.log(val);
+    if (val == 0) {
+        container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center">
+            <input type="text" class="form-control" id="studentLastName" pattern="[a-zA-Z\s]+">
+            <label for="studentLastName" class="form-label">Last Name</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="studentFirstName" pattern="[a-zA-Z\s]+">
+            <label for="studentFirstName" class="form-label">First Name</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="studentMiddleName" pattern="[a-zA-Z\s]+">
+            <label for="studentMiddleName" class="form-label">Middle Name</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center flex-fill me-4">
+            <input type="text" class="form-control" id="studentLRN">
+            <label for="studentLRN" class="form-label">Learner's Reference Number</label>
+        </div>
+        <div class="text-center">
+            <select class="form-select" id="studentGrade" aria-label="Floating label select example" style="border-radius:15px;" onchange="setStudentSections(this)">
+                <option selected value="">Select a grade level</option>
+                <option value="7">Grade 7</option>
+                <option value="8">Grade 8</option>
+                <option value="9">Grade 9</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
+                <option value="12">Grade 12</option>
+            </select>
+            <label for="teacherGrade">Grade level</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center w-50">
+            <select class="form-select" aria-label="Default select example" style="border-radius:15px;" id="studentSection" disabled>
+                <option selected>Select a section</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <label for="studentSection" class="form-label">Section</label>
+        </div>
+    </div>`;
+    submit.setAttribute("onclick","setAddStudent()")
+    getGradeSections()
+    } else if (val == 1) {
+        container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center">
+            <input type="text" class="form-control" id="parentLastName">
+            <label for="parentLastName" class="form-label">Last Name</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="parentFirstName">
+            <label for="parentFirstName" class="form-label">First Name</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="parentMiddleName">
+            <label for="parentMiddleName" class="form-label">Middle Name</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center flex-fill me-4">
+            <input type="text" class="form-control" id="parentLRN">
+            <label for="parentLRN" class="form-label">Child's Learner's Reference Number</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="parentContactNumber">
+            <label for="parentContactNumber" class="form-label">Contact Number</label>
+        </div>
+    </div>`
+    submit.setAttribute("onclick","setAddParent()")
+    } else {
+        container.innerHTML = `<div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center">
+            <input type="text" class="form-control" id="teacherLastName">
+            <label for="teacherLastName" class="form-label">Last Name</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="teacherFirstName">
+            <label for="teacherFirstName" class="form-label">First Name</label>
+        </div>
+        <div class="text-center">
+            <input type="text" class="form-control" id="teacherMiddleName">
+            <label for="teacherMiddleName" class="form-label">Middle Name</label>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between fw-bold text-darkish mt-3">
+        <div class="text-center w-100 me-4">
+            <input type="text" class="form-control" id="teacherEmployeeNumber">
+            <label for="teacherEmployeeNumber" class="form-label">Employee Number</label>
+        </div>
+        <div class="text-center w-100">
+            <input type="email" class="form-control" id="teacherEmail">
+            <label for="teacherEmail" class="form-label">Email Address</label>
+        </div>
+    </div>`
+    submit.setAttribute("onclick","setAddTeacher()")
     }
 }
