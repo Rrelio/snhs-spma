@@ -84,18 +84,20 @@ function isValidJSON(text) {
 }
 
 function resCheck(res, method) {
-    if (method == "GET" && res != '') {
-        return true
-    } else if (method == "POST" && res == "1") {
-        return true
-    } else if (typeof res == String && res != null) {
-        if (res.includes("Error")) {
-            console.log(res)
+    if(res!=null){
+        if (method == "GET" && (res != '' || res != null)) {
+            return true
+        } else if (method == "POST" && res == "1") {
+            return true
+        } else if (typeof res == String && res != null) {
+            if (res.includes("Error")) {
+                console.log(res)
+            }
+            return false
+        } else {
+            return false
         }
-        return false
-    } else {
-        return false
-    }
+    }else{return false}
 
 }
 

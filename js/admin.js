@@ -836,6 +836,7 @@ async function getSubjects(grade = 0) {
         grade: grade
     });
     if (resCheck(res, "GET")) {
+        console.log(res)
         if (grade != 0) {
             document.querySelector(`#grade${grade}-Subjects`).innerHTML = ''
         }
@@ -976,32 +977,18 @@ async function setSectionDelete(ID, name, grade) {
 
 let teacherSections;
 let teacherSubjects;
-let teacherHandles;
+// let teacherHandles;
 let teachers;
 async function getTeachersClass() {
     let res = await GET("getTeachersClass", {});
     let count = 0;
     document.querySelector("#teacherList").innerHTML = '';
     if (resCheck(res, "GET")) {
-        teachers = res;
         setVisibility(document.querySelector("#teacherError"), false)
-        res.forEach(teacher => {
-            let handles = JSON.parse(teacher.handle);
-            let subjectTables = ``;
-            if (Object.keys(handles).length === 0 && handles.constructor === Object) {
-                console.log(0)
-            } else {
-                console.log(handles)
-                for (const key in handles) {
-                    subjectTables += `
-                    <tr>
-                        <td>${handles[key].subject}</td>
-                        <td>${handles[key].grade}</td>
-                        <td>${handles[key].section}</td>
-                        <td><div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="askTeacherHandleRemove(${count}, '${key}')"><small><i class="bi bi-trash-fill"></i></small></div></td>
-                    </tr>`
-                }
-            }
+        teachers = res;
+        let handles = await GET("getTeachersHandledClass", {});
+        console.log(handles)
+        await res.forEach(teacher => {
             document.querySelector("#teacherList").innerHTML += `
             <h2 class="accordion-header" id="flush-heading${teacher.ID}" onclick="selectTeacher('${teacher.last_name}, ${teacher.first_name}', ${count})">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${teacher.ID}" aria-expanded="false" aria-controls="flush-collapse${teacher.ID}">
@@ -1021,20 +1008,26 @@ async function getTeachersClass() {
                                 <th scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            ${subjectTables}
+                        <tbody id="teacherhandle-${teacher.ID}">
                         </tbody>
                     </table>
                 </div>
             </div>`
             count++;
         });
+        await handles.forEach(element => {
+            document.querySelector("#teacherhandle-"+element.teacher_ID).innerHTML+=`
+                <tr>
+                    <td>${element.subject_name}</td>
+                    <td>${element.grade_level}</td>
+                    <td>${element.section_name}</td>
+                    <td><div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="askTeacherHandleRemove(${element.teacher_ID}, ${element.ID}, '${element.subject_name}', '${element.section_name}', '${element.grade_level}')"><small><i class="bi bi-trash-fill"></i></small></div></td>
+                </tr>`
+        });
     }
 }
 
-function selectTeacher(teacher_name, teacher_id) {
-    teacherHandles = teachers[teacher_id].handle;
-    // console.log(teacherHandles)
+function clearTeacherClass() {
     let gradeSelect = document.querySelector("#teacherGrade")
     let sectionSelect = document.querySelector("#teacherSection");
     let subjectSelect = document.querySelector("#teacherSubject");
@@ -1043,6 +1036,11 @@ function selectTeacher(teacher_name, teacher_id) {
     subjectSelect.value = ""
     disable(sectionSelect, true)
     disable(subjectSelect, true)
+    document.querySelector("#teacherName").innerHTML = "<u>Teacher's Name</u>"
+}
+
+function selectTeacher(teacher_name, teacher_id) {
+    clearTeacherClass()
     document.querySelector("#teacherName").innerHTML = `<u>${teacher_name}</u>`
     document.querySelector("#teacherSubmit").setAttribute("onclick", "setTeacherAddHandles(" + teachers[teacher_id].ID + ")");
     disable(document.querySelector("#teacherGrade"), false)
@@ -1073,7 +1071,7 @@ function setTeacherSections(grade) {
     document.querySelector('#teacherSection').innerHTML = `<option selected value="">Select section</option>`
     try {
         teacherSections[grade].forEach(element => {
-            document.querySelector('#teacherSection').innerHTML += `<option value="${element}">${element}</option>`
+            document.querySelector('#teacherSection').innerHTML += `<option value="${element[1]}">${element[0]}</option>`
         });
         return true;
     } catch (TypeError) {
@@ -1086,7 +1084,7 @@ function setTeacherSubjects(grade) {
     document.querySelector('#teacherSubject').innerHTML = `<option selected value="">Select subject</option>`
     try {
         teacherSubjects[grade].forEach(element => {
-            document.querySelector('#teacherSubject').innerHTML += `<option value="${element}">${element}</option>`
+            document.querySelector('#teacherSubject').innerHTML += `<option value="${element[1]}">${element[0]}</option>`
         });
         return true;
     } catch (TypeError) {
@@ -1102,6 +1100,8 @@ async function getTeacherSectionsAndSubjects(grade) {
     let subject = await GET("getTeacherSubjects", {
         grade: grade
     });
+    console.log(subject)
+    console.log(section)
     teacherSections = section
     teacherSubjects = subject
 }
@@ -1111,21 +1111,17 @@ async function setTeacherAddHandles(ID) {
     let subjectSelect = document.querySelector("#teacherSubject").value;
     let gradeSelect = document.querySelector("#teacherGrade").value;
     if (sectionSelect && subjectSelect && gradeSelect) {
-        let handles = JSON.parse(teacherHandles);
-        handles[`${gradeSelect}-${sectionSelect}-${subjectSelect}`] = {
-            subject: subjectSelect,
-            grade: gradeSelect,
-            section: sectionSelect
-        }
-        console.log(handles);
         let res = await POST({
-            func: "setTeacherHandles",
-            ID: ID,
-            handle: JSON.stringify(handles)
+            func: "setTeacherAddHandles",
+            ID : ID,
+            section : sectionSelect,
+            subject: subjectSelect,
+            grade : gradeSelect
         })
-        if (resCheck(res, "POST")) {
+        if(resCheck(res, "POST")){
+            clearTeacherClass()
             getTeachersClass()
-        } else {
+        }else{
             console.log(res)
         }
     } else {
@@ -1133,28 +1129,22 @@ async function setTeacherAddHandles(ID) {
     }
 }
 
-function askTeacherHandleRemove(ID, handleKey) {
+function askTeacherHandleRemove(ID, handle_ID, subject, section, grade) {
     let removeTeacher = teachers[ID]
-    let handle = JSON.parse(removeTeacher.handle)[handleKey]
+    // let handle = JSON.parse(removeTeacher.handle)[handleKey]
     classModalDelete.show()
-    document.querySelector("#classDeleteMsg").innerHTML = `Are you sure you want <i> ${removeTeacher.first_name} ${removeTeacher.last_name} </i> to unhandle <u>${handle.subject} of ${handle.grade} - ${handle.section} </u>?`;
-    document.querySelector("#classDeleteYes").setAttribute("onclick", `setTeacherDeleteHandle(${removeTeacher.ID}, '${handleKey}', ${ID})`);
+    document.querySelector("#classDeleteMsg").innerHTML = `Are you sure you want <i> ${removeTeacher.first_name} ${removeTeacher.last_name} </i> to unhandle <u>${subject} of ${grade}-${section}</u>?`;
+    document.querySelector("#classDeleteYes").setAttribute("onclick", `setTeacherDeleteHandle(${handle_ID})`);
 }
 
-async function setTeacherDeleteHandle(ID, removeKey, count) {
-    console.log("hey")
-    let handles = JSON.parse(teachers[count].handle);
-    delete handles[removeKey];
+async function setTeacherDeleteHandle(ID) {
     let res = await POST({
-        func: "setTeacherHandles",
-        ID: ID,
-        handle: JSON.stringify(handles)
+        func: "setTeacherDeleteHandle",
+        ID: ID
     })
-    if (resCheck(res, "POST")) {
+    if(resCheck(res, "POST")){
         getTeachersClass()
-    } else {
-        console.log(res)
-    }
+    }else{console.log}
 }
 
 function switchClassManager(elem) {

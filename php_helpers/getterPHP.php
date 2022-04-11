@@ -170,7 +170,13 @@
 
     function getTeachersClass($data)
     {
-        $res = selectDatabase("SELECT * FROM teacher WHERE active=1");
+        $res = selectDatabase("SELECT ID, last_name, first_name, active FROM `teacher` WHERE active=1");
+        return $res;
+    }
+
+    function getTeachersHandledClass($data)
+    {
+        $res = selectDatabase("SELECT handle.ID, teacher.ID AS teacher_ID, teacher.last_name, teacher.first_name, teacher.active, subjects.subject_name, subjects.active, handle.grade_level, handle.active, sections.section_name, sections.active FROM `teacher` INNER JOIN `handle` ON teacher.ID=handle.teacher_ID INNER JOIN sections ON sections.ID=handle.section_ID INNER JOIN subjects ON subjects.ID=handle.subject_ID WHERE handle.active=1");
         return $res;
     }
     
@@ -183,10 +189,10 @@
         foreach ($res as $key => $value) {
             if($grade!=$value["grade_level"]){
                 $section[$grade] = $temp;
-                $grade+=1;
+                $grade=$value["grade_level"];
                 $temp = array();
             }
-            array_push($temp, $value["section_name"]);
+            array_push($temp, [$value["section_name"], $value["ID"]]);
         }
         $section[$grade] = $temp;
         return $section;
@@ -201,10 +207,10 @@
         foreach ($res as $key => $value) {
             if($grade!=$value["grade_level"]){
                 $ubject[$grade] = $temp;
-                $grade+=1;
+                $grade=$value["grade_level"];
                 $temp = array();
             }
-            array_push($temp, $value["subject_name"]);
+            array_push($temp, [$value["subject_name"], $value["ID"]]);
         }
         $ubject[$grade] = $temp;
         return $ubject;

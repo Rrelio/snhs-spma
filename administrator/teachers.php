@@ -27,7 +27,7 @@
             <div class="w-50 border-start ps-2 d-flex flex-column">
                 <h6 class="fw-bold text-darkish mb-1 ms-4">Teacher's Subjects</h6>
                 <div class="container border rounded-3 py-2 flex-fill d-flex flex-column justify-content-center">
-                    <h5 class="fw-bold text-darkish mb-1 ms-4 align-self-center mb-3" id="teacherName"><u>Teacher's Name</u></h5>
+                    <h5 class="fw-bold text-darkish ms-4 align-self-center mb-3" id="teacherName"><u>Teacher's Name</u></h5>
 
                     <form class="">
                         <div class="form-floating mb-3">
@@ -54,11 +54,11 @@
                             </select>
                             <label for="teacherSubject">Subject</label>
                         </div>
-                        <div class="alert alert-danger p-0 px-2" role="alert" style="visibility: hidden;" id="teacherError">
+                        <div class="alert alert-danger p-0 px-2 m-0" role="alert" style="visibility: hidden;" id="teacherError">
                             <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;<small>Don't leave any field
                                 blank</small>
                         </div>
-                        <button class="spma-button-2 text-white rounded-pill w-fit px-3 mx-auto d-block my-2" type="button" onclick="setTeacherAddHandles()" id="teacherSubmit">Submit <i
+                        <button class="spma-button-2 text-white rounded-pill w-fit px-3 mx-auto d-block" type="button" onclick="setTeacherAddHandles()" id="teacherSubmit">Submit <i
                                 class="bi bi-plus-circle"></i></button>
                     </form>
                 </div>

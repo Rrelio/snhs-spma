@@ -159,6 +159,12 @@
     {
         $ID = $data["ID"];
         $res = modifyDatabase("UPDATE subjects SET active = 0 WHERE ID=$ID");
+        $res1 = modifyDatabase("UPDATE handle SET active = 0 WHERE subject_ID=$ID");
+        if($res1===$res){
+            return "1";
+        }else{
+            return "ERROR";
+        }
         return $res;
     }
 
@@ -174,6 +180,28 @@
     {
         $ID = $data["ID"];
         $res = modifyDatabase("UPDATE sections SET active = 0 WHERE ID=$ID");
+        $res1 = modifyDatabase("UPDATE handle SET active = 0 WHERE section_ID=$ID");
+        if($res1===$res){
+            return "1";
+        }else{
+            return "ERROR";
+        }
+    }
+
+    function setTeacherAddHandles($data)
+    {
+        $ID = $data["ID"];
+        $section = $data["section"];
+        $subject = $data["subject"];
+        $grade = $data["grade"];
+        $res = modifyDatabase("INSERT INTO handle (teacher_ID, section_ID, subject_id, grade_level, active) VALUE ($ID, $section, $subject, $grade, 1)");
+        return $res;
+    }
+
+    function setTeacherDeleteHandle($data)
+    {
+        $ID = $data["ID"];
+        $res = modifyDatabase("UPDATE handle SET active=0 WHERE ID=$ID");
         return $res;
     }
 
