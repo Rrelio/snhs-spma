@@ -280,3 +280,23 @@
         $res = modifyDatabase("UPDATE $role SET password='$newPassword' WHERE ID=$ID");
         return $res;
     }
+
+    function setTeacherActivityAdd($data)
+    {
+        $subject_name = $data["subject_name"];
+        $grade_level = $data["grade_level"];
+        $section_name = $data["section_name"];
+        $category = $data["category"];
+        $subject_ID = $data["subject_ID"];
+        $title = $data["title"];
+        $handle_ID = $data["handle_ID"];
+        $res = modifyDatabase("INSERT INTO subject_activity (section_name, grade_level,	subject_name, subject_ID, activity_title, category, active, handle_ID) VALUE ('$section_name', '$grade_level', '$subject_name', '$subject_ID', '$title', '$category', 1, $handle_ID)");
+        return $res;
+    }
+
+    function setActivityDelete($data)
+    {
+        $ID = $data["ID"];
+        $res = modifyDatabase("UPDATE subject_activity SET active=0 WHERE ID=$ID");
+        return $res;
+    }

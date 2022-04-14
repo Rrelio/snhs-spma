@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="classSuccess" tabindex="-1" aria-labelledby="classSuccess" aria-hidden="true">
+<div class="modal fade" id="activitySuccess" tabindex="-1" aria-labelledby="activitySuccess" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header borderless">
@@ -103,7 +103,7 @@
                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
                     </svg>
                 </div>
-                <span id="classSuccessMsg">Subject successfully added</span>
+                <span id="activitySuccessMsg">Activity successfully added</span>
             </div>
             <div class="modal-footer borderless d-flex justify-content-end">
                 <button class="spma-button-2 w-auto px-3" data-bs-dismiss="modal">OK</button>
@@ -112,20 +112,20 @@
     </div>
 </div>
 
-<div class="modal fade" id="classDelete" tabindex="-1" aria-labelledby="classDelete" aria-hidden="true">
+<div class="modal fade" id="activityDelete" tabindex="-1" aria-labelledby="activityDelete" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header borderless">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body pt-0 text-center">
-                <h5 class="modal-title fw-bold d-block text-center">Remove Subject</h5>
-                <span id="classDeleteMsg">
-                    Are you sure you want to delete this note?
+                <h5 class="modal-title fw-bold d-block text-center">Remove Activity</h5>
+                <span id="activityDeleteMsg">
+                    Are you sure you want to remove this activity?
                 </span>
             </div>
             <div class="modal-footer borderless d-flex justify-content-center">
-                <button class="spma-button-2-danger w-auto px-3" data-bs-dismiss="modal" onclick="setSectionDelete()" id="classDeleteYes">Yes</button>
+                <button class="spma-button-2-danger w-auto px-3" data-bs-dismiss="modal" onclick="setActivityDelete()" id="activityDeleteYes">Yes</button>
                 <button class="spma-button-2 w-auto px-3" data-bs-dismiss="modal">No</button>
             </div>
         </div>

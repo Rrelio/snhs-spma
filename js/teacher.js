@@ -12,6 +12,14 @@ async function setTeacherIndex(){
     await setTeacherHandleSelect()
 }
 
+let activityModalSuccess
+let activityModalDanger
+function setTeacherActivityModal(){
+    activityModalSuccess = new bootstrap.Modal(document.querySelector("#activitySuccess"));
+    activityModalDanger = new bootstrap.Modal(document.querySelector("#activityDelete"));
+}
+
+
 async function setTeacherHandleSelect() {
     let handleSelect = document.querySelector("#teacherHandles");
 
@@ -42,95 +50,95 @@ async function getTeacherHandledClasses()
 async function setTeacherHandledClassesActivityHistory() {
     let activityHistoryClasses = document.querySelector("#teacherHandledClassesActivityHistory");
     let res = await getTeacherHandledClasses();
-    if(resCheck(res, "GET")){
-        res.forEach(element => {
-            activityHistoryClasses.innerHTML += `
-                    <h2 class="accordion-header" id="flush-heading${element.ID}"><button class="accordion-button collapsed"
-                            type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${element.ID}"
-                            aria-expanded="false" aria-controls="flush-collapse${element.ID}">
-                            <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
+    let handleIDList =[];
 
-                            ${element.subject_name} - ${element.grade_level} ${element.section_name}
-                        </button></h2>
-                    <div id="flush-collapse${element.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading${element.ID}"
-                        data-bs-parent="#accordionFlushExamples">
-                        <div class="accordion-body py-2 px-4 d-flex">
-                            <div class="px-3">
-                                <i class="fs-5 bi bi-arrow-return-right"></i>
-                            </div>
-                            <div class="accordion accordion-flush flex-fill ps-2" id="accordionFlushExample">
-                                <div class="accordion-item ">
-                                    <h2 class="accordion-header" id="flush-headingTwo"><button
-                                            class="accordion-button collapsed p-2" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
-                                            aria-expanded="false" aria-controls="flush-collapseTwo"><i class="bi bi-file-earmark-text mx-1"></i> Activity 1</button>
-                                    </h2>
-                                    <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                        aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body p-0 ps-1">
-                                            <table class="table table-sm" style="table-layout:fixed;">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Student Name</th>
-                                                        <th scope="col" class="text-end w-25"><span class="me-2"> Status </span></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="border-color: rgba(0,0,0,.125);">
-                                                    <tr>
-                                                        <td ><small class="d-block text-truncate">José Protacio Rizal Mercado y Alonso RealondaJosé Protacio Rizal Mercado y Alonso Realonda</small></td>
-                                                        <td class="d-flex justify-content-end">
-                                                            <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
-                                                            <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><small>Student 2</small></td>
-                                                        <td class="d-flex justify-content-end">
-                                                            <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
-                                                            <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><small>Student 3</small></td>
-                                                        <td class="d-flex justify-content-end">
-                                                            <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
-                                                            <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="flush-headingThree"><button
-                                            class="accordion-button collapsed p-2" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                            aria-expanded="false" aria-controls="flush-collapseThree"><i class="bi bi-file-earmark-text mx-1"></i> Activity
-                                            2</button></h2>
-                                    <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                        aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">Placeholder content for this accordion,
-                                            which is intended to demonstrate the <code>.accordion-flush</code>class.
-                                            This is the third item's accordion body. Nothing more exciting happening
-                                            here in terms of content, but just filling up the space to make it look, at
-                                            least at first glance, a bit more representative of how this would look in a
-                                            real-world application.</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`
+    if(resCheck(res, "GET")){
+        activityHistoryClasses.innerHTML = ''
+        await res.forEach(element => {
+            activityHistoryClasses.innerHTML += `
+            <h2 class="accordion-header" id="flush-heading-activity${element.ID}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-activity${element.ID}" aria-expanded="false" aria-controls="flush-collapse-activity${element.ID}">
+                    <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
+                    ${element.subject_name} - ${element.grade_level} ${element.section_name}
+                </button>
+            </h2>
+            <div id="flush-collapse-activity${element.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading-activity${element.ID}" data-bs-parent="#accordionFlushParentActivity${element.ID}">
+                <div class="accordion-body py-2 px-4 d-flex">
+                    <div class="px-3">
+                        <i class="fs-5 bi bi-arrow-return-right"></i>
+                    </div>
+                    <div class="accordion accordion-flush flex-fill ps-2" id="accordionFlush${element.ID}">
+                        
+                    </div>
+                </div>
+            </div>`
+            handleIDList.push(element.ID);
         });
+        await getHandleActivityHistoryList(handleIDList)
     }else{
         console.log(res)
     }
 }
 
+async function getHandleActivityHistoryList(handle_IDs) {
+    let act = await GET("getHandledActivities", {handle_ID:handle_IDs})
+    if(resCheck(act, "GET")){
+        await act.forEach(activity => {
+            document.querySelector(`#accordionFlush${activity.handle_ID}`).innerHTML +=`
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading${activity.ID}">
+                <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${activity.ID}" aria-expanded="false" aria-controls="flush-collapse${activity.ID}">
+                    <i class="bi bi-file-earmark-text mx-1"></i> ${activity.category} - ${activity.activity_title}
+                </button>
+            </h2>
+            <div id="flush-collapse${activity.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading${activity.ID}" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body p-0 ps-1">
+                    <table class="table table-sm" style="table-layout:fixed;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Name</th>
+                                <th scope="col" class="text-end w-25"><span class="me-2"> Status </span></th>
+                            </tr>
+                        </thead>
+                        <tbody style="border-color: rgba(0,0,0,.125);">
+                            <tr>
+                                <td ><small class="d-block text-truncate">José Protacio Rizal Mercado y Alonso RealondaJosé Protacio Rizal Mercado y Alonso Realonda</small></td>
+                                <td class="d-flex justify-content-end">
+                                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
+                                    <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><small>Student 2</small></td>
+                                <td class="d-flex justify-content-end">
+                                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
+                                    <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><small>Student 3</small></td>
+                                <td class="d-flex justify-content-end">
+                                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
+                                    <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>`
+        });
+    }else{
+        console.log(act)
+    }
+}
+
 async function setTeacherActivityManager() {
     let classes = document.querySelector("#teacherActivitiesHandles");
+    classes.innerHTML = ''
     let res = await getTeacherHandledClasses();
+    let handleIDList =[];
     if(resCheck(res, "GET")){
-        res.forEach(element => {
+        await res.forEach(element => {
             classes.innerHTML += `
             <h2 class="accordion-header" id="flush-heading${element.ID}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${element.ID}" aria-expanded="false" aria-controls="flush-collapse${element.ID}">
@@ -141,22 +149,52 @@ async function setTeacherActivityManager() {
             <div id="flush-collapse${element.ID}" class="accordion-collapse collapse"
                 aria-labelledby="flush-heading${element.ID}" data-bs-parent="#accordionFlushExamples">
                 <div class="accordion-body p-2 pe-0 d-flex">
-                    <ul class="list-group w-100">
-                        <li class="list-group-item list-group-item-action d-flex pe-1">
-                            <div class="test-truncate align-self-center"><small> Lorem ipsum dolor sit, amet
-                                    consectetur adipisicing elit. Culpa pariatur libero quasi incidunt
-                                    laudantium. Accusantium, adipisci nisi! Esse cupiditate tenetur quas
-                                    dicta. Sed amet nemo, similique atque repellendus perspiciatis
-                                    dolores?</small></div>
-                            <div class="btn btn-danger px-1 text-white ms-2 p-0"><small><i
-                                        class="bi bi-trash-fill"></i></small></div>
-                        </li>
+                    <ul class="list-group w-100" id="handleActivity${element.ID}">
+                       
                     </ul>
                 </div>
             </div>`
+            handleIDList.push(element.ID);
         });
+        console.log(handleIDList)
+        await getHandleActivities(handleIDList)
     }else{
         console.log(res)
+    }
+}
+
+async function getHandleActivities(handle_IDs) {
+    let act = await GET("getHandledActivities", {handle_ID:handle_IDs})
+    if(resCheck(act, "GET")){
+        await act.forEach(activity => {
+            document.querySelector(`#handleActivity${activity.handle_ID}`).innerHTML +=`
+            <li class="list-group-item list-group-item-action d-flex pe-1 justify-content-between" title="${activity.category} - ${activity.activity_title}">
+                <div class="test-truncate align-self-center"><small>${activity.category} - ${activity.activity_title}</small></div>
+                <div class="btn btn-danger px-1 text-white ms-2 p-0" onclick="askActivityRemove(${activity.ID}, '${activity.activity_title}')"><small><i class="bi bi-trash-fill"></i></small></div>
+            </li>`
+        });
+    }else{
+        console.log(act)
+    }
+}
+
+function askActivityRemove(ID, name) {
+    activityModalDanger.show();
+    document.querySelector("#activityDeleteMsg").innerHTML = `Are you sure you want to remove <i>${name}</i> from the activity list?`;
+    document.querySelector("#activityDeleteYes").setAttribute("onclick", `setActivityDelete(${ID})`);
+}
+
+async function setActivityDelete(ID){
+    let res = await POST({
+        func: "setActivityDelete",
+        ID: ID
+    });
+    if(resCheck(res, "POST")){
+        document.querySelector("#activitySuccessMsg").innerHTML = 'Activity successfully removed'
+        activityModalSuccess.show();
+        setTeacherActivityManager()
+    }else{
+        alert(res);
     }
 }
 
@@ -165,7 +203,7 @@ async function setTeacherActivityManagerHandleSelect() {
     let res = await getTeacherHandledClasses();
     if(resCheck(res, "GET")){
         res.forEach(element => {
-            classes.innerHTML += `<option value="['${element.subject_name}',${element.grade_level},'${element.section_name}']">${element.subject_name} - ${element.grade_level} ${element.section_name}</option>`
+            classes.innerHTML += `<option value="${element.subject_name}!@#${element.grade_level}!@#${element.section_name}!@#${element.subject_ID}!@#${element.ID}">${element.subject_name} - ${element.grade_level} ${element.section_name}</option>`
         });
     }else{
         console.log(res)
@@ -173,13 +211,33 @@ async function setTeacherActivityManagerHandleSelect() {
 }
 
 async function setTeacherActivityAdd(){
-    let subject_ID = document.querySelector("#activityHandle").value;
+    let handle = document.querySelector("#activityHandle").value;
     let category = document.querySelector("#activityCategory").value;
     let title = document.querySelector("#activityTitle").value;
     let error = document.querySelector("#activityError");
-    if(subject_ID && category && title){
-        setVisibility(error, false)
-
+    handle = handle.split("!@#")
+    if(handle && category && title){
+        let res = await POST({
+            func: "setTeacherActivityAdd",
+            subject_name: handle[0],
+            grade_level: handle[1],
+            section_name: handle[2],
+            subject_ID: handle[3],
+            handle_ID: handle[4],
+            category: category,
+            title: title
+        })
+        if(resCheck(res, "POST")){
+            activityModalSuccess.show()
+            setTeacherActivityManager()
+            document.querySelector("#activitySuccessMsg").innerHTML = 'Activity successfully added'
+            document.querySelector("#activityHandle").value = ''
+            document.querySelector("#activityCategory").value = ''
+            document.querySelector("#activityTitle").value = ''
+        }else{
+            console.log(res)
+            setVisibility(error, false)
+        }
     }else{
         setVisibility(error, true)
     }

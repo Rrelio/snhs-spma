@@ -316,6 +316,7 @@ async function switchTab(location, elem) {
                 break;
             case "activities":
                 if (SessionStorage()['role'] == "teacher") {
+                    setTeacherActivityModal()
                     setTeacherActivityManager()
                     setTeacherActivityManagerHandleSelect()
                 }

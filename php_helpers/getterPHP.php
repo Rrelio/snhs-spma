@@ -264,6 +264,26 @@
         return $res[0]["COUNT(ID)"];
     }
 
+    function getHandledActivities($data)
+    {
+        $handle_ID = $data["handle_ID"];
+        $sqlWhere = "handle_ID=";
+        if(count($handle_ID)==1){
+            $sqlWhere .= $handle_ID[0];
+        }else{
+            for ($i=0; $i < count($handle_ID); $i++) { 
+                # code...
+                if($i==count($handle_ID)-1){
+                    $sqlWhere .= $handle_ID[$i];
+                }else{
+                    $sqlWhere .= $handle_ID[$i].' OR handle_ID=';
+                }
+            }
+        }
+        $res = selectDatabase("SELECT * FROM subject_activity WHERE ($sqlWhere) AND active=1");
+        return $res;
+    }
+
     function test(){
         echo "hey";
     }
