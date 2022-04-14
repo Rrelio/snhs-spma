@@ -318,7 +318,6 @@
         if($statistics["Assignment"]["Total"] == 0){
             $statistics["Assignment"]["Percent"] = 100;
             $divisor = $divisor - 1;
-            // $dividen = $dividen + 0;
         }else{
             $statistics["Assignment"]["Percent"] = ($statistics["Assignment"]["Finished"]/$statistics["Assignment"]["Total"])*100;
             $dividen = $dividen + $statistics["Assignment"]["Percent"];
@@ -332,7 +331,6 @@
         if($statistics["Quiz"]["Total"] == 0){
             $statistics["Quiz"]["Percent"] = 100;
             $divisor = $divisor - 1;
-            // $dividen = $dividen + 0;
         }else{
             $statistics["Quiz"]["Percent"] = ($statistics["Quiz"]["Finished"]/$statistics["Quiz"]["Total"])*100;
             $dividen = $dividen + $statistics["Quiz"]["Percent"];
@@ -373,7 +371,6 @@
         }
         $statistics["TotalActivities"] = $statistics["Assignment"]["Total"]+$statistics["Quiz"]["Total"]+$statistics["Performance Task"]["Total"]+$statistics["Other"]["Total"];
         $statistics["TotalFinished"] = $statistics["Assignment"]["Finished"]+$statistics["Quiz"]["Finished"]+$statistics["Performance Task"]["Finished"]+$statistics["Other"]["Finished"];
-        // $statistics["Divisor"] = $divisor;
         return $statistics;
     }
 
