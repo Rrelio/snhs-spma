@@ -179,6 +179,13 @@
         $res = selectDatabase("SELECT handle.ID, teacher.ID AS teacher_ID, teacher.last_name, teacher.first_name, teacher.active, subjects.subject_name, subjects.active, handle.grade_level, handle.active, sections.section_name, sections.active FROM `teacher` INNER JOIN `handle` ON teacher.ID=handle.teacher_ID INNER JOIN sections ON sections.ID=handle.section_ID INNER JOIN subjects ON subjects.ID=handle.subject_ID WHERE handle.active=1");
         return $res;
     }
+
+    function getTeacherHandledClasses($data)
+    {
+        $ID = intval($data["ID"]);
+        $res = selectDatabase("SELECT handle.ID, teacher.ID AS teacher_ID, teacher.last_name, teacher.first_name, teacher.active, subjects.ID AS subject_ID, subjects.subject_name, subjects.active, handle.grade_level, handle.active, sections.section_name, sections.active FROM `teacher` INNER JOIN `handle` ON teacher.ID=handle.teacher_ID INNER JOIN sections ON sections.ID=handle.section_ID INNER JOIN subjects ON subjects.ID=handle.subject_ID WHERE handle.active=1 AND teacher.ID=$ID");
+        return $res;
+    }
     
     function getTeacherSections($data)
     {
@@ -246,6 +253,15 @@
         $employeeNumber = $data["employeeNumber"];
         $res = selectDatabase("SELECT COUNT(employee_no) FROM teacher WHERE employee_no='$employeeNumber' AND active=1");
         return $res[0]["COUNT(employee_no)"];
+    }
+    
+    function checkUserPassword($data)
+    {
+        $ID = $data["ID"];
+        $role = $data["role"];
+        $oldPassword = $data["oldPassword"];
+        $res = selectDatabase("SELECT COUNT(ID) FROM $role WHERE password='$oldPassword' AND active=1 AND ID=$ID");
+        return $res[0]["COUNT(ID)"];
     }
 
     function test(){

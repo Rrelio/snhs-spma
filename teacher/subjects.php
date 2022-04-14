@@ -9,7 +9,7 @@
                 <h5 class="fw-bold text-darkish mb-1 me-5 pe-2"></h5>
             </div>
             <div class="accordion accordion-flush" id="accordionFlushExamples">
-                <div class="accordion-item">
+                <div class="accordion-item" id="teacherHandledClassesActivityHistory">
                     <h2 class="accordion-header" id="flush-headingOne"><button class="accordion-button collapsed"
                             type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                             aria-expanded="false" aria-controls="flush-collapseOne">

@@ -6,11 +6,11 @@
                 <small class="text-black-50 d-block">Your students have completed <span class="activity-percent"> 60%
                     </span> of their weekly activities</small>
             </div>
-            <select class="form-select align-self-start " style="width: auto;" aria-label="Default select example">
-                <option selected value="0">Section A</option>
+            <select class="form-select align-self-start " style="width: 25%;" aria-label="Default select example" id="teacherHandles">
+                <!-- <option selected value="0">Section A</option>
                 <option value="1">Section B</option>
                 <option value="2">Section C</option>
-                <option value="3">Section D</option>
+                <option value="3">Section D</option> -->
             </select>
         </div>
 

@@ -305,11 +305,20 @@ async function switchTab(location, elem) {
                     setAdminIndex()
                     setNoteModal()
                     getNotes()
+                }else if (SessionStorage()['role'] == "teacher") {
+                    setTeacherIndex()
                 }
                 break;
             case "subjects":
+                if (SessionStorage()['role'] == "teacher") {
+                    setTeacherHandledClassesActivityHistory()
+                }
                 break;
             case "activities":
+                if (SessionStorage()['role'] == "teacher") {
+                    setTeacherActivityManager()
+                    setTeacherActivityManagerHandleSelect()
+                }
                 break;
             case "setting":
                     setSelectedAccent()
@@ -433,13 +442,62 @@ function setSelectedAccent() {
     let accent = JSON.parse(sessionStorage.userInfo).theme
     setAccentColor(accent)
     let colorPicks = document.querySelectorAll(".color-pick");
-    colorPicks.forEach(element => {
-        console.log(`${accent} == ${element.getAttribute("value") == accent}`)
-        if(element.getAttribute("value") == accent)
-        {
-            element.classList.add("text-white");
+    if(accent==''){
+        document.querySelector('.color-pick[value="128, 168, 63"]').classList.add("text-white");
+    }else{
+        colorPicks.forEach(element => {
+            // console.log(`${accent} == ${element.getAttribute("value") == accent}`)
+            if(element.getAttribute("value") == accent)
+            {
+                element.classList.add("text-white");
+            }
+        });
+    }
+}
+
+async function setNewPassword() {
+    let oldPassword = document.querySelector("#userPassword").value
+    let newPassword = document.querySelector("#initUserPassword").value
+    let confirmPassword = document.querySelector("#initUserPasswordConfirm").value
+    let newPassErrorMsg = document.querySelector("#newPasswordErrorMsg")
+    let newPassError = document.querySelector("#newPasswordError")
+    if(oldPassword && newPassword && confirmPassword){
+        let res = await GET("checkUserPassword", {
+            ID:SessionStorage().ID,
+            role:SessionStorage().role,
+            oldPassword: oldPassword
+        })
+        if(res=="0"){
+            setVisibility(newPassError, true)
+            newPassErrorMsg.innerHTML = `Incorrect Password`;
+        }else{
+            if(newPassword.length<8){
+                setVisibility(newPassError, true)
+                newPassErrorMsg.innerHTML = `Password must be atleast 8 characters`;
+            }else{
+                if(newPassword===confirmPassword){
+                    let res = await POST({
+                        func: "setNewPassword",
+                        ID:SessionStorage().ID,
+                        role:SessionStorage().role,
+                        newPassword: newPassword
+                    })
+                    if(resCheck(res, "POST")){
+                        setVisibility(newPassError, false)
+                    }else{
+                        setVisibility(newPassError, true)
+                        newPassErrorMsg.innerHTML = `Something went wrong ${res}`;
+                    }
+                }else{
+                    setVisibility(newPassError, true)
+                    newPassErrorMsg.innerHTML = `New password do not match`;
+                }
+            }
         }
-    });
+    }else{
+        setVisibility(newPassError, true)
+        newPassErrorMsg.innerHTML = `Invalid value(s) entered`;
+    }
 }
 
 function setAccentColor(color) {

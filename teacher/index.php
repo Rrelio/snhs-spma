@@ -70,8 +70,8 @@
                     <img src="../images/Users/Layer 7.png" alt=""
                         class="img-fluid mx-auto d-block mt-3 border rounded-circle"
                         style="width: 35%;" id="userProfilePic">
-                    <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish">Teacher Name</p>
-                    <p>Handled Subject</p>
+                    <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish" id="teacherName">Teacher Name</p>
+                    <p>Teacher</p>
                 </div>
                 <div>
                     <div class="d-flex justify-content-between mt-2">

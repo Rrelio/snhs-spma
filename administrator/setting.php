@@ -38,54 +38,54 @@
                 </div>
 
                 <div class="py-2 text-center  ms-1 m-0 d-flex" style="overflow-x:auto;">
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(128, 168, 63);" id="mamba-green" onclick="changeAccentColor(this)" value="128, 168, 63"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(227, 93, 106);" id="lovely-little-rosy" onclick="changeAccentColor(this)" value="227, 93, 106"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(253, 152, 67);" id="absolute-apricot" onclick="changeAccentColor(this)" value="253, 152, 67"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(255, 193, 7);" id="marigold" onclick="changeAccentColor(this)" value="255, 193, 7"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(71, 159, 118);" id="natural-orchestra" onclick="changeAccentColor(this)" value="71, 159, 118"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(10, 162, 192);" id="sea-wonder" onclick="changeAccentColor(this)" value="10, 162, 192"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(163, 112, 247);" id="purple-illusionist" onclick="changeAccentColor(this)" value="163, 112, 247"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(111, 66, 193);" id="purple-rain" onclick="changeAccentColor(this)" value="111, 66, 193"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2 px-2"
-                            style="background-color:rgb(126, 203, 180);" id="pale-teal" onclick="changeAccentColor(this)" value="126, 203, 180"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(230, 133, 181);" id="fuchsia-blush" onclick="changeAccentColor(this)" value="230, 133, 181"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(222,184,135);" id="burlywood" onclick="changeAccentColor(this)" value="222,184,135"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(255, 187, 97);" id="orange-quench" onclick="changeAccentColor(this)" value="255, 187, 97"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(180, 180, 250);" id="purple-illusion" onclick="changeAccentColor(this)" value="180, 180, 250"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(0, 26, 56);" id="naval-night" onclick="changeAccentColor(this)" value="0, 26, 56"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(180, 180, 190);" id="enchanted-silver" onclick="changeAccentColor(this)" value="180, 180, 190"><i
-                                class="bi bi-check-circle"></i></div>
-                        <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
-                            style="background-color:rgb(80, 80, 80);" id="fiftieth-shade-of-grey" onclick="changeAccentColor(this)" value="80, 80, 80"><i
-                                class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(128, 168, 63);" id="mamba-green" onclick="changeAccentColor(this)" value="128, 168, 63"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(227, 93, 106);" id="lovely-little-rosy" onclick="changeAccentColor(this)" value="227, 93, 106"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(253, 152, 67);" id="absolute-apricot" onclick="changeAccentColor(this)" value="253, 152, 67"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(255, 193, 7);" id="marigold" onclick="changeAccentColor(this)" value="255, 193, 7"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(71, 159, 118);" id="natural-orchestra" onclick="changeAccentColor(this)" value="71, 159, 118"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(10, 162, 192);" id="sea-wonder" onclick="changeAccentColor(this)" value="10, 162, 192"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(163, 112, 247);" id="purple-illusionist" onclick="changeAccentColor(this)" value="163, 112, 247"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick d-inline rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(111, 66, 193);" id="purple-rain" onclick="changeAccentColor(this)" value="111, 66, 193"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2 px-2"
+                        style="background-color:rgb(126, 203, 180);" id="pale-teal" onclick="changeAccentColor(this)" value="126, 203, 180"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(230, 133, 181);" id="fuchsia-blush" onclick="changeAccentColor(this)" value="230, 133, 181"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(222,184,135);" id="burlywood" onclick="changeAccentColor(this)" value="222,184,135"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(255, 187, 97);" id="orange-quench" onclick="changeAccentColor(this)" value="255, 187, 97"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(180, 180, 250);" id="purple-illusion" onclick="changeAccentColor(this)" value="180, 180, 250"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(0, 26, 56);" id="naval-night" onclick="changeAccentColor(this)" value="0, 26, 56"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(180, 180, 190);" id="enchanted-silver" onclick="changeAccentColor(this)" value="180, 180, 190"><i
+                            class="bi bi-check-circle"></i></div>
+                    <div class="color-pick rounded-4 p-1 border pointer text-center text-transparent px-2"
+                        style="background-color:rgb(80, 80, 80);" id="fiftieth-shade-of-grey" onclick="changeAccentColor(this)" value="80, 80, 80"><i
+                            class="bi bi-check-circle"></i></div>
                 </div>
             </div>
         </div>

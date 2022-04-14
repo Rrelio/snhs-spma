@@ -3,7 +3,12 @@ sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replac
 
 async function setAdminIndex() {
     document.querySelector("#adminName").innerText = SessionStorage().user_name
-    document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
+    if(SessionStorage().profile_image == ''){
+        document.querySelector("#userProfilePic").setAttribute("src", "../images/default_avatar.png")
+
+    }else{
+        document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
+    }
 }
 
 async function getNotes() {

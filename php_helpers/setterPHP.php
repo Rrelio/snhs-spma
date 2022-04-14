@@ -271,3 +271,12 @@
         $res = modifyDatabase("UPDATE $role SET profile_image='$image' WHERE ID=$ID");
         return $res;
     }
+
+    function setNewPassword($data)
+    {
+        $ID = $data["ID"];
+        $role = $data["role"];
+        $newPassword = $data["newPassword"];
+        $res = modifyDatabase("UPDATE $role SET password='$newPassword' WHERE ID=$ID");
+        return $res;
+    }

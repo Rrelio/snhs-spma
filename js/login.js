@@ -148,6 +148,9 @@ function loginUser()
     }else{
         firstLoginModal.hide();
         setUserRole(user_Role);
+        let temp = JSON.parse(sessionStorage.userInfo)
+        temp["role"]=user_Role
+        sessionStorage.userInfo = JSON.stringify(temp)
         window.location.replace("http://localhost/snhs-spma/" + userRole);
     }
 }
