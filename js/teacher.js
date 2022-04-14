@@ -56,13 +56,13 @@ async function setTeacherHandledClassesActivityHistory() {
         activityHistoryClasses.innerHTML = ''
         await res.forEach(element => {
             activityHistoryClasses.innerHTML += `
-            <h2 class="accordion-header" id="flush-heading-activity${element.ID}">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-activity${element.ID}" aria-expanded="false" aria-controls="flush-collapse-activity${element.ID}">
+            <h2 class="accordion-header" id="flush-heading${element.ID}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${element.ID}" aria-expanded="false" aria-controls="flush-collapse${element.ID}">
                     <div class="fs-5"><i class="bi bi-folder me-2"></i></div>
                     ${element.subject_name} - ${element.grade_level} ${element.section_name}
                 </button>
             </h2>
-            <div id="flush-collapse-activity${element.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading-activity${element.ID}" data-bs-parent="#accordionFlushParentActivity${element.ID}">
+            <div id="flush-collapse${element.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading${element.ID}" data-bs-parent="#accordionFlushExamples">
                 <div class="accordion-body py-2 px-4 d-flex">
                     <div class="px-3">
                         <i class="fs-5 bi bi-arrow-return-right"></i>
@@ -82,16 +82,18 @@ async function setTeacherHandledClassesActivityHistory() {
 
 async function getHandleActivityHistoryList(handle_IDs) {
     let act = await GET("getHandledActivities", {handle_ID:handle_IDs})
+    let activityList = [];
     if(resCheck(act, "GET")){
+        console.log(act)
         await act.forEach(activity => {
             document.querySelector(`#accordionFlush${activity.handle_ID}`).innerHTML +=`
             <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-heading${activity.ID}">
-                <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${activity.ID}" aria-expanded="false" aria-controls="flush-collapse${activity.ID}">
+                <h2 class="accordion-header" id="flush-heading-activity${activity.ID}">
+                <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-activity${activity.ID}" aria-expanded="false" aria-controls="flush-collapse-activity${activity.ID}">
                     <i class="bi bi-file-earmark-text mx-1"></i> ${activity.category} - ${activity.activity_title}
                 </button>
             </h2>
-            <div id="flush-collapse${activity.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading${activity.ID}" data-bs-parent="#accordionFlushExample">
+            <div id="flush-collapse-activity${activity.ID}" class="accordion-collapse collapse" aria-labelledby="flush-heading-activity${activity.ID}" data-bs-parent="#accordionFlush${activity.handle_ID}">
                 <div class="accordion-body p-0 ps-1">
                     <table class="table table-sm" style="table-layout:fixed;">
                         <thead>
@@ -100,35 +102,44 @@ async function getHandleActivityHistoryList(handle_IDs) {
                                 <th scope="col" class="text-end w-25"><span class="me-2"> Status </span></th>
                             </tr>
                         </thead>
-                        <tbody style="border-color: rgba(0,0,0,.125);">
-                            <tr>
-                                <td ><small class="d-block text-truncate">José Protacio Rizal Mercado y Alonso RealondaJosé Protacio Rizal Mercado y Alonso Realonda</small></td>
-                                <td class="d-flex justify-content-end">
-                                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
-                                    <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><small>Student 2</small></td>
-                                <td class="d-flex justify-content-end">
-                                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
-                                    <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><small>Student 3</small></td>
-                                <td class="d-flex justify-content-end">
-                                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle text-success " onclick="markActivityStatus(true, this)"></i>
-                                    <i class="fs-5 pointer px-1 bi bi-x-circle text-danger " onclick="markActivityStatus(false, this)"></i>
-                                </td>
-                            </tr>
+                        <tbody style="border-color: rgba(0,0,0,.125);" id="studentClass-${activity.ID}">
+                            
                         </tbody>
                     </table>
                 </div>
             </div>`
+            activityList.push(activity.ID)
         });
+        await setTeacherActivityHistoryStudents(activityList)
     }else{
         console.log(act)
+    }
+}
+
+async function setTeacherActivityHistoryStudents(activityList)
+{
+    let res = await GET("getTeacherActivityHistoryStudents", {activityList:activityList});
+    console.log(res)
+    if(resCheck(res, "GET")){
+        res.forEach(row => {
+            let done = ''
+            let notDone = ''
+            if(row.status==0){
+                done = ''
+                notDone = '-fill'
+            }else{
+                done = '-fill'
+                notDone = ''
+            }
+            document.querySelector(`#studentClass-${row.activity_ID}`).innerHTML += `
+            <tr>
+                <td><small>${row.first_name} ${row.middle_name} ${row.last_name}</small></td>
+                <td class="d-flex justify-content-end">
+                    <i class="fs-5 pointer px-1 me-2 bi bi-check-circle${done} text-success " onclick="markActivityStatus(true, this, ${row.student_activity_ID})"></i>
+                    <i class="fs-5 pointer px-1 bi bi-x-circle${notDone} text-danger " onclick="markActivityStatus(false, this, ${row.student_activity_ID})"></i>
+                </td>
+            </tr>`
+        });
     }
 }
 
@@ -243,23 +254,30 @@ async function setTeacherActivityAdd(){
     }
 }
 
-function markActivityStatus(stat, elem)
+async function markActivityStatus(stat, elem, ID)
 {
     let sibling = getSiblings(elem)
-    // console.log(typeof(siblings))
     console.log(sibling[0])
-    if(stat)
-    {
-        elem.classList.remove("bi-check-circle");
-        elem.classList.add("bi-check-circle-fill");
-        sibling[0].classList.remove("bi-x-circle-fill")
-        sibling[0].classList.add("bi-x-circle")
-    }else
-    {
-        elem.classList.remove("bi-x-circle");
-        elem.classList.add("bi-x-circle-fill");
-        sibling[0].classList.remove("bi-check-circle-fill")
-        sibling[0].classList.add("bi-check-circle")
+    let res = await POST({
+        func: "setActivityStatus",
+        ID: ID,
+        status: stat
+    });
+    if(resCheck(res, "POST")){
+        if(stat)
+        {
+            elem.classList.remove("bi-check-circle");
+            elem.classList.add("bi-check-circle-fill");
+            sibling[0].classList.remove("bi-x-circle-fill")
+            sibling[0].classList.add("bi-x-circle")
+        }else
+        {
+            elem.classList.remove("bi-x-circle");
+            elem.classList.add("bi-x-circle-fill");
+            sibling[0].classList.remove("bi-check-circle-fill")
+            sibling[0].classList.add("bi-check-circle")
+        }
     }
+
 }
 

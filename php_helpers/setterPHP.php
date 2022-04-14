@@ -290,13 +290,42 @@
         $subject_ID = $data["subject_ID"];
         $title = $data["title"];
         $handle_ID = $data["handle_ID"];
+        $return = "0";
         $res = modifyDatabase("INSERT INTO subject_activity (section_name, grade_level,	subject_name, subject_ID, activity_title, category, active, handle_ID) VALUE ('$section_name', '$grade_level', '$subject_name', '$subject_ID', '$title', '$category', 1, $handle_ID)");
-        return $res;
+        if($res=="1"){
+            $selectStudents = selectDatabase("SELECT LRN FROM student WHERE grade_level=$grade_level AND section='$section_name'");
+            $activity_ID = selectDatabase("SELECT ID FROM subject_activity WHERE section_name='$section_name' AND grade_level=$grade_level AND subject_name='$subject_name' AND subject_ID=$subject_ID AND activity_title='$title' AND category='$category' AND active=1 AND handle_ID=$handle_ID");
+            $activity_ID = $activity_ID[0]["ID"];
+            if($selectStudents=="0" && $activity_ID=="0"){
+                $return = "0";
+            }else{
+                foreach ($selectStudents as $key => $value) {
+                    $LRN = $value["LRN"];
+                    $insertStudents = modifyDatabase("INSERT INTO student_activity (lrn, activity_id, status, date) VALUE ('$LRN', $activity_ID, 0, NOW())");
+                    $return = $insertStudents;
+                }
+                $return = "1";
+
+            }
+        }
+        return $return;
     }
 
     function setActivityDelete($data)
     {
         $ID = $data["ID"];
         $res = modifyDatabase("UPDATE subject_activity SET active=0 WHERE ID=$ID");
+        return $res;
+    }
+
+    function setActivityStatus($data)
+    {
+        $ID = $data["ID"];
+        $status = $data["status"];
+        if($status){
+            $res = modifyDatabase("UPDATE student_activity SET status=1, date=NOW() WHERE ID=$ID");
+        }else{
+            $res = modifyDatabase("UPDATE student_activity SET status=0, date=NOW() WHERE ID=$ID");
+        }
         return $res;
     }

@@ -284,6 +284,26 @@
         return $res;
     }
 
+    function getTeacherActivityHistoryStudents($data)
+    {
+        $activityList = $data["activityList"];
+        $sqlWhere = "activity_ID=";
+        if(count($activityList)==1){
+            $sqlWhere .= $activityList[0];
+        }else{
+            for ($i=0; $i < count($activityList); $i++) { 
+                # code...
+                if($i==count($activityList)-1){
+                    $sqlWhere .= $activityList[$i];
+                }else{
+                    $sqlWhere .= $activityList[$i].' OR activity_ID=';
+                }
+            }
+        }
+        $res = selectDatabase("SELECT `student_activity`.`activity_ID`, `student_activity`.`ID` AS `student_activity_ID`, `student`.`first_name`, `student`.`middle_name`, `student`.`last_name`, `student_activity`.`status` FROM `subject_activity` JOIN `student_activity` ON `subject_activity`.`ID`=`student_activity`.`activity_id` JOIN `student` ON `student`.`LRN`=`student_activity`.`LRN` WHERE $sqlWhere AND `subject_activity`.`active` = 1");
+        return $res;
+    }
+
     function test(){
         echo "hey";
     }
