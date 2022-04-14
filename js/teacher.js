@@ -8,8 +8,10 @@ async function setTeacherIndex(){
     }else{
         document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
     }
-
     await setTeacherHandleSelect()
+    let handleList = await getTeacherHandledClasses();
+    console.log(handleList[0].ID)
+    getStudentActivityCount(handleList[0].ID)
 }
 
 let activityModalSuccess
@@ -281,3 +283,19 @@ async function markActivityStatus(stat, elem, ID)
 
 }
 
+async function getStudentActivityCount(val) {
+    let res = await GET("getStudentActivityCount", {ID:val})
+    let root = document.documentElement;
+    if(resCheck(res, "GET")){
+        console.log(res)
+        document.querySelector("#activityTotalPercentageMini").innerHTML = Math.round(res.TotalPercent) + "%";
+        document.querySelector("#activityTotalPercentage").innerHTML = Math.round(res.TotalPercent) + "%";
+        root.style.setProperty('--assignment-percent', (res.Assignment.Percent*180)/100 + "deg"); 
+        root.style.setProperty('--activity-percent', (res.Quiz.Percent*180)/100 + "deg"); 
+        root.style.setProperty('--performance-percent', (res["Performance Task"].Percent*180)/100 + "deg"); 
+        root.style.setProperty('--other-percent', (res.Other.Percent*180)/100 + "deg"); 
+        document.querySelector("#activityFinished").innerHTML = res.TotalFinished;
+        document.querySelector("#activityNotFinished").innerHTML = res.TotalActivities - res.TotalFinished
+        document.querySelector("#activityTotal").innerHTML = res.TotalActivities
+    }else{console.log(res)}
+}

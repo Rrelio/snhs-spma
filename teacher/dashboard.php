@@ -3,10 +3,10 @@
         <div class="d-flex justify-content-between">
             <div>
                 <h5 class="fw-bold text-darkish">Activity History</h5>
-                <small class="text-black-50 d-block">Your students have completed <span class="activity-percent"> 60%
+                <small class="text-black-50 d-block">Your students have completed <span class="activity-percent" id="activityTotalPercentageMini"> 60%
                     </span> of their weekly activities</small>
             </div>
-            <select class="form-select align-self-start " style="width: 25%;" aria-label="Default select example" id="teacherHandles">
+            <select class="form-select align-self-start " style="width: 25%;" aria-label="Default select example" id="teacherHandles" onchange="getStudentActivityCount(this.value)">
                 <!-- <option selected value="0">Section A</option>
                 <option value="1">Section B</option>
                 <option value="2">Section C</option>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center" id="percentage">
-                    <h3 class="m-0">60%</h3>
+                    <h3 class="m-0" id="activityTotalPercentage">60%</h3>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #ACD5F1;">° °</div>
-                    <h5 class="fw-bold m-0">636</h5>
+                    <h5 class="fw-bold m-0" id="activityFinished">636</h5>
                     <small class="text-black-50 lh-1 mb-2">Total of Activities Submitted</small>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #E94444;">° °</div>
-                    <h5 class="fw-bold m-0">564</h5>
+                    <h5 class="fw-bold m-0" id="activityNotFinished">564</h5>
                     <small class="text-black-50 lh-1 mb-2">Total of Unfinished Activities</small>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                 </div>
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #AAC559;">° °</div>
-                    <h5 class="fw-bold m-0">1200</h5>
+                    <h5 class="fw-bold m-0" id="activityTotal">1200</h5>
                     <small class="text-black-50 lh-1 mb-2">Total of all Activities</small>
                 </div>
             </div>

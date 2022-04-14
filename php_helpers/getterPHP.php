@@ -304,6 +304,79 @@
         return $res;
     }
 
+    function getStudentActivityCount($data)
+    {
+        $ID = $data["ID"];
+        $statistics = [];
+        $divisor = 4;
+        $dividen = 0;
+
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Assignment'");
+        $statistics["Assignment"]["Total"] = $res[0]["Total"];
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Assignment' AND student_activity.status=1");
+        $statistics["Assignment"]["Finished"] = $res[0]["Total"];
+        if($statistics["Assignment"]["Total"] == 0){
+            $statistics["Assignment"]["Percent"] = 100;
+            $divisor = $divisor - 1;
+            // $dividen = $dividen + 0;
+        }else{
+            $statistics["Assignment"]["Percent"] = ($statistics["Assignment"]["Finished"]/$statistics["Assignment"]["Total"])*100;
+            $dividen = $dividen + $statistics["Assignment"]["Percent"];
+        }
+        
+
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Quiz'");
+        $statistics["Quiz"]["Total"] = $res[0]["Total"];
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Quiz' AND student_activity.status=1");
+        $statistics["Quiz"]["Finished"] = $res[0]["Total"];
+        if($statistics["Quiz"]["Total"] == 0){
+            $statistics["Quiz"]["Percent"] = 100;
+            $divisor = $divisor - 1;
+            // $dividen = $dividen + 0;
+        }else{
+            $statistics["Quiz"]["Percent"] = ($statistics["Quiz"]["Finished"]/$statistics["Quiz"]["Total"])*100;
+            $dividen = $dividen + $statistics["Quiz"]["Percent"];
+
+        }
+        
+
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Performance Task'");
+        $statistics["Performance Task"]["Total"] = $res[0]["Total"];
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Performance Task' AND student_activity.status=1");
+        $statistics["Performance Task"]["Finished"] = $res[0]["Total"];
+        if($statistics["Performance Task"]["Total"] == 0){
+            $statistics["Performance Task"]["Percent"] = 100;
+            $divisor = $divisor - 1;
+        }else{
+            $statistics["Performance Task"]["Percent"] = ($statistics["Performance Task"]["Finished"]/$statistics["Performance Task"]["Total"])*100;
+            $dividen = $dividen + $statistics["Performance Task"]["Percent"];
+            
+        }
+        
+
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Other'");
+        $statistics["Other"]["Total"] = $res[0]["Total"];
+        $res = selectDatabase("SELECT COUNT(student_activity.ID) AS Total  FROM student_activity JOIN subject_activity ON student_activity.activity_id=subject_activity.ID WHERE subject_activity.handle_ID=$ID AND subject_activity.active=1 AND subject_activity.category='Other' AND student_activity.status=1");
+        $statistics["Other"]["Finished"] = $res[0]["Total"];
+        if($statistics["Other"]["Total"] == 0){
+            $statistics["Other"]["Percent"] = 100;
+            $divisor = $divisor - 1;
+
+        }else{
+            $statistics["Other"]["Percent"] = ($statistics["Other"]["Finished"]/$statistics["Other"]["Total"])*100;
+            $dividen = $dividen + $statistics["Other"]["Percent"];
+        }
+        if($divisor==0){
+            $statistics["TotalPercent"]=100;
+        }else{
+            $statistics["TotalPercent"] = $dividen/$divisor;
+        }
+        $statistics["TotalActivities"] = $statistics["Assignment"]["Total"]+$statistics["Quiz"]["Total"]+$statistics["Performance Task"]["Total"]+$statistics["Other"]["Total"];
+        $statistics["TotalFinished"] = $statistics["Assignment"]["Finished"]+$statistics["Quiz"]["Finished"]+$statistics["Performance Task"]["Finished"]+$statistics["Other"]["Finished"];
+        // $statistics["Divisor"] = $divisor;
+        return $statistics;
+    }
+
     function test(){
         echo "hey";
     }
