@@ -112,7 +112,7 @@
                     <div class="side-img rounded-circle p-2 px-3 align-self-center d-flex" style="background-color: #F0F3E7;">
                         <img src="../images/sum.png" alt="" class="img-fluid align-self-center">
                     </div>
-                </div>
+                </div>  
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #AAC559;">° °</div>
                     <h5 class="fw-bold m-0" id="activityTotal">40</h5>
@@ -122,14 +122,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    window.onload = ()=>
-    {
-        console.log("oi")
-        const mini_image = document.querySelectorAll(".side-img");
-        mini_image.forEach(element => {
-            resizeToOnebyOne_Width(element)
-        });
-    }
-</script>

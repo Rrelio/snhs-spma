@@ -313,9 +313,7 @@ async function switchTab(location, elem) {
                     getActivityCount()
                     initializeTooltips()
                 }else if (SessionStorage()['role'] == "parent") {
-                    // getChild()
                     setParentIndex()
-                    
                 }
                 break;
             case "subjects":
@@ -338,6 +336,9 @@ async function switchTab(location, elem) {
                 break;
             case "setting":
                     setSelectedAccent()
+                    if(SessionStorage()['role'] == "teacher"||SessionStorage()['role'] == "student"||SessionStorage()['role'] == "parent"){
+                        setSettingModal()
+                    }
                 break;
             case "accounts":
                 if (SessionStorage()['role'] == "admin") {
@@ -471,6 +472,14 @@ function setSelectedAccent() {
     }
 }
 
+let newPasswordModal;
+let newPasswordSuccessModal;
+function setSettingModal() {
+    newPasswordModal = new bootstrap.Modal(document.querySelector("#changePasswordModal"));
+    newPasswordSuccessModal = new bootstrap.Modal(document.querySelector("#settingSuccess"));
+
+}
+
 async function setNewPassword() {
     let oldPassword = document.querySelector("#userPassword").value
     let newPassword = document.querySelector("#initUserPassword").value
@@ -500,6 +509,11 @@ async function setNewPassword() {
                     })
                     if(resCheck(res, "POST")){
                         setVisibility(newPassError, false)
+                        newPasswordModal.hide()
+                        document.querySelector("#userPassword").value = ""
+                        document.querySelector("#initUserPassword").value = ""
+                        document.querySelector("#initUserPasswordConfirm").value = ""
+                        newPasswordSuccessModal.show()
                     }else{
                         setVisibility(newPassError, true)
                         newPassErrorMsg.innerHTML = `Something went wrong ${res}`;
@@ -515,6 +529,8 @@ async function setNewPassword() {
         newPassErrorMsg.innerHTML = `Invalid value(s) entered`;
     }
 }
+
+
 
 function setAccentColor(color) {
     let root = document.documentElement;

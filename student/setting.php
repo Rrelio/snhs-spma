@@ -137,3 +137,25 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="settingSuccess" tabindex="-1" aria-labelledby="settingSuccess" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header borderless">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-0 text-center">
+                <div class="checkmark_wrapper">
+                    <svg class="checkmark my-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                    </svg>
+                </div>
+                <span id="settingSuccessMsg">Password successfully changed</span>
+            </div>
+            <div class="modal-footer borderless d-flex justify-content-end">
+                <button class="spma-button-2 w-auto px-3" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
