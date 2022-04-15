@@ -2,7 +2,7 @@
     <div class="bg-white container border p-3 d-flex flex-column justify-content-between" style="border-radius: 25px;">
         <div>
             <h5 class="fw-bold text-darkish">Activity History</h5>
-            <small class="text-black-50 d-block">You have completed <span class="activity-percent"> 60% </span> of your weekly
+            <small class="text-black-50 d-block">You have completed <span class="activity-percent" id="activityTotalPercentageMini"> 0% </span> of your weekly
             activities</small>
         </div>
 
@@ -68,16 +68,15 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center" id="percentage">
-                    <h3 class="m-0">60%</h3>
+                    <h3 class="m-0" id="activityTotalPercentage">60%</h3>
             </div>
             </div>
         </div>
-
         <div class="d-block d-flex justify-content-around mt-3">
-            <small class="text-black-50"><span style="color: #2E9BB4;">▉</span> Assignment</small>
-            <small class="text-black-50"><span style="color: #FF7543;">▉</span> Quiz</small>
-            <small class="text-black-50"><span style="color: #88CCE1;">▉</span> Performance Task</small>
-            <small class="text-black-50"><span style="color: #FFBB61;">▉</span> Other</small>
+            <small class="text-black-50" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" id="assignmentLegend"><span style="color: #2E9BB4;">▉</span> Assignment</small>
+            <small class="text-black-50" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" id="quizLegend"><span style="color: #FF7543;">▉</span> Quiz</small>
+            <small class="text-black-50" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" id="performanceLegend"><span style="color: #88CCE1;">▉</span> Performance Task</small>
+            <small class="text-black-50" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top" id="otherLegend"><span style="color: #FFBB61;">▉</span> Other</small>
         </div>
     </div>
     <div class="flex-fill d-flex flex-column justify-content-around">
@@ -90,7 +89,7 @@
                 </div>
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #ACD5F1;">° °</div>
-                    <h5 class="fw-bold m-0">24</h5>
+                    <h5 class="fw-bold m-0" id="activityFinished">24</h5>
                     <small class="text-black-50 lh-1 mb-2">Total of Activities Submitted</small>
                 </div>
             </div>
@@ -102,8 +101,8 @@
                 </div>
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #E94444;">° °</div>
-                    <h5 class="fw-bold m-0">16</h5>
-                    <small class="text-black-50 lh-1 mb-2">Total of Activities Submitted</small>
+                    <h5 class="fw-bold m-0" id="activityNotFinished">16</h5>
+                    <small class="text-black-50 lh-1 mb-2">Total of Unfinished Activities</small>
                 </div>
             </div>
         </div>
@@ -116,8 +115,8 @@
                 </div>
                 <div class="col-7 p-0 text-center d-flex flex-column justify-content-end">
                     <div class="text-end pe-2" style="color: #AAC559;">° °</div>
-                    <h5 class="fw-bold m-0">40</h5>
-                    <small class="text-black-50 lh-1 mb-2">Total of Activities Submitted</small>
+                    <h5 class="fw-bold m-0" id="activityTotal">40</h5>
+                    <small class="text-black-50 lh-1 mb-2">Total of All Activities</small>
                 </div>
             </div>
         </div>

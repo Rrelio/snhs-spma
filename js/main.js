@@ -312,6 +312,10 @@ async function switchTab(location, elem) {
                     setStudentIndex()
                     getActivityCount()
                     initializeTooltips()
+                }else if (SessionStorage()['role'] == "parent") {
+                    // getChild()
+                    setParentIndex()
+                    
                 }
                 break;
             case "subjects":
@@ -319,6 +323,10 @@ async function switchTab(location, elem) {
                     setTeacherHandledClassesActivityHistory()
                 }else if (SessionStorage()['role'] == "student") {
                     getStudentSubjectsAndTeachers()
+                    initializeTooltips()
+                }else if (SessionStorage()['role'] == "parent") {
+                    getStudentSubjectsAndTeachers()
+                    initializeTooltips()
                 }
                 break;
             case "activities":

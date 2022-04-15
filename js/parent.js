@@ -1,23 +1,43 @@
-sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replace("http://localhost/snhs-spma/login.php");
+let parentChild;
+if(sessionStorage.userInfo){
+    console.log(SessionStorage())
+}else{ 
+    window.location.replace("http://localhost/snhs-spma/login.php")
+}
 
-async function setStudentIndex(){
-    document.querySelector("#studentName").innerHTML = `${SessionStorage().first_name} ${SessionStorage().last_name}`
-    document.querySelector("#studentGradeSection").innerHTML = `${SessionStorage().grade_level} - ${SessionStorage().section}`
-    
+async function setParentIndex(){
+    await getChild()
+    document.querySelector("#parentName").innerHTML = `${SessionStorage().first_name} ${SessionStorage().last_name}`
+    setChildOnProfile()
     if(SessionStorage().profile_image == ''){
         document.querySelector("#userProfilePic").setAttribute("src", "../images/default_avatar.png")
-
     }else{
         document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
     }
+    initializeTooltips()
+    await getActivityCount()
 }
 
-async function getStudentSubjectsAndTeachers()
+async function getChild()
 {
+    let res = await GET("getChild", {
+        LRN: SessionStorage().child_lrn
+    })
+    if(resCheck(res, "GET")){
+        parentChild = res[0];
+        console.log(parentChild)
+    }else{console.log(res)}
+}
+
+function setChildOnProfile(){
+    document.querySelector("#parentChildName").innerHTML = `Child: ${parentChild.first_name} ${parentChild.last_name}`
+}
+
+async function getStudentSubjectsAndTeachers(){
     let container = document.querySelector("#studentSubjects");
     let res = await GET("getStudentSubjectsAndTeachers", {
-        grade_level: SessionStorage().grade_level,
-        section: SessionStorage().section
+        grade_level: parentChild.grade_level,
+        section: parentChild.section
     });
     let handleIDs = [];
     if(resCheck(res, "GET")){
@@ -60,9 +80,10 @@ async function getStudentSubjectsAndTeachers()
 }
 
 async function getStudentSubjectActivities(handleIDs){
+    // initializeTooltips()
     let res = await GET("getStudentSubjectActivities", {
         handle_ID:handleIDs,
-        LRN:SessionStorage().LRN
+        LRN:parentChild.LRN
     })
     let status = '';
     let category = '';
@@ -104,9 +125,9 @@ async function getStudentSubjectActivities(handleIDs){
 
 async function getActivityCount(){
     let res = await GET("getActivityCount", {
-        LRN: SessionStorage().LRN,
-        grade_level: SessionStorage().grade_level,
-        section_name: SessionStorage().section
+        LRN: parentChild.LRN,
+        grade_level: parentChild.grade_level,
+        section_name: parentChild.section
     })
     let root = document.documentElement;
     if(resCheck(res, "GET")){
@@ -120,6 +141,7 @@ async function getActivityCount(){
         document.querySelector("#activityFinished").innerHTML = res.TotalFinished;
         document.querySelector("#activityNotFinished").innerHTML = res.TotalActivities - res.TotalFinished
         document.querySelector("#activityTotal").innerHTML = res.TotalActivities
+        console.log(`${res.Assignment.Finished}/${res.Assignment.Total} : ${res.Assignment.Percent.toFixed(1)}%`)
         document.querySelector("#assignmentLegend").setAttribute("data-bs-original-title", `${res.Assignment.Finished}/${res.Assignment.Total} : ${res.Assignment.Percent.toFixed(1)}%`);
         document.querySelector("#quizLegend").setAttribute("data-bs-original-title", `${res.Quiz.Finished}/${res.Quiz.Total} : ${res.Quiz.Percent.toFixed(1)}%`);
         document.querySelector("#performanceLegend").setAttribute("data-bs-original-title", `${res["Performance Task"].Finished}/${res["Performance Task"].Total} : ${res["Performance Task"].Percent.toFixed(1)}%`);

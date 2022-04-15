@@ -475,6 +475,13 @@
         return $statistics;
     }
 
+    function getChild($data)
+    {
+        $LRN=$data["LRN"];
+        $res = selectDatabase("SELECT student.* FROM parent JOIN student ON parent.child_lrn=student.LRN WHERE student.LRN='$LRN' AND student.active=1");
+        return $res;
+    }
+
     function test(){
         echo "hey";
     }
