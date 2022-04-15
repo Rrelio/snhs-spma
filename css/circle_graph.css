@@ -352,7 +352,10 @@ transform: rotate(var(--other-percent));
 #percentage{
   transition: transform var(--animation-speed);
   position: absolute;
-  top: 42.5%;
-  right: 37.5%;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  top: 0%;
+  right: 0%;
   transform: rotateZ(180deg);
 }

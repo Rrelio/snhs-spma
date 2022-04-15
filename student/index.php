@@ -26,9 +26,9 @@
                             <div class=""  id="activity" onclick="switchTab('subjects', this)">
                                 <img src="../images/activity.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
-                            <div class=""  id="notes" onclick="switchTab()">
+                            <!-- <div class=""  id="notes" onclick="switchTab()">
                                 <img src="../images/notes.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
-                            </div>
+                            </div> -->
                             <div class=""  id="settings" onclick="switchTab('setting', this)">
                                 <img src="../images/settings.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
@@ -67,11 +67,11 @@
                 <div class="fw-bold mb-3">My Profile</div>
                 <div class=" text-center flex-fill mx-2"
                     style="border-radius:25px; background-color:rgba(255,255,255,.5);">
-                    <img src="../images/Users/Layer 2.png" alt=""
+                    <img src="" alt=""
                         class="img-fluid mx-auto d-block mt-3 border rounded-circle"
                         style="width: 35%;" id="userProfilePic">
-                    <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish">Student Name</p>
-                    <p>Grade Level - Section</p>
+                    <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish" id="studentName">Student Name</p>
+                    <p id="studentGradeSection">Grade Level - Section</p>
                 </div>
                 <div>
                     <div class="d-flex justify-content-between mt-2">
@@ -162,6 +162,7 @@
     </script>
 
     <script type="text/javascript" src="../js/main.js"></script>
+    <script type="text/javascript" src="../js/student.js"></script>
 
     <script type="text/javascript">
         window.onload = function () {

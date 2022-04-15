@@ -308,12 +308,17 @@ async function switchTab(location, elem) {
                 }else if (SessionStorage()['role'] == "teacher") {
                     setTeacherIndex()
                     initializeTooltips()
-                    // getStudentActivityCount()
+                }else if (SessionStorage()['role'] == "student") {
+                    setStudentIndex()
+                    getActivityCount()
+                    initializeTooltips()
                 }
                 break;
             case "subjects":
                 if (SessionStorage()['role'] == "teacher") {
                     setTeacherHandledClassesActivityHistory()
+                }else if (SessionStorage()['role'] == "student") {
+                    getStudentSubjectsAndTeachers()
                 }
                 break;
             case "activities":
@@ -519,10 +524,11 @@ async function getUpcomingEvents() {
     if (resCheck(res, "GET")) {
         console.log(res)
         res.forEach(event => {
+            
             container.innerHTML += `
             <div class="row mx-0 mt-2">
                 <div class="col-4 d-flex align-items-center pe-0" style="border-right:5px ${event.color} solid;">
-                    <strong>${convertMonth(Number(event.date.split("-")[1])-1).substring(0,3)}. ${event.date.split("-")[2]}</strong>
+                    <strong>${convertMonth(Number(event.date.split("-")[1])-1).length<=3? convertMonth(Number(event.date.split("-")[1])-1): convertMonth(Number(event.date.split("-")[1])-1).substring(0,3)+"."} ${event.date.split("-")[2]}</strong>
                 </div>
                 <div class="col-8 pe-0">
                     <small class="d-block text-truncate">${event.holiday}</small>
