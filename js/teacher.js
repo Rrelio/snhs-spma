@@ -10,8 +10,21 @@ async function setTeacherIndex(){
     }
     await setTeacherHandleSelect()
     let handleList = await getTeacherHandledClasses();
-    console.log(handleList[0].ID)
-    getStudentActivityCount(handleList[0].ID)
+    console.log(handleList)
+    if(handleList){
+        getStudentActivityCount(handleList[0].ID)
+    }else{
+        let root = document.documentElement;
+        // document.querySelector("#activityTotalPercentageMini").innerHTML = Math.round(res.TotalPercent) + "%";
+        document.querySelector("#activityTotalPercentage").innerHTML = "0%";
+        root.style.setProperty('--assignment-percent', "0deg"); 
+        root.style.setProperty('--activity-percent', "0deg"); 
+        root.style.setProperty('--performance-percent', "0deg"); 
+        root.style.setProperty('--other-percent', "0deg"); 
+        document.querySelector("#activityFinished").innerHTML = 0;
+        document.querySelector("#activityNotFinished").innerHTML = 0
+        document.querySelector("#activityTotal").innerHTML = 0
+    }
 }
 
 let activityModalSuccess
@@ -27,11 +40,12 @@ async function setTeacherHandleSelect() {
 
     let res = await getTeacherHandledClasses();
     console.log(res)
-    if(resCheck(res, "GET")){
+    if(res){
         res.forEach(element => {
             handleSelect.innerHTML += `<option value="${element.ID}">${element.subject_name} - ${element.grade_level} ${element.section_name}</option>`
         });
     }else{
+        document.querySelector("#activityTotalPercentageSentence").innerHTML = `The system administrator haven't assigned a subject and section you will handle`
         console.log(res)
     }
 }
@@ -54,7 +68,7 @@ async function setTeacherHandledClassesActivityHistory() {
     let res = await getTeacherHandledClasses();
     let handleIDList =[];
 
-    if(resCheck(res, "GET")){
+    if(res){
         activityHistoryClasses.innerHTML = ''
         await res.forEach(element => {
             activityHistoryClasses.innerHTML += `
@@ -78,7 +92,8 @@ async function setTeacherHandledClassesActivityHistory() {
         });
         await getHandleActivityHistoryList(handleIDList)
     }else{
-        console.log(res)
+        activityHistoryClasses.innerHTML = `<div class="text-center text-danger mt-4"><i class="bi bi-exclamation-diamond"></i> The system administrator haven't assigned a subject and section you will handle</div>`
+        // console.log(res)
     }
 }
 
@@ -150,7 +165,7 @@ async function setTeacherActivityManager() {
     classes.innerHTML = ''
     let res = await getTeacherHandledClasses();
     let handleIDList =[];
-    if(resCheck(res, "GET")){
+    if(res){
         await res.forEach(element => {
             classes.innerHTML += `
             <h2 class="accordion-header" id="flush-heading${element.ID}">
@@ -172,6 +187,10 @@ async function setTeacherActivityManager() {
         console.log(handleIDList)
         await getHandleActivities(handleIDList)
     }else{
+        classes.innerHTML = `<div class="text-center text-danger mt-4"><i class="bi bi-exclamation-diamond"></i> The system administrator haven't assigned a subject and section you will handle</div>`
+        disable(document.querySelector("#activityHandle"), true)
+        disable(document.querySelector("#activityCategory"), true)
+        disable(document.querySelector("#activityTitle"), true)
         console.log(res)
     }
 }
@@ -214,7 +233,7 @@ async function setActivityDelete(ID){
 async function setTeacherActivityManagerHandleSelect() {
     let classes = document.querySelector("#activityHandle");
     let res = await getTeacherHandledClasses();
-    if(resCheck(res, "GET")){
+    if(res){
         res.forEach(element => {
             classes.innerHTML += `<option value="${element.subject_name}!@#${element.grade_level}!@#${element.section_name}!@#${element.subject_ID}!@#${element.ID}">${element.subject_name} - ${element.grade_level} ${element.section_name}</option>`
         });
@@ -297,5 +316,16 @@ async function getStudentActivityCount(val) {
         document.querySelector("#activityFinished").innerHTML = res.TotalFinished;
         document.querySelector("#activityNotFinished").innerHTML = res.TotalActivities - res.TotalFinished
         document.querySelector("#activityTotal").innerHTML = res.TotalActivities
+        document.querySelector("#assignmentLegend").setAttribute("data-bs-original-title", `${res.Assignment.Finished}/${res.Assignment.Total} : ${res.Assignment.Percent.toFixed(1)}%`);
+        document.querySelector("#quizLegend").setAttribute("data-bs-original-title", `${res.Quiz.Finished}/${res.Quiz.Total} : ${res.Quiz.Percent.toFixed(1)}%`);
+        document.querySelector("#performanceLegend").setAttribute("data-bs-original-title", `${res["Performance Task"].Finished}/${res["Performance Task"].Total} : ${res["Performance Task"].Percent.toFixed(1)}%`);
+        document.querySelector("#otherLegend").setAttribute("data-bs-original-title", `${res.Other.Finished}/${res.Other.Total} : ${res.Other.Percent.toFixed(1)}%`);
     }else{console.log(res)}
+}
+
+function initializeTooltips() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 }

@@ -307,6 +307,7 @@ async function switchTab(location, elem) {
                     getNotes()
                 }else if (SessionStorage()['role'] == "teacher") {
                     setTeacherIndex()
+                    initializeTooltips()
                     // getStudentActivityCount()
                 }
                 break;
