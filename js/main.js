@@ -538,6 +538,7 @@ function setAccentColor(color) {
 }
 
 function logout() {
+    sessionStorage.clear();
     window.location.replace("http://localhost/snhs-spma");
 }
 
@@ -593,6 +594,8 @@ async function setProfilePicture(elem){
     form_data.append('ID', SessionStorage().ID)
     // console.log(form_data)
     let res = await uploadUserPicture(form_data);
+    console.log(res)
+
     if(resCheck(res, "GET")){
         console.log(JSON.parse(res))
         let resu = await POST({

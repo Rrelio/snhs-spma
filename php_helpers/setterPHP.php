@@ -48,6 +48,7 @@
         $res = '';
         $res1 = '';
         $check = '';
+        // echo $credential;
         if($user === "teacher")
         {
             $res = selectDatabase("SELECT * FROM teacher WHERE employee_no='$credential'");
@@ -62,13 +63,25 @@
         if($res!="0")
         {
             $ID = $res[0]["ID"];
-            $check = selectDatabase("SELECT * FROM reset_requests WHERE role_id='$ID'");
+            $check = selectDatabase("SELECT * FROM reset_requests WHERE role_id='$ID' AND role='$user'");
+            // print_r($check);
             if($check=="0")
             {
                 $res1 = modifyDatabase("INSERT INTO reset_requests (role,role_id,active, date) VALUES ('$user','$ID','1', NOW());");
             }else
             {
                 $res1 = modifyDatabase("UPDATE reset_requests SET active='1', date=NOW() WHERE role_id='$ID'");
+            }
+            
+            if($user === "teacher")
+            {
+                $res = modifyDatabase("UPDATE teacher SET `reset`='1' WHERE employee_no='$credential'");
+            }elseif($user === "parent")
+            {
+                $res = modifyDatabase("UPDATE parent SET `reset`='1' WHERE child_lrn='$credential'");
+            }elseif($user === "student")
+            {
+                $res = modifyDatabase("UPDATE student SET `reset`='1' WHERE LRN='$credential'");
             }
             return $res1;
         }else
@@ -242,7 +255,7 @@
         $middleName = $data["middleName"];
         $employeeNumber = $data["employeeNumber"];
         $email = $data["email"];
-        $res = modifyDatabase("INSERT INTO teacher (last_name, first_name, middle_name, employee_no, email, handle, password, active, reset, initial, theme) VALUE ('$lastName', '$firstName', '$middleName', '$employeeNumber', '$email', '{}', '$employeeNumber', 1, 0, 1, '128, 168, 63')");
+        $res = modifyDatabase("INSERT INTO teacher (last_name, first_name, middle_name, employee_no, email, password, active, reset, initial, theme) VALUE ('$lastName', '$firstName', '$middleName', '$employeeNumber', '$email', '$employeeNumber', 1, 0, 1, '128, 168, 63')");
         return $res;
     }
     

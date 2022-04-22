@@ -1,8 +1,12 @@
 let parentChild;
 if(sessionStorage.userInfo){
-    console.log(SessionStorage())
-}else{ 
-    window.location.replace("http://localhost/snhs-spma/login.php")
+    if(SessionStorage().role == "parent"){
+        console.log(SessionStorage())
+    }else{
+        window.location.replace("http://localhost/snhs-spma");
+    }
+}else{
+    window.location.replace("http://localhost/snhs-spma");
 }
 
 async function setParentIndex(){

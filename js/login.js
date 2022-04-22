@@ -46,7 +46,7 @@ async function POST(obj) {
 async function MAIL(obj) {
     try {
         let jsonObj = '&obj=' + JSON.stringify(obj)
-        const response = await fetch('php_helpers/mail.php/?' + jsonObj);
+        const response = await fetch('php_helpers/phpmailer.php/?' + jsonObj);
         if (response.ok) {
             const result = await response.text()
             console.log(result)

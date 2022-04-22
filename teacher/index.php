@@ -44,7 +44,7 @@
                                 </h4>
                                 <small class="text-black-50 text-truncate">Welcome & let's update your students activity status.</small>
                             </div>
-                            <div class="d-flex align-items-start">
+                            <!-- <div class="d-flex align-items-start">
                                 <div class="d-flex">
                                     <input type="text" class="form-control rounded-pill" placeholder="Search Subject..."
                                         id="searchSubject">
@@ -52,7 +52,7 @@
                                         <i class="bi bi-search text-darkish "></i>
                                     </button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- tabs -->
                         <div class="mt-3 mx-1 flex-fill" id="tab-content">
@@ -170,7 +170,7 @@
         window.onload = function () {
             setCalendarDate();
             resizeToOnebyOne_Width(document.querySelector("#userProfilePic"));
-            resizeToOnebyOne_Width(document.querySelector("#searchButtonSubject"));
+            // resizeToOnebyOne_Width(document.querySelector("#searchButtonSubject"));
             setElemHeight(document.querySelector("#tab-content"))
             initialTab()
             // tabTest();

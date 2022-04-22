@@ -53,7 +53,7 @@
                                     </h4>
                                     <small class="text-black-50 test-truncate d-block">Welcome & let's manage your organization accounts.</small>
                                 </div>
-                                <div class="d-flex align-items-start">
+                                <!-- <div class="d-flex align-items-start">
                                     <div class="d-flex">
                                         <input type="text" class="form-control rounded-pill" placeholder="Search..."
                                             id="searchSubject">
@@ -61,7 +61,7 @@
                                             <i class="bi bi-search text-darkish "></i>
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
     
                             <div class="mt-3 mx-1 flex-fill overflow-auto" id="tab-content" style="width: 100%;" onchange="">

@@ -1,5 +1,14 @@
 sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replace("http://localhost/snhs-spma/login.php");
 // console.log(SessionStorage())
+if(sessionStorage.userInfo){
+    if(SessionStorage().role == "admin"){
+        console.log(SessionStorage())
+    }else{
+        window.location.replace("http://localhost/snhs-spma/login.php");
+    }
+}else{
+    window.location.replace("http://localhost/snhs-spma/login.php");
+}
 
 async function setAdminIndex() {
     document.querySelector("#adminName").innerText = SessionStorage().user_name

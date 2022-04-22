@@ -1,4 +1,12 @@
-sessionStorage.userInfo ? console.log(SessionStorage()) : window.location.replace("http://localhost/snhs-spma/login.php");
+if(sessionStorage.userInfo){
+    if(SessionStorage().role == "student"){
+        console.log(SessionStorage())
+    }else{
+        window.location.replace("http://localhost/snhs-spma");
+    }
+}else{
+    window.location.replace("http://localhost/snhs-spma");
+}
 
 async function setStudentIndex(){
     document.querySelector("#studentName").innerHTML = `${SessionStorage().first_name} ${SessionStorage().last_name}`
