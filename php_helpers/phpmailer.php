@@ -23,7 +23,7 @@
   $mail->IsHTML(true);
   $mail->SetFrom("snhs.spma@gmail.com", "Student Performance Monitoring Application");
   $mail->AddAddress(address:$to);
-  $mail->Subject = "Test is Test Email sent via Gmail SMTP Server using PHP Mailer";
+  $mail->Subject = "SPMA Admin Login Code";
 
   $message = "<html>";
   $message .= '</style>';
