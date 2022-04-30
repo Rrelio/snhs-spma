@@ -75,6 +75,42 @@
                 </div>
                 <div>
                     <div class="d-flex justify-content-between mt-2">
+                        <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear">User Info
+                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="">
+                                <i class="bi bi-arrow-clockwise text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="fs-4 text-dark">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                    </div>         
+                </div>
+                <div style="border-top: 1px rgba(0,0,0,.25) solid;">
+                    <ul class="text-darkerish">
+                        <li>
+                            Child's Name:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoChild">Juan Dela Cruz</div>
+                        </li>
+                        <li>
+                            Learner's Reference Number:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoLRN">123456789012</div>
+                        </li>
+                        <li>
+                            Grade Level:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold"id="infoGrade">Grade 7</div>
+                        </li>
+                        <li>
+                            Section:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoSection">Section A</div>
+                        </li>
+                        <li>
+                            Activity Status:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoStatus">50% - 3/6 Finished</div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- <div>
+                    <div class="d-flex justify-content-between mt-2">
                         <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear"></div>
                         <div class="fs-4 text-dark">
                             <i class="bi bi-calendar4-week"></i>
@@ -120,9 +156,9 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="flex-fill"></div> -->
-                <div style="border-top: 1px rgba(0,0,0,.25) solid;">
+                <!-- <div style="border-top: 1px rgba(0,0,0,.25) solid;">
                     <strong class="d-block text-center text-darkerish mb-3">Upcoming Events</strong>
                     <div class="mb-4" style="overflow: auto;" id="upcomingEvents">
                         <div class="row mx-0 mt-2">
@@ -153,7 +189,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -166,7 +202,7 @@
 
     <script type="text/javascript">
         window.onload = function () {
-            setCalendarDate();
+            // setCalendarDate();
             resizeToOnebyOne_Width(document.querySelector("#userProfilePic"));
             // resizeToOnebyOne_Width(document.querySelector("#searchButtonSubject"));
             setElemHeight(document.querySelector("#tab-content"))

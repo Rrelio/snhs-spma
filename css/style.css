@@ -575,3 +575,7 @@ pre.nowrap{
         box-shadow: inset 0px 0px 0px 30px rgb(var(--accent-color))
     }
 }
+
+#infoHandles li{
+    margin-bottom: .25rem;
+}

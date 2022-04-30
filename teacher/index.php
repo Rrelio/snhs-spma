@@ -75,6 +75,35 @@
                 </div>
                 <div>
                     <div class="d-flex justify-content-between mt-2">
+                        <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear">User Info
+                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="">
+                                <i class="bi bi-arrow-clockwise text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="fs-4 text-dark">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                    </div>         
+                </div>
+                <div style="border-top: 1px rgba(0,0,0,.25) solid;">
+                    <ul class="text-darkerish">
+                        <li>
+                            Employee Number:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoEmployeeNumber">987654321</div>
+                        </li>
+                        <li>
+                            Handled Classes:
+                            <div class="bg-white-50 rounded-5 me-2 fw-bold">
+                                <ul id="infoHandles" class="py-2">
+                                    <li>Math 7 - Section B</li>
+                                    <li>English 7 - Section A</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- <div>
+                    <div class="d-flex justify-content-between mt-2">
                         <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear"></div>
                         <div class="fs-4 text-dark">
                             <i class="bi bi-calendar4-week"></i>
@@ -121,7 +150,6 @@
                         </table>
                     </div>
                 </div>
-                <!-- <div class="flex-fill"></div> -->
                 <div style="border-top: 1px rgba(0,0,0,.25) solid;">
                     <strong class="d-block text-center text-darkerish mb-3">Upcoming Events</strong>
                     <div class="mb-4" style="overflow: auto;" id="upcomingEvents">
@@ -153,7 +181,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -168,7 +196,7 @@
 
     <script type="text/javascript">
         window.onload = function () {
-            setCalendarDate();
+            // setCalendarDate();
             resizeToOnebyOne_Width(document.querySelector("#userProfilePic"));
             // resizeToOnebyOne_Width(document.querySelector("#searchButtonSubject"));
             setElemHeight(document.querySelector("#tab-content"))

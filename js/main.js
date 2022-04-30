@@ -402,7 +402,7 @@ function tabTest() {
 
 async function initialTab() {
     await switchTab("dashboard", document.querySelector("#home"))
-    getUpcomingEvents()
+    // getUpcomingEvents()
     return true;
 }
 
@@ -549,7 +549,6 @@ async function getUpcomingEvents() {
     if (resCheck(res, "GET")) {
         console.log(res)
         res.forEach(event => {
-            
             container.innerHTML += `
             <div class="row mx-0 mt-2">
                 <div class="col-4 d-flex align-items-center pe-0" style="border-right:5px ${event.color} solid;">
@@ -564,6 +563,14 @@ async function getUpcomingEvents() {
     } else {
         console.log(res)
     }
+    let child = document.querySelector("#currentMonthAndYear").parentNode.parentNode
+    console.log(child)
+    child.innerHTML =''
+    let sibling = container.parentNode.childNodes
+    console.log(sibling)
+    sibling[1].innerHTML = ''
+    container.innerHTML = ''
+    container.parentNode.style.border = 'none'
 }
 
 function ValidateEmail(mail) 

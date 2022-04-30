@@ -35,9 +35,9 @@
                             <div class=""  id="grades" onclick="switchTab('grades', this)">
                                 <img src="../images/Asset 1.png"  class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
-                            <div class=""  id="events" onclick="switchTab('events', this)">
+                            <!-- <div class=""  id="events" onclick="switchTab('events', this)">
                                 <img src="../images/Calendar.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
-                            </div>
+                            </div> -->
                             <div class=""  id="settings" onclick="switchTab('setting', this)">
                                 <img src="../images/settings.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
@@ -132,7 +132,6 @@
                 </div>
                 <div style="border-top: 1px rgba(0,0,0,.25) solid;">
                     <div class="d-flex justify-content-between">
-                        <datagrid></datagrid>
                         <strong class="d-block text-center text-darkerish mb-3">Upcoming Events</strong>
                         <div class="bg-white-50 mt-1 rounded-circle align-self-start px-1 pointer" onclick="getUpcomingEvents()">
                             <i class="bi bi-arrow-clockwise text-primary"></i>
