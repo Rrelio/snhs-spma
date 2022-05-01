@@ -163,9 +163,14 @@ async function setNoteDelete() {
 async function getActiveUserTotal() {
     let res = await GET("getActiveUserTotal", {});
     if (res != 0) {
-        document.querySelector("#totalTeachers").innerText = res.totalTeachers
-        document.querySelector("#totalStudents").innerText = res.totalStudents
-        document.querySelector("#totalParents").innerText = res.totalParents
+        try{
+            document.querySelector("#totalTeachers").innerText = res.totalTeachers
+            document.querySelector("#totalStudents").innerText = res.totalStudents
+            document.querySelector("#totalParents").innerText = res.totalParents
+        }catch{}
+        document.querySelector("#infoTotalTeachers").innerHTML = res.totalTeachers
+        document.querySelector("#infoTotalStudents").innerHTML = res.totalStudents
+        document.querySelector("#infoTotalParents").innerHTML = res.totalParents
     }
 }
 

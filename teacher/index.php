@@ -76,7 +76,7 @@
                 <div>
                     <div class="d-flex justify-content-between mt-2">
                         <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear">User Info
-                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="">
+                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="setTeacherHandleSelect()">
                                 <i class="bi bi-arrow-clockwise text-primary"></i>
                             </div>
                         </div>
@@ -89,14 +89,22 @@
                     <ul class="text-darkerish">
                         <li>
                             Employee Number:
-                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoEmployeeNumber">987654321</div>
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoEmployeeNumber">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            <!-- 987654321 -->
+                            </div>
                         </li>
                         <li>
                             Handled Classes:
                             <div class="bg-white-50 rounded-5 me-2 fw-bold">
                                 <ul id="infoHandles" class="py-2">
-                                    <li>Math 7 - Section B</li>
-                                    <li>English 7 - Section A</li>
+                                    <div class="spinner-border text-dark opacity-25 spinner-border-sm mx-auto d-block" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <!-- <li>Math 7 - Section B</li>
+                                    <li>English 7 - Section A</li> -->
                                 </ul>
                             </div>
                         </li>

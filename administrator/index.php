@@ -84,6 +84,52 @@
                 </div>
                 <div>
                     <div class="d-flex justify-content-between mt-2">
+                        <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear">School Info
+                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="getActiveUserTotal()">
+                                <i class="bi bi-arrow-clockwise text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="fs-4 text-dark">
+                        <i class="bi bi-building"></i>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-top: 1px rgba(0,0,0,.25) solid;">
+                    <ul class="text-darkerish">
+                        <li>
+                            Total Teachers:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoTotalTeachers">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- Juan Dela Cruz -->
+                            </div>
+                        </li>
+                        <li>
+                            Total Students:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoTotalStudents">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- 123456789012 -->
+                            </div>
+                        </li>
+                        <li>
+                            Total Parents:
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoTotalParents">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- Grade 7 -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4 text-end">
+                    <small>Contact the developers for found issues <a target="_blank" href="https://www.youtube.com/watch?v=iik25wqIuFo">here</a></small>
+                </div>
+                <!-- <div>
+                    <div class="d-flex justify-content-between mt-2">
                         <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear"></div>
                         <div class="fs-4 text-dark">
                             <i class="bi bi-calendar4-week"></i>
@@ -166,7 +212,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -183,7 +229,7 @@
             initialTab().then(
                 function(val)
                 {
-                    setCalendarDate();
+                    // setCalendarDate();
                     resizeToOnebyOne_Width(document.querySelector("#userProfilePic"));
                     setElemHeight(document.querySelector("#tab-content"))
                 },

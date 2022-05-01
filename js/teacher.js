@@ -17,6 +17,7 @@ async function setTeacherIndex(){
     }else{
         document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
     }
+    document.querySelector("#infoEmployeeNumber").innerHTML = SessionStorage().employee_no
     await setTeacherHandleSelect()
     let handleList = await getTeacherHandledClasses();
     console.log(handleList)
@@ -48,10 +49,14 @@ async function setTeacherHandleSelect() {
     let handleSelect = document.querySelector("#teacherHandles");
 
     let res = await getTeacherHandledClasses();
+    document.querySelector("#infoHandles").innerHTML = '';
     console.log(res)
     if(res){
         res.forEach(element => {
-            handleSelect.innerHTML += `<option value="${element.ID}">${element.subject_name} - ${element.grade_level} ${element.section_name}</option>`
+            try{
+                handleSelect.innerHTML += `<option value="${element.ID}">${element.subject_name} - ${element.grade_level} ${element.section_name}</option>`
+            }catch{}
+            document.querySelector("#infoHandles").innerHTML += `<li>${element.subject_name} - ${element.grade_level} ${element.section_name}</li>`;
         });
     }else{
         document.querySelector("#activityTotalPercentageSentence").innerHTML = `The system administrator haven't assigned a subject and section you will handle`

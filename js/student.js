@@ -11,13 +11,16 @@ if(sessionStorage.userInfo){
 async function setStudentIndex(){
     document.querySelector("#studentName").innerHTML = `${SessionStorage().first_name} ${SessionStorage().last_name}`
     document.querySelector("#studentGradeSection").innerHTML = `${SessionStorage().grade_level} - ${SessionStorage().section}`
-    
     if(SessionStorage().profile_image == ''){
         document.querySelector("#userProfilePic").setAttribute("src", "../images/default_avatar.png")
 
     }else{
         document.querySelector("#userProfilePic").setAttribute("src", SessionStorage().profile_image)
     }
+    document.querySelector("#infoLRN").innerHTML = SessionStorage().LRN;
+    document.querySelector("#infoGrade").innerHTML = SessionStorage().grade_level;
+    document.querySelector("#infoSection").innerHTML = SessionStorage().section;
+    getParent()
 }
 
 async function getStudentSubjectsAndTeachers()
@@ -119,19 +122,23 @@ async function getActivityCount(){
     let root = document.documentElement;
     if(resCheck(res, "GET")){
         console.log(res)
-        document.querySelector("#activityTotalPercentageMini").innerHTML = Math.round(res.TotalPercent) + "%";
-        document.querySelector("#activityTotalPercentage").innerHTML = Math.round(res.TotalPercent) + "%";
-        root.style.setProperty('--assignment-percent', (res.Assignment.Percent*180)/100 + "deg"); 
-        root.style.setProperty('--activity-percent', (res.Quiz.Percent*180)/100 + "deg"); 
-        root.style.setProperty('--performance-percent', (res["Performance Task"].Percent*180)/100 + "deg"); 
-        root.style.setProperty('--other-percent', (res.Other.Percent*180)/100 + "deg"); 
-        document.querySelector("#activityFinished").innerHTML = res.TotalFinished;
-        document.querySelector("#activityNotFinished").innerHTML = res.TotalActivities - res.TotalFinished
-        document.querySelector("#activityTotal").innerHTML = res.TotalActivities
-        document.querySelector("#assignmentLegend").setAttribute("data-bs-original-title", `${res.Assignment.Finished}/${res.Assignment.Total} : ${res.Assignment.Percent.toFixed(1)}%`);
-        document.querySelector("#quizLegend").setAttribute("data-bs-original-title", `${res.Quiz.Finished}/${res.Quiz.Total} : ${res.Quiz.Percent.toFixed(1)}%`);
-        document.querySelector("#performanceLegend").setAttribute("data-bs-original-title", `${res["Performance Task"].Finished}/${res["Performance Task"].Total} : ${res["Performance Task"].Percent.toFixed(1)}%`);
-        document.querySelector("#otherLegend").setAttribute("data-bs-original-title", `${res.Other.Finished}/${res.Other.Total} : ${res.Other.Percent.toFixed(1)}%`);
+        try{
+            document.querySelector("#activityTotalPercentageMini").innerHTML = Math.round(res.TotalPercent) + "%";
+            document.querySelector("#activityTotalPercentage").innerHTML = Math.round(res.TotalPercent) + "%";
+            root.style.setProperty('--assignment-percent', (res.Assignment.Percent*180)/100 + "deg"); 
+            root.style.setProperty('--activity-percent', (res.Quiz.Percent*180)/100 + "deg"); 
+            root.style.setProperty('--performance-percent', (res["Performance Task"].Percent*180)/100 + "deg"); 
+            root.style.setProperty('--other-percent', (res.Other.Percent*180)/100 + "deg"); 
+            document.querySelector("#activityFinished").innerHTML = res.TotalFinished;
+            document.querySelector("#activityNotFinished").innerHTML = res.TotalActivities - res.TotalFinished
+            document.querySelector("#activityTotal").innerHTML = res.TotalActivities
+            document.querySelector("#assignmentLegend").setAttribute("data-bs-original-title", `${res.Assignment.Finished}/${res.Assignment.Total} : ${res.Assignment.Percent.toFixed(1)}%`);
+            document.querySelector("#quizLegend").setAttribute("data-bs-original-title", `${res.Quiz.Finished}/${res.Quiz.Total} : ${res.Quiz.Percent.toFixed(1)}%`);
+            document.querySelector("#performanceLegend").setAttribute("data-bs-original-title", `${res["Performance Task"].Finished}/${res["Performance Task"].Total} : ${res["Performance Task"].Percent.toFixed(1)}%`);
+            document.querySelector("#otherLegend").setAttribute("data-bs-original-title", `${res.Other.Finished}/${res.Other.Total} : ${res.Other.Percent.toFixed(1)}%`);
+        }catch{}
+        document.querySelector("#infoStatus").innerHTML = `${Math.round(res.TotalPercent)}% - ${res.TotalFinished}/${res.TotalActivities} Finished`;
+        
     }else{console.log(res)}
 }
 
@@ -140,4 +147,15 @@ function initializeTooltips() {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+}
+
+async function getParent() {
+    let res = await GET("getParent", {
+        LRN: SessionStorage().LRN
+    });
+    if(resCheck(res, "GET")){
+        document.querySelector("#infoParent").innerHTML = `${res[0].first_name} ${res[0].last_name}`
+    }else{
+        document.querySelector("#infoParent").innerHTML = `none`
+    }
 }

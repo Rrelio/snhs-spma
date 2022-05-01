@@ -482,6 +482,12 @@
         return $res;
     }
 
+    function getParent($data){
+        $LRN=$data["LRN"];
+        $res = selectDatabase("SELECT first_name, last_name FROM parent WHERE child_lrn='$LRN'");
+        return $res;
+    }
+    
     function test(){
         echo "hey";
     }

@@ -20,21 +20,22 @@
                             <img src="../logo/SPMA.png" class="img-fluid p-2" alt="">
                         </div>
                         <div class="">
-                            <div class="active-tab"  id="home" onclick="switchTab('dashboard', this)">
+                            <div class="active-tab" id="home" onclick="switchTab('dashboard', this)">
                                 <img src="../images/home.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
-                            <div class=""  id="activity" onclick="switchTab('subjects', this)">
+                            <div class="" id="activity" onclick="switchTab('subjects', this)">
                                 <img src="../images/activity.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
                             <!-- <div class=""  id="notes" onclick="switchTab()">
                                 <img src="../images/notes.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div> -->
-                            <div class=""  id="settings" onclick="switchTab('setting', this)">
+                            <div class="" id="settings" onclick="switchTab('setting', this)">
                                 <img src="../images/settings.png" class="img-fluid d-block my-2 p-2 pointer" alt="">
                             </div>
                         </div>
                         <div>
-                            <img src="../images/md-log-out.png" onclick="logout()" class="img-fluid d-block my-2 p-2 mb-5 pointer" alt="">
+                            <img src="../images/md-log-out.png" onclick="logout()"
+                                class="img-fluid d-block my-2 p-2 mb-5 pointer" alt="">
                         </div>
                     </div>
                     <div class="col-11 py-1 d-flex flex-column">
@@ -42,7 +43,8 @@
                             <div class="">
                                 <h4 class="fw-bold text-darkish mb-0">Hello, Student! <span class="wave-anim">👋</span>
                                 </h4>
-                                <small class="text-black-50 text-truncate">Welcome & let's see how many activities left today.</small>
+                                <small class="text-black-50 text-truncate">Welcome & let's see how many activities left
+                                    today.</small>
                             </div>
                             <!-- <div class="d-flex align-items-start">
                                 <div class="d-flex">
@@ -56,7 +58,7 @@
                         </div>
                         <!-- tabs -->
                         <div class="mt-3 mx-1 flex-fill" id="tab-content">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -67,45 +69,69 @@
                 <div class="fw-bold mb-3">My Profile</div>
                 <div class=" text-center flex-fill mx-2"
                     style="border-radius:25px; background-color:rgba(255,255,255,.5);">
-                    <img src="" alt=""
-                        class="img-fluid mx-auto d-block mt-3 border rounded-circle"
-                        style="width: 35%;" id="userProfilePic">
+                    <img src="" alt="" class="img-fluid mx-auto d-block mt-3 border rounded-circle" style="width: 35%;"
+                        id="userProfilePic">
                     <p class="fw-bold mt-2 mb-0 fs-5 text-darkerish" id="studentName">Student Name</p>
                     <p id="studentGradeSection">Grade Level - Section</p>
                 </div>
                 <div>
                     <div class="d-flex justify-content-between mt-2">
                         <div class="fw-bold text-darkerish fs-6 align-self-center" id="currentMonthAndYear">User Info
-                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="">
+                            <div class="bg-white-50 rounded-pill px-1 pointer d-inline" onclick="getActivityCount()">
                                 <i class="bi bi-arrow-clockwise text-primary"></i>
                             </div>
                         </div>
                         <div class="fs-4 text-dark">
                             <i class="bi bi-person-circle"></i>
                         </div>
-                    </div>         
+                    </div>
                 </div>
                 <div style="border-top: 1px rgba(0,0,0,.25) solid;">
                     <ul class="text-darkerish">
                         <li>
                             Learner's Reference Number:
-                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoLRN">123456789012</div>
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoLRN">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- 123456789012 -->
+                            </div>
                         </li>
                         <li>
                             Grade Level:
-                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold"id="infoGrade" >Grade 7</div>
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoGrade">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- Grade 7 -->
+                            </div>
                         </li>
                         <li>
                             Section:
-                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoSection" >Section A</div>
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoSection">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- Section A -->
+                            </div>
                         </li>
                         <li>
                             Activity Status:
-                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoStatus" >50% - 3/6 Finished</div>
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoStatus">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- 50% - 3/6 Finished -->
+                            </div>
                         </li>
                         <li>
                             Registered Parent:
-                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoParent" >Juana Dela Cruz</div>
+                            <div class="text-center bg-white-50 rounded-pill me-2 fw-bold" id="infoParent">
+                                <div class="spinner-border text-dark opacity-25 spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- Juana Dela Cruz -->
+                            </div>
                         </li>
                     </ul>
                 </div>

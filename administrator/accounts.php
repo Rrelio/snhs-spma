@@ -30,7 +30,7 @@
                 <option value="active">Status</option>
             </select>
         </div>
-        <div class="overflow-auto mt-3 flex-grow-1">
+        <div class="overflow-auto mt-3 flex-grow-1" style="height: 50px;">
             <table class="table table-sm table-hover table-fs-small">
                 <thead class="sticky-top bg-white">
                     <tr class="sticky-th bg-white" id="accountsTableHeader">
